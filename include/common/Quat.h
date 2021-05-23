@@ -1,5 +1,9 @@
 #pragma once
-class Camera
+
+
+
+class Quat
 {
+
 };
 

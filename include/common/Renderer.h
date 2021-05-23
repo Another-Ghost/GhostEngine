@@ -1,15 +1,18 @@
+#pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Shader.h"
 
-#include "common/Shader.h"
-#include "common/Window.h"
-
-int main()
+class Renderer
 {
+protected:
 
-	return 0;
-}
+	virtual bool Init() = 0;
+
+
+};
+

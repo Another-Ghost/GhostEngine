@@ -1,6 +1,7 @@
 #include "Shader.h"
+#include "File.h"
 
-Shader::Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path)
+Shader::Shader(const string& vertex_name, const string& fragment_name, const string& geometry_name)
 {
 	//1.retrieve the source code from filePath
 	const char* vertex_code;
@@ -17,8 +18,8 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 
 	try
 	{
-		vertex_shader_file.open(vertex_path);
-		fragment_shader_file.open(fragment_path);
+		vertex_shader_file.open(File::GetShaderPath(vertex_name));
+		fragment_shader_file.open(File::GetShaderPath(fragment_name));
 		stringstream vertex_shader_stream, fragment_shader_stream;
 		vertex_shader_stream << vertex_shader_file.rdbuf();
 		fragment_shader_stream << fragment_shader_file.rdbuf();
@@ -27,9 +28,9 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 
 		vertex_code = vertex_shader_stream.str().c_str();
 		fragment_code = fragment_shader_stream.str().c_str();
-		if (geometry_path != "")
+		if (geometry_name != "")
 		{
-			geometry_shader_file.open(geometry_path);
+			geometry_shader_file.open(File::GetShaderPath(geometry_name));
 			stringstream geometry_shader_stream;
 			geometry_shader_stream << geometry_shader_file.rdbuf();
 			geometry_shader_file.close();
@@ -55,7 +56,7 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	CheckCompileErrors(vertex, "FRAGMENT");
 	
 	unsigned int geometry;
-	if (geometry_path != "")
+	if (geometry_name != "")
 	{
 		geometry = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(geometry, 1, &geometry_code, NULL);
@@ -67,7 +68,7 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	id = glCreateProgram();
 	glAttachShader(id, vertex);
 	glAttachShader(id, fragment);
-	if (geometry_path != "")
+	if (geometry_name != "")
 		glAttachShader(id, geometry);
 	glLinkProgram(id);
 	CheckCompileErrors(id, "PROGRAM");
@@ -75,7 +76,7 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	//4. delete the shaders
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
-	if (geometry_path != "")
+	if (geometry_name != "")
 		glDeleteShader(geometry);
 	
 }

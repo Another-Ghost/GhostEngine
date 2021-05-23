@@ -5,10 +5,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "shader.h"
-
 #include <string>
 #include <vector>
+
+#include "shader.h"
+#include "Texture.h"
+
+
+
 using namespace std;
 
 struct Vertex {
@@ -24,11 +28,7 @@ struct Vertex {
 	glm::vec3 Bitangent;
 };
 
-struct Texture {
-	unsigned int id;
-	string type; //类型，比如是漫反射贴图或者是镜面光贴图
-	string path; //通过不同路径来比较不同纹理（将所有加载过的纹理全局储存，每当我们想加载一个纹理的时候，首先去检查它有没有被加载过）
-};
+
 
 class Mesh {
 public:
@@ -62,18 +62,18 @@ public:
 			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
 			// retrieve texture number (the N in diffuse_textureN)
 			string number;
-			string name = textures[i].type;
-			if (name == "texture_diffuse")
+			TextureType type = textures[i].type;
+			if (type == TextureType::DIFFUSE)
 				number = std::to_string(diffuseNr++);
-			else if (name == "texture_specular")
+			else if (type == TextureType::SPECULAR)
 				number = std::to_string(specularNr++); // transfer unsigned int to stream
-			else if (name == "texture_normal")
+			else if (type == TextureType::NORMAL)
 				number = std::to_string(normalNr++); // transfer unsigned int to stream
-			else if (name == "texture_height")
+			else if (type == TextureType::HEIGHT)
 				number = std::to_string(heightNr++); // transfer unsigned int to stream
 
 			// now set the sampler to the correct texture unit
-			glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+			glUniform1i(glGetUniformLocation(shader.GetID(), (Texture::TypeName(type) + number).c_str()), i);
 			// and finally bind the texture
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
