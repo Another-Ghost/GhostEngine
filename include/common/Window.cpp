@@ -6,6 +6,23 @@ using namespace std;
 using namespace std::placeholders;
 
 
+bool Window::Update(float& dt)
+{
+	if (!glfwWindowShouldClose(glfw_window))
+	{
+		float current_frame_time = glfwGetTime();
+		delta_time = current_frame_time - last_frame_time;
+		last_frame_time = current_frame_time;
+		
+		dt = delta_time;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Window::MouseCallback(double x_pos, double y_pos)
 {
 	if (first_mouse)

@@ -1,18 +1,16 @@
-﻿#include "WindowCreater.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+﻿#include "WindowInitializer.h"
 #include "Window.h"
 #include <stb_image.h>
 #include <iostream>
 
 
 
-Initializer::Initializer()
+WindowInitializer::WindowInitializer()
 {
 	Init();
 }
 
-bool Initializer::Init()
+bool WindowInitializer::Init()
 {
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -26,7 +24,7 @@ bool Initializer::Init()
 
 }
 
-Window* Initializer::CreateWindow(int width, int height)
+Window* WindowInitializer::CreateWindow(Window* win, int width, int height)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -60,17 +58,17 @@ Window* Initializer::CreateWindow(int width, int height)
 }
 
 
-void Initializer::FrameBufferSizeCallBack(GLFWwindow* glfw_window, int width, int height)
+void WindowInitializer::FrameBufferSizeCallBack(GLFWwindow* glfw_window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
-void Initializer::MouseCallback(GLFWwindow* glfw_window, double x_pos, double y_pos)
+void WindowInitializer::MouseCallback(GLFWwindow* glfw_window, double x_pos, double y_pos)
 {
 	window->MouseCallback(x_pos, y_pos);
 }
 
-void Initializer::ScrollCallback(GLFWwindow* glfw_window, double x_offset, double y_offset)
+void WindowInitializer::ScrollCallback(GLFWwindow* glfw_window, double x_offset, double y_offset)
 {
 	window->ScrollCallback(x_offset, y_offset);
 }

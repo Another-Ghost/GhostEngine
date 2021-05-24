@@ -151,12 +151,13 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Repositry.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="WindowCreater.cpp" />
+    <ClCompile Include="WindowInitializer.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,12 +169,13 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Repositry.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowCreater.h" />
+    <ClInclude Include="WindowInitializer.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
