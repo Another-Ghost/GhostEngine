@@ -8,7 +8,7 @@ void Transform::UpdateMatrix()
 	//matrix = mat4_cast(orientation);
 }
 
-Transform::Transform(const vec3& pos, const quat& ori, const vec3 dim)
+Transform::Transform(const vec3& pos, const quat& ori, const vec3& dim)
 {
 	position = pos;
 	orientation = ori;

@@ -1,21 +1,24 @@
 #include "BasicRenderer.h"
 #include "common/Shader.h"
+#include "common/Transform.h"
+#include "common/world.h"
 
-
-BasicRenderer::BasicRenderer()
+bool BasicRenderer::Initialize()
 {
-	window = WindowInitializer().CreateWindow(1280, 720);
+	camera = world->GetCamera();
+
+	return true;
 }
 
-bool BasicRenderer::Init()
+void BasicRenderer::BeginRender()
 {
 	glEnable(GL_DEPTH_TEST);
 
 	basic_shader = new Shader("basic.vs", "basic.fs");
-	return true;
+
 }
 
-bool BasicRenderer::Update(float& dt)
+void BasicRenderer::Update(float dt)
 {
 	
 }

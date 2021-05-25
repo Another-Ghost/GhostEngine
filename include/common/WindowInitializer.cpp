@@ -20,11 +20,13 @@ bool WindowInitializer::Init()
 	}
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-	stbi_set_flip_vertically_on_load(true);
+	//stbi_set_flip_vertically_on_load(true); //? Image
 
+
+	return true;
 }
 
-Window* WindowInitializer::CreateWindow(Window* win, int width, int height)
+Window* WindowInitializer::CreateWindow(int width, int height)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

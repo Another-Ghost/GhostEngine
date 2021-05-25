@@ -1,14 +1,14 @@
 ﻿#include "BasicWorld.h"
-#include "BasicRenderer.h"
-#include "BasicRepositry.h"
+//#include "BasicRenderer.h"
+//#include "BasicRepositry.h"
 
 int main()
 {
-	BasicRenderer renderer; //? 在堆中生成更好？
-	BasicRepositry repositry;
-	BasicWorld(&renderer, &repositry);
+	//BasicRenderer renderer; //? 在堆中生成更好？
+	//BasicRepositry repositry;
+	BasicWorld world;
 
-	while (world.Update());
+	world.Update();
 
 	return 0;
 }

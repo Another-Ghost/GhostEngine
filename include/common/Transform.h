@@ -18,7 +18,7 @@ private:
 	void UpdateMatrix();
 
 public:
-	Transform(const glm::vec3& pos = { 0, 0, 0 }, const quat& ori = {1, 0, 0, 0}, const vec3 dim = { 1, 1, 1 });
+	Transform(const glm::vec3& pos = { 0, 0, 0 }, const quat& ori = {1, 0, 0, 0}, const vec3& dim = { 1, 1, 1 });
 
 	void SetPosition(const vec3& pos);
 

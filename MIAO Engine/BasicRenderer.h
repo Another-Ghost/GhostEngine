@@ -4,17 +4,27 @@
 
 class BasicRenderer : public Renderer
 {
-private:
-	BasicRenderer();
+public:
+	BasicRenderer(World* world_, Window* window_) :Renderer(world_, window_) {
+		Initialize();
+		BeginRender();
+	}
 
-	bool Init() override;
+	bool Initialize() override;
 
-	bool Update(float& dt);
+	void BeginRender() override;
+
+	void Update(float dt) override;
+
 
 
 private:
 	Shader* basic_shader;
 
 	Window* window;
+
+	Camera* camera;
+
+	World* world;
 };
 

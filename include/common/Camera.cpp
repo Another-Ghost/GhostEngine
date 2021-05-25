@@ -5,8 +5,8 @@ void Camera::ProcessMouseMovement(float x_offset, float y_offset)
     float yaw = transform.GetYaw();
     float pitch = transform.GetPitch();
 
-    yaw += x_offset * mouse_spead;
-    pitch = y_offset * mouse_spead;
+    yaw += x_offset * rotation_spead;
+    pitch = y_offset * rotation_spead;
 
     // make sure that when pitch is out of bounds, screen doesn't get flipped
     if (pitch > 89.f)

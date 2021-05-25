@@ -38,12 +38,18 @@ void Window::MouseCallback(double x_pos, double y_pos)
 	last_x = x_pos;
 	last_y = y_pos;
 
-	camera.ProcessMouseMovement(x_offset, y_offset);
+	if (camera)
+		camera->ProcessMouseMovement(x_offset, y_offset);
+	else
+		std::cout << "WARNING in Window: camera is null \n";
 }
 
 void Window::ScrollCallback(double x_offset, double y_offset)
 {
-	camera.ProcessMouseScroll(y_offset);
+	if(camera)
+		camera->ProcessMouseScroll(y_offset);
+	else
+		std::cout << "WARNING in Window: camera is null \n";
 }
 
 void Window::ProcessInput()

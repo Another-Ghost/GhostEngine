@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Camera.h"
 
 
 
-class Window
+class Window	//? 改为全局
 {
 
 public:
@@ -15,23 +15,21 @@ public:
 
 public:
 
-	Window(GLFWwindow* win, int width, int height) :glfw_window(win), kWidth(width), kHeight(height), first_mouse(true), last_x(width / 2.0f), last_y(height / 2.0f) 
+	Window(GLFWwindow* win, int width, int height) :glfw_window(win), kWidth(width), kHeight(height), first_mouse(true), last_x(width / 2.0f), last_y(height / 2.0f), delta_time(0.f)
 	{
 
 	}
 
 	//GLFWwindow* GetGLFWWindow() { return glfw_window; }
 	
-
-
 	bool Update(float & dt);
 
-
+	void SetCamera(Camera* cam) { camera = cam; }
 
 protected:
 	GLFWwindow* glfw_window;
 
-	Camera camera;
+	Camera* camera;
 
 	float delta_time;
 
@@ -39,8 +37,6 @@ private:
 	bool first_mouse;
 	float last_x;
 	float last_y;
-
-
 
 
 	float last_frame_time;
