@@ -8,7 +8,11 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::string;
+using std::ifstream;
+using std::stringstream;
+
 using namespace glm;
 
 
@@ -26,7 +30,7 @@ public:
 
 	void SetBool(const string& name, bool value) const { glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value); } //! is there a uniform bool type right now? No.
 
-	void SetInt(string& name, int value) const { glUniform1i(glGetUniformLocation(id, name.c_str()), value); }
+	void SetInt(const string& name, int value) const { glUniform1i(glGetUniformLocation(id, name.c_str()), value); }
 
 	void SetFloat(const string& name, float value) const { glUniform1f(glGetUniformLocation(id, name.c_str()), value); }
 

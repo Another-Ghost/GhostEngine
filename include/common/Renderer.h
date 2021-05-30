@@ -2,7 +2,7 @@
 #include "WindowInitializer.h"
 #include "window.h"
 #include "Shader.h"
-
+#include "Scene.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 

@@ -4,9 +4,9 @@
 Shader::Shader(const string& vertex_name, const string& fragment_name, const string& geometry_name)
 {
 	//1.retrieve the source code from filePath
-	const char* vertex_code;
-	const char* fragment_code;
-	const char* geometry_code;
+	string vertex_code;
+	string fragment_code;
+	string geometry_code;
 	ifstream vertex_shader_file;
 	ifstream fragment_shader_file;
 	ifstream geometry_shader_file;
@@ -26,40 +26,43 @@ Shader::Shader(const string& vertex_name, const string& fragment_name, const str
 		vertex_shader_file.close();
 		fragment_shader_file.close();
 
-		vertex_code = vertex_shader_stream.str().c_str();
-		fragment_code = fragment_shader_stream.str().c_str();
+		vertex_code = vertex_shader_stream.str();
+		fragment_code = fragment_shader_stream.str();
 		if (geometry_name != "")
 		{
 			geometry_shader_file.open(File::GetShaderPath(geometry_name));
 			stringstream geometry_shader_stream;
 			geometry_shader_stream << geometry_shader_file.rdbuf();
 			geometry_shader_file.close();
-			geometry_code = geometry_shader_stream.str().c_str();
+			geometry_code = geometry_shader_stream.str();
 		}
 	}
 	catch (ifstream::failure& e)
 	{
-		cout << "ERROR: Shader file is not loaded successfully" << endl;
+		cout << "ERROR: Shader file is not loaded successfully \n";
 	}
 
+	const char* v_code = vertex_code.c_str();
+	const char* f_code = fragment_code.c_str();
 	//2. compile shaders
 	unsigned int vertex;
 	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vertex_code, NULL); //second parameter is the number of string of the source code
+	glShaderSource(vertex, 1, &v_code, NULL); //second parameter is the number of string of the source code
 	glCompileShader(vertex);
 	CheckCompileErrors(vertex, "VERTEX");
 
 	unsigned int fragment;
 	fragment = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(fragment, 1, &fragment_code, NULL);
+	glShaderSource(fragment, 1, &f_code, NULL);
 	glCompileShader(fragment);
 	CheckCompileErrors(vertex, "FRAGMENT");
 	
 	unsigned int geometry;
 	if (geometry_name != "")
 	{
+		const char* g_code = geometry_code.c_str();
 		geometry = glCreateShader(GL_GEOMETRY_SHADER);
-		glShaderSource(geometry, 1, &geometry_code, NULL);
+		glShaderSource(geometry, 1, &g_code, NULL);
 		glCompileShader(geometry);
 		CheckCompileErrors(geometry, "GEOMETRY");
 	}
@@ -84,23 +87,25 @@ Shader::Shader(const string& vertex_name, const string& fragment_name, const str
 void Shader::CheckCompileErrors(GLuint shader, string type)
 {
 	GLint success;
-	GLchar infoLog[1024];
+	int log_length = 0;
 	if (type != "PROGRAM")
 	{
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success)
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+		if (log_length)
 		{
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR: SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+			GLchar* log_data = new GLchar[log_length];
+			glGetShaderInfoLog(shader, log_length, NULL, log_data);
+			std::cout << "ERROR: SHADER_COMPILATION_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
 		}
 	}
 	else
 	{
-		glGetProgramiv(shader, GL_LINK_STATUS, &success);	//not relating to linker, it's just means like if vertex shader could link to fragment shader
-		if (!success)
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+		if (log_length)
 		{
-			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR: PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+			GLchar* log_data = new GLchar[log_length];
+			glGetShaderInfoLog(shader, log_length, NULL, log_data);
+			std::cout << "ERROR: SHADER_LINKING_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
 		}
 	}
 

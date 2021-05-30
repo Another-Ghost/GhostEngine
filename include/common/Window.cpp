@@ -1,4 +1,6 @@
 #include "Window.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
 #include <functional>
 
@@ -15,12 +17,20 @@ bool Window::Update(float& dt)
 		last_frame_time = current_frame_time;
 		
 		dt = delta_time;
+
+		ProcessInput();
 		return true;
 	}
 	else
 	{
 		return false;
 	}
+}
+
+void Window::EndUpdate()
+{
+	glfwSwapBuffers(glfw_window);
+	glfwPollEvents();
 }
 
 void Window::MouseCallback(double x_pos, double y_pos)
@@ -56,6 +66,15 @@ void Window::ProcessInput()
 {
 	if (glfwGetKey(glfw_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(glfw_window, true);
+
+	if (glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS)
+		camera->ProcessKeyboard(CameraControl::FORWARD, delta_time);
+	if (glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS)
+		camera->ProcessKeyboard(CameraControl::BACKWARD, delta_time);
+	if (glfwGetKey(glfw_window, GLFW_KEY_A) == GLFW_PRESS)
+		camera->ProcessKeyboard(CameraControl::LEFT, delta_time);
+	if (glfwGetKey(glfw_window, GLFW_KEY_D) == GLFW_PRESS)
+		camera->ProcessKeyboard(CameraControl::RIGHT, delta_time);
 }
 
 

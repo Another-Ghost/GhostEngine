@@ -146,36 +146,46 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Datatype.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Repositry.cpp" />
+    <ClCompile Include="Root.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WindowFactory.cpp" />
     <ClCompile Include="WindowInitializer.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Datatype.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Repositry.h" />
+    <ClInclude Include="Root.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowFactory.h" />
     <ClInclude Include="WindowInitializer.h" />
+    <ClInclude Include="WindowManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

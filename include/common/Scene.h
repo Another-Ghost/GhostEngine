@@ -9,14 +9,20 @@
 
 class Scene
 {
-	static std::vector<Texture> textures;
-	
-	//static std::vector<Mesh> meshes;
-
+public:
 	Scene(const string& path)
 	{
 		LoadScene(path);
 	}
+
+private:
+	const aiScene* scene;
+
+	string directory;
+
+	static std::vector<Texture> textures;
+	
+	//static std::vector<Mesh> meshes;
 
 	void LoadScene(const string& path);
 
@@ -28,11 +34,8 @@ class Scene
 
 	std::vector<Texture> ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type);
 
-	unsigned int LoadTexture(const string& name, const string& directory);	//? 在何处进行gamma校正
+	//static unsigned int LoadTexture(const string& name, const string& directory);	//? 在何处进行gamma校正
 
-private:
-	const aiScene* scene;
 
-	string directory;
 };
 

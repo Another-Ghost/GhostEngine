@@ -9,7 +9,6 @@ enum class TextureType
 	NORMAL,
 	HEIGHT,
 
-
 };
 
 
@@ -35,5 +34,11 @@ struct Texture
 			return nullptr;
 		}
 	}
+
+	static unsigned int LoadTexture(const std::string& name);
+
+	static unsigned int LoadTexture(const std::string& name, const std::string& directory);	//? 在何处进行gamma校正
+
+
 };
 

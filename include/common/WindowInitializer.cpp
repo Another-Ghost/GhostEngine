@@ -2,7 +2,8 @@
 #include "Window.h"
 #include <stb_image.h>
 #include <iostream>
-
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 
 WindowInitializer::WindowInitializer()
@@ -13,15 +14,10 @@ WindowInitializer::WindowInitializer()
 bool WindowInitializer::Init()
 {
 	// glad: load all OpenGL function pointers
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return false;
-	}
+
 
 	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-	//stbi_set_flip_vertically_on_load(true); //? Image
-
+	stbi_set_flip_vertically_on_load(true); //? Image
 
 	return true;
 }
@@ -53,7 +49,11 @@ Window* WindowInitializer::CreateWindow(int width, int height)
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return nullptr;
+	}
 
 
     return window;

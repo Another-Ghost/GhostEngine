@@ -6,6 +6,13 @@
 
 #include "Transform.h"
 
+enum class CameraControl
+{
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT
+};
 
 class Camera
 {
@@ -37,6 +44,8 @@ public:
 
 	Camera(const Transform& tf = Transform(), float aspect_ = 16 / 9.0f, float fov_y_ = 90.f, float near = 0.1f, float far = 100.f, float move_speed_ = 2.5f, float roation_speed_ = 0.1f)
 	:transform(tf), aspect(aspect_), fov_y(fov_y_), near_plane(near), far_plane(far), move_speed(move_speed_), rotation_spead(roation_speed_){ }
+
+	void ProcessKeyboard(CameraControl type, float dt);
 
 	void ProcessMouseMovement(float x_offset, float y_offset);
  

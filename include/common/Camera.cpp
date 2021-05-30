@@ -1,5 +1,18 @@
 #include "Camera.h"
 
+void Camera::ProcessKeyboard(CameraControl type, float dt)
+{
+    float velocity = move_speed * dt;
+    if (type == CameraControl::FORWARD)
+        transform.SetPosition(transform.GetPosition() + transform.GetForward() * dt);
+	if (type == CameraControl::BACKWARD)
+		transform.SetPosition(transform.GetPosition() - transform.GetForward() * dt);
+	if (type == CameraControl::RIGHT)
+		transform.SetPosition(transform.GetPosition() + transform.GetRight() * dt);
+	if (type == CameraControl::LEFT)
+		transform.SetPosition(transform.GetPosition() - transform.GetRight() * dt);
+}
+
 void Camera::ProcessMouseMovement(float x_offset, float y_offset)
 {
     float yaw = transform.GetYaw();
