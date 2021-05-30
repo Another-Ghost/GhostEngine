@@ -1,6 +1,8 @@
 ﻿#include "WindowManager.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+#include <assert.h>
 
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 bool WindowManager::Initialize()
@@ -16,18 +18,93 @@ bool WindowManager::Initialize()
     b_initialized = true;
     return true;
 }
-Window* WindowManager::CreateWindow(int width, int height, const std::string& title)
+Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int height, const std::string& title)
 {
-    if (!b_initialized)
-    {
-        Initialize();
-    }
+	if (!b_initialized)
+	{
+		if (!Initialize())
+			return nullptr;
+	}
 
-    
-    //传进window参数
-    GLFWwindow* glfw_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+	
 
+	GLFWwindow* glfw_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+	if (glfw_window == nullptr)
+	{
+		std::cout << "WINDOW ERROR: Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		
+		return nullptr;
+	}
 
+	Window* window = factory->CreateWindow(glfw_window);
+	if (!window)
+	{
+		glfwTerminate();
+		assert(window);
+		//return nullptr;
+	}
+	window_array.push_back(window);
+	current_window = window;
+	//- 生成一个Window的时候自动将上下文切换至新生成的window
+	glfwMakeContextCurrent(glfw_window);
 
-    return nullptr;
+	glfwSetFramebufferSizeCallback(glfw_window, FrameBufferSizeCallBack);
+	glfwSetCursorPosCallback(glfw_window, MouseCallback);
+	glfwSetScrollCallback(glfw_window, ScrollCallback);
+
+	return nullptr;
 }
+
+void WindowManager::FrameBufferSizeCallBack(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height); //- 考虑移进window类里
+	if (current_window)
+	{
+		if (current_window->glfw_window == window)
+		{
+			current_window->FrameBufferSizeCallBack();
+		}
+		else
+		{
+			std::cout << "ERROR<Window> from: FrameBufferSizeCallBack\n";
+		}
+	}
+	else
+		std::cout << "ERROR<Window> from: FrameBufferSizeCallBack\n";
+}
+
+void WindowManager::MouseCallback(GLFWwindow* window, double x_pos, double y_pos)
+{
+	if (current_window)
+	{
+		if (current_window->glfw_window == window)
+		{
+			current_window->MouseCallback(x_pos, y_pos);
+		}
+		else
+		{
+			std::cout << "ERROR<Window> from: MouseCallback\n";
+		}
+	}
+	else
+		std::cout << "ERROR<Window> from: MouseCallback\n";
+}
+
+void WindowManager::ScrollCallback(GLFWwindow* window, double x_offset, double y_offset)
+{
+	if (current_window)
+	{
+		if (current_window->glfw_window == window)
+		{
+			current_window->ScrollCallback(x_offset, y_offset);
+		}
+		else
+		{
+			std::cout << "ERROR<Window> from: ScrollCallback\n";
+		}
+	}
+	else
+		std::cout << "ERROR<Window> from: ScrollCallback\n";
+}
+

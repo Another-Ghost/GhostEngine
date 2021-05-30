@@ -1,8 +1,6 @@
 ﻿#pragma once
-
-#include "Camera.h"
-
-struct GLFWwindow;
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Window	//? 改为全局
 {
@@ -10,38 +8,40 @@ class Window	//? 改为全局
 public:
 
 	//Window(GLFWwindow* win, int width_, int height_) :glfw_window(win), width(width_), height(height_), first_mouse(true), last_x(width / 2.0f), last_y(height / 2.0f), delta_time(0.f){}
+	Window(GLFWwindow* glfw_window_);
 
 	//GLFWwindow* GetGLFWWindow() { return glfw_window; }
 	virtual bool Initialize();
 
-	virtual bool Update(float & dt);
+	//子类重写后需先调用父类的
+	virtual bool Update(float& dt);	
 
 	virtual void EndUpdate();
 
-	//void SetCamera(Camera* cam) { camera = cam; }
+	int GetWidth() { return width; }
+	int GetHeight() { return height; }
 
 protected:
 	GLFWwindow* glfw_window;
 
-	//Camera* camera;
+
 
 	float delta_time;
 
-private:
-	unsigned int width; //1280, 1920
-	unsigned int height; //720, 1080
-
-	bool first_mouse;
-	float last_x;
-	float last_y;
-
 	float last_frame_time;
 
-	void FrameBufferSizeCallBack();
-	void MouseCallback(double x_pos, double y_pos);
-	void ScrollCallback(double x_offset, double y_offset);
+
+
+private:
+	int width; //1280, 1920
+	int height; //720, 1080
+
+	virtual void FrameBufferSizeCallBack();	//可以把所有CallBack移出单独写个类
+	virtual void MouseCallback(double x_pos, double y_pos);
+	virtual void ScrollCallback(double x_offset, double y_offset);
 	virtual void ProcessInput();
 
-	friend class WindowInitializer;
+
+	friend class WindowManager;
 };
 

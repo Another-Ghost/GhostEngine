@@ -35,7 +35,7 @@ Window* WindowInitializer::CreateWindow(int width, int height)
 
 	if (glfw_window == nullptr)
 	{
-		std::cout << "WINDOW ERROR: Failed to create GLFW window" << std::endl;
+		std::cout << "ERROR<Window>: failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return nullptr;
 	}

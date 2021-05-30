@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="BasicRepositry.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
+    <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="BasicWorld.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="demo.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="BasicRepositry.h" />
     <ClInclude Include="BasicWindow.h" />
+    <ClInclude Include="BasicWindowFactory.h" />
     <ClInclude Include="BasicWorld.h" />
     <ClInclude Include="BasicRenderer.h" />
   </ItemGroup>
