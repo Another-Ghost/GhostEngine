@@ -1,5 +1,7 @@
 ﻿#pragma once
+#include "Prerequisite.h"
 #include <string>
+#include <stb_image.h>
 
 
 enum class TextureType
@@ -7,16 +9,27 @@ enum class TextureType
 	DIFFUSE,
 	SPECULAR,
 	NORMAL,
+	ROUGHNESS,
+	METALNESS,
+	AO,
 	HEIGHT,
-
 };
 
 
 struct Texture
 {
 	unsigned int id;
+	
+	unique_ptr<unsigned char> data;
 	TextureType type; //类型，比如是漫反射贴图或者是镜面光贴图
 	std::string path; //通过不同路径来比较不同纹理（将所有加载过的纹理全局储存，每当我们想加载一个纹理的时候，首先去检查它有没有被加载过）
+
+	int width;
+	int height;
+	int component_num;
+
+
+	Texture(const string& path, TextureType type_);
 
 	static std::string TypeName(TextureType type)
 	{
@@ -28,12 +41,22 @@ struct Texture
 			return "specular";
 		case TextureType::NORMAL:
 			return "normal";
+		case TextureType::METALNESS:
+			return "Metalness";
+		case TextureType::AO:
+			return "ao";
 		case TextureType::HEIGHT:
 			return "height";
+		case TextureType::ROUGHNESS:
+			return "roughness"
 		default:
 			return nullptr;
 		}
 	}
+
+	void Buffer();
+
+	bool b_buffered;
 
 	static unsigned int LoadTexture(const std::string& name);
 

@@ -35,6 +35,11 @@ void Window::EndUpdate()
 	glfwPollEvents();
 }
 
+void Window::FrameBufferSizeCallBack()
+{
+
+}
+
 void Window::MouseCallback(double x_pos, double y_pos)
 {
 

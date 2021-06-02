@@ -1,12 +1,20 @@
 #pragma once
+#include "Prerequisite.h"
 #include "Texture.h"
 #include <vector>
 
-class Material
+enum class MaterialType
+{
+	PBR,
+};
+
+struct Material
 {
 public:
-	std::vector<Texture> textures;
+	//std::vector<Texture*> textures;
 
-	Material(std::vector<Texture> texs) :textures(texs) { }
+	//Material(vector<Texture*> texs = vector<Texture*>()) :textures(texs) { }
+	
+	virtual ~Material();
 };
 

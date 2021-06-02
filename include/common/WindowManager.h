@@ -1,4 +1,5 @@
-#pragma once
+﻿#pragma once
+#include "Prerequisite.h"
 #include "Singleton.h"
 #include "Window.h"
 #include "WindowFactory.h"
@@ -9,7 +10,7 @@
 class WindowManager : public Singleton<WindowManager>
 {
 public:
-	static std::vector<Window*> window_array;
+	std::vector<Window*> window_array;	//? 改成监听/观察者列表
 
 	static Window* current_window;
 

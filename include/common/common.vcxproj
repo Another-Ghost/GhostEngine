@@ -144,21 +144,38 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Datatype.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="PBRMaterial.cpp" />
+    <ClCompile Include="PBRMaterialFacotry.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Prerequisite.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="RenderModule.cpp" />
+    <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="Repositry.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Singleton.cpp" />
+    <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TriangleMesh.cpp" />
+    <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
     <ClCompile Include="WindowInitializer.cpp" />
@@ -167,26 +184,47 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Datatype.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Module.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="PBRMaterial.h" />
+    <ClInclude Include="PBRMaterialFactory.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Prerequisite.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="RenderModule.h" />
+    <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="Repositry.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Root.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TriangleMesh.h" />
+    <ClInclude Include="Unit.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowFactory.h" />
     <ClInclude Include="WindowInitializer.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="common.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

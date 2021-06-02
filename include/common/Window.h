@@ -2,6 +2,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+class WindowEventListener
+{
+	virtual bool WindowClosed(Window* window);
+};
+
 class Window	//? 改为全局
 {
 
@@ -11,7 +16,7 @@ public:
 	Window(GLFWwindow* glfw_window_);
 
 	//GLFWwindow* GetGLFWWindow() { return glfw_window; }
-	virtual bool Initialize();
+	//virtual bool Initialize();
 
 	//子类重写后需先调用父类的
 	virtual bool Update(float& dt);	
@@ -20,6 +25,10 @@ public:
 
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
+
+	float GetCurrentFrameTime() { return glfwGetTime(); }
+
+	bool WindowClosinng() { return glfwWindowShouldClose(glfw_window); }
 
 protected:
 	GLFWwindow* glfw_window;
@@ -31,8 +40,6 @@ protected:
 	float last_frame_time;
 
 
-
-private:
 	int width; //1280, 1920
 	int height; //720, 1080
 
@@ -43,5 +50,6 @@ private:
 
 
 	friend class WindowManager;
+
 };
 

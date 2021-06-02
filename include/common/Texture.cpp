@@ -13,6 +13,46 @@ unsigned int Texture::LoadTexture(const std::string& name, const std::string& di
 
 }
 
+Texture::Texture(const string& path, TextureType type_)
+{
+	unsigned char* data = stbi_load(File::GetTexturePath(path).c_str(), &width, &height, &component_num, 0); //倒数第二个参数为图片原始的通道数，不是输出的通道数
+	type = type_;
+
+	Buffer();
+}
+
+void Texture::Buffer()
+{
+	glGenTextures(1, &id);
+
+	if (data)
+	{
+		GLenum format;
+		if (component_num == 1)
+			format = GL_RED;
+		else if (component_num == 3)
+			format = GL_RGB;
+		else if (component_num == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, id);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data.get());
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		b_buffered = true;
+	}
+	else
+	{
+		std::cout << "ERROR<Texture> from Buffer: texture failed to load at path: " << path << endl;
+		b_buffered = false;
+	}
+}
+
 unsigned int Texture::LoadTexture(const std::string& name)
 {
 

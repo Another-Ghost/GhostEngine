@@ -5,6 +5,7 @@
 #include <assert.h>
 
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
+Window* WindowManager::current_window = nullptr;
 bool WindowManager::Initialize()
 {
     if (!glfwInit())

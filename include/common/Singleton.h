@@ -1,4 +1,5 @@
 #pragma once
+#include <assert.h>
 
 //Template class for creating single - instance global classes.
 template <typename T>

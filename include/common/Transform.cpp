@@ -68,5 +68,17 @@ glm::vec3 Transform::GetUpword()
 	return normalize(vec3(matrix[0][2], matrix[1][2], matrix[2][2]));
 }
 
+Transform Transform::Translate(vec3 vector)
+{
+	SetPosition(position + vector);
+	return *this;
+}
+
+Transform Transform::Scale(vec3 scale_)
+{
+	SetDimension(dimension * scale_);
+	return *this;
+}
+
 
 

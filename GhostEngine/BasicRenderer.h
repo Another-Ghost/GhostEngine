@@ -1,6 +1,7 @@
 #pragma once
 #include "common/Renderer.h"
 
+class Camera;
 
 class BasicRenderer : public Renderer
 {
