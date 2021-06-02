@@ -42,13 +42,13 @@ struct Texture
 		case TextureType::NORMAL:
 			return "normal";
 		case TextureType::METALNESS:
-			return "Metalness";
+			return "metalness";
 		case TextureType::AO:
 			return "ao";
 		case TextureType::HEIGHT:
 			return "height";
 		case TextureType::ROUGHNESS:
-			return "roughness"
+			return "roughness";
 		default:
 			return nullptr;
 		}
