@@ -22,7 +22,7 @@ public:
 
 	Camera* CreateDefaultCamera();
 
-	void BindCamera(Camera* camera_) { camera_array.push_back(camera_); }
+	void BindCamera(Camera* camera_);
 
 	void Update(float dt);
 	

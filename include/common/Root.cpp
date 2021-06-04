@@ -14,6 +14,11 @@ max_delta_time(1/60.f)
 	s_render_manager = std::make_unique<RenderManager>();
 }
 
+bool Root::Initialize()
+{
+	return RenderManager::GetSingleton().Initialize();
+}
+
 void Root::Loop()
 {
 	Window* window = WindowManager::GetSingleton().current_window;
@@ -33,7 +38,7 @@ void Root::Update(float dt)
 {
 	WindowManager::GetSingleton().Update(dt);
 	SceneManager::GetSingleton().Update(dt);
-
+	RenderManager::GetSingleton().Update(dt);
 	WindowManager::GetSingleton().EndUpdate(dt);
 }
 

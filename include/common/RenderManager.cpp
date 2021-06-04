@@ -9,7 +9,13 @@
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager()
 {
+
+}
+
+bool RenderManager::Initialize()
+{
 	pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
+	return true;
 }
 
 void RenderManager::Update(float dt)
@@ -42,32 +48,32 @@ void RenderManager::RenderPBRMaterial(float dt)
 	pbr_shader->SetMat4("projection", camera->ViewMatrix());
 
 
-	//for (const auto& pair : pbr_mat_module_map)
-	//{
-	//	PBRMaterial* material = pair.first;
+	for (const auto& pair : pbr_mat_module_map)
+	{
+		PBRMaterial* material = pair.first;
 
-	//	glActiveTexture(GL_TEXTURE0);
-	//	glBindTexture(GL_TEXTURE_2D, material->specular_map->id);
-	//	glActiveTexture(GL_TEXTURE1);
-	//	glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
-	//	glActiveTexture(GL_TEXTURE2);
-	//	glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
-	//	glActiveTexture(GL_TEXTURE3);
-	//	glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
-	//	glActiveTexture(GL_TEXTURE4);
-	//	glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, material->specular_map->id);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
 
-	//	for (const auto& render_module : pair.second)
-	//	{
-	//		Mesh* mesh = render_module->mesh;
+		for (const auto& render_module : pair.second)
+		{
+			Mesh* mesh = render_module->mesh;
 
-	//		mat4 model = render_module->GetParent()->transform.GetMatrix();
-	//		pbr_shader->SetMat4("model", model);
+			mat4 model = render_module->GetParent()->transform.GetMatrix();
+			pbr_shader->SetMat4("model", model);
 
-	//		glBindVertexArray(mesh->vao_id);
-	//		glDrawElements(GL_TRIANGLE_STRIP, mesh->index_array.size(), GL_UNSIGNED_INT, 0);
-	//	}
-	//}
+			glBindVertexArray(mesh->vao_id);
+			glDrawElements(GL_TRIANGLE_STRIP, mesh->index_array.size(), GL_UNSIGNED_INT, 0);
+		}
+	}
 
 
 
@@ -84,7 +90,7 @@ void RenderManager::InsertRenderModule(RenderModule* rm)
 	switch (material->type)
 	{
 	case MaterialType::PBR:
-		PBRMaterial* pbr_material = dynamic_cast<PBRMaterial*>(rm);
+		PBRMaterial* pbr_material = dynamic_cast<PBRMaterial*>(material);
 		auto rm_set_ite = pbr_mat_module_map.find(pbr_material);
 		if (rm_set_ite == pbr_mat_module_map.end())
 		{
@@ -92,6 +98,7 @@ void RenderManager::InsertRenderModule(RenderModule* rm)
 		}
 		pbr_mat_module_map[pbr_material].emplace(rm);
 		break;
+
 	}
 
 }

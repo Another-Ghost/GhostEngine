@@ -19,6 +19,12 @@ void SceneManager::AddRenderUnit(RenderUnit* unit, Unit* parent)
 	parent->AddChild(unit);
 }
 
+void SceneManager::BindCamera(Camera* camera_)
+{
+	camera_array.push_back(camera_);
+	main_camera = camera_;
+}
+
 void SceneManager::Update(float dt)
 {
 	root_unit->Update(dt);

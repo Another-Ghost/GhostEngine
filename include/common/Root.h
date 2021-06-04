@@ -12,6 +12,8 @@ public:
 
 	Root();
 
+	bool Initialize();
+
 	void Loop();
 
 	void Update(float dt);

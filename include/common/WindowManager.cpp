@@ -6,6 +6,8 @@
 
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 Window* WindowManager::current_window = nullptr;
+
+
 bool WindowManager::Initialize()
 {
     if (!glfwInit())
@@ -17,14 +19,7 @@ bool WindowManager::Initialize()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "ERROR<GLAD> from Initialize: Failed to initialize GLAD" << std::endl;
-		return false;
-	}
 
-	// configure global opengl state
-	glEnable(GL_DEPTH_TEST);
 
     b_initialized = true;
     return true;
@@ -49,8 +44,6 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 		if (!Initialize())
 			return nullptr;
 	}
-
-	
 
 	GLFWwindow* glfw_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (glfw_window == nullptr)
@@ -77,7 +70,16 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 	glfwSetCursorPosCallback(glfw_window, MouseCallback);
 	glfwSetScrollCallback(glfw_window, ScrollCallback);
 
-	return nullptr;
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "ERROR<GLAD> from Initialize: Failed to initialize GLAD" << std::endl;
+		return nullptr;
+	}
+
+	// configure global opengl state
+	glEnable(GL_DEPTH_TEST);
+
+	return window;
 }
 
 void WindowManager::FrameBufferSizeCallBack(GLFWwindow* window, int width, int height)

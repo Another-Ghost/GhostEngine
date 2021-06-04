@@ -12,5 +12,6 @@ std::string File::GetScenePath(const std::string& path)
 
 std::string File::GetTexturePath(const std::string& path)
 {
+    
     return "../resource/scene/texture/" + path;
 }

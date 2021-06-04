@@ -28,6 +28,8 @@ public:
 	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
 
 	RenderManager();
+
+	bool Initialize();
 	
 	void Update(float dt);
 
