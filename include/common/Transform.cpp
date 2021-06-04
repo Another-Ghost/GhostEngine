@@ -1,4 +1,4 @@
-#include "Transform.h"
+﻿#include "Transform.h"
 
 
 
@@ -14,6 +14,14 @@ Transform::Transform(const vec3& pos, const quat& ori, const vec3& dim)
 	orientation = ori;
 	dimension = dim;
 	UpdateMatrix();
+}
+
+Transform::Transform(const mat4& matrix_)
+{
+	matrix = matrix_; //? （正交化）解决矩阵蠕变
+	dimension = vec3(vec3(matrix[0]).length(), vec3(matrix[1]).length(), vec3(matrix[2]).length());
+	orientation = quat(matrix);
+	position = vec3(matrix[0][3], matrix[1][3], matrix[2][3]) / dimension;
 }
 
 void Transform::SetPosition(const vec3& pos)
@@ -77,6 +85,17 @@ Transform Transform::Translate(vec3 vector)
 Transform Transform::Scale(vec3 scale_)
 {
 	SetDimension(dimension * scale_);
+	return *this;
+}
+
+Transform Transform::operator*(const Transform& other)
+{
+	return Transform(matrix * other.matrix);
+}
+
+Transform Transform::operator*=(const Transform& other)
+{
+	*this = Transform(matrix * other.matrix);
 	return *this;
 }
 

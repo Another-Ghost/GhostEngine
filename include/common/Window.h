@@ -1,11 +1,9 @@
 ﻿#pragma once
+#include "Prerequisite.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class WindowEventListener
-{
-	virtual bool WindowClosed(Window* window);
-};
+
 
 class Window	//? 改为全局
 {
@@ -28,12 +26,10 @@ public:
 
 	float GetCurrentFrameTime() { return glfwGetTime(); }
 
-	bool WindowClosinng() { return glfwWindowShouldClose(glfw_window); }
+	bool WindowShouldClose() { return glfwWindowShouldClose(glfw_window); }
 
 protected:
 	GLFWwindow* glfw_window;
-
-
 
 	float delta_time;
 
@@ -48,8 +44,11 @@ protected:
 	virtual void ScrollCallback(double x_offset, double y_offset);
 	virtual void ProcessInput();
 
-
 	friend class WindowManager;
 
 };
 
+class WindowEventListener
+{
+	virtual bool WindowClosed(Window* window);
+};

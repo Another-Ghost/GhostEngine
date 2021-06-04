@@ -17,8 +17,8 @@ public:
 
 private:
 
-	unsigned int VBO;
-	unsigned int EBO;
+	unsigned int vbo_id;
+	unsigned int ebo_id;
 
 
 };

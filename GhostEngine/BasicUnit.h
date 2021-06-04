@@ -1,9 +1,9 @@
 #pragma once
-#include "common/Unit.h"
-class BasicUnit : public Unit
+#include "common/RenderUnit.h"
+class BasicUnit : public RenderUnit
 {
 public:
-	unique_ptr<RenderModule> render_module;
+	
 
 };
 

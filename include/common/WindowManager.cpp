@@ -14,10 +14,33 @@ bool WindowManager::Initialize()
     }
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "ERROR<GLAD> from Initialize: Failed to initialize GLAD" << std::endl;
+		return false;
+	}
+
+	// configure global opengl state
+	glEnable(GL_DEPTH_TEST);
+
     b_initialized = true;
     return true;
+}
+void WindowManager::Update(float dt)
+{
+	current_window->ProcessInput();
+
+}
+void WindowManager::EndUpdate(float dt)
+{
+	current_window->EndUpdate();
+}
+void WindowManager::Terminate()
+{
+	glfwTerminate();
 }
 Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int height, const std::string& title)
 {

@@ -21,7 +21,7 @@ class Shader
 
 
 public:
-	Shader(const string& vertex_name, const string& fragment_name, const string& geometry_name = "");
+	Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path = "");
 
 	// utility function for checking shader compilation/linking errors
 	void CheckCompileErrors(GLuint shader, string type);

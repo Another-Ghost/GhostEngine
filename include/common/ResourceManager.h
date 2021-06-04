@@ -17,5 +17,7 @@ public:
 	Texture* CreateTexture(const string& path, TextureType type);
 
 	Material* CreateMaterial(MaterialType type);
+
+
 };
 

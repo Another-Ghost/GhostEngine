@@ -8,7 +8,7 @@ SphereGeometryMesh::SphereGeometryMesh(float radius_, int x_segment_num_, int y_
 
 void SphereGeometryMesh::Initialize()
 {
-	const float PI = glm::pi<float>();
+	constexpr float PI = glm::pi<float>();
 	for (int y = 0; y < y_segment_num; ++y)
 	{
 		for (int x = 0; x < x_segment_num; ++x)
@@ -50,16 +50,16 @@ void SphereGeometryMesh::Initialize()
 void SphereGeometryMesh::Buffer()
 {
 	// create buffers/arrays
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	glGenVertexArrays(1, &vao_id);
+	glGenBuffers(1, &vbo_id);
+	glGenBuffers(1, &ebo_id);
 
-	glBindVertexArray(VAO);
+	glBindVertexArray(vao_id);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 	glBufferData(GL_ARRAY_BUFFER, vertex_array.size() * sizeof(Vertex), &vertex_array[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_array.size() * sizeof(unsigned int), &index_array[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0); //启用编号0的顶点属性，0对应于shader中的 layout(location = 0)

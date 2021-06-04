@@ -1,8 +1,9 @@
 #pragma once
 #include "Prerequisite.h"
+#include "Unit.h"
 
-class Module
+class Module : public Unit
 {
-
+	
 };
 

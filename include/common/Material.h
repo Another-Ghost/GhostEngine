@@ -10,7 +10,7 @@ enum class MaterialType
 
 struct Material
 {
-public:
+
 	//std::vector<Texture*> textures;
 
 	//Material(vector<Texture*> texs = vector<Texture*>()) :textures(texs) { }

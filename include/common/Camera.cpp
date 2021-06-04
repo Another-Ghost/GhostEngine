@@ -1,6 +1,12 @@
 #include "Camera.h"
 
 
+
+Camera::~Camera()
+{
+
+}
+
 glm::mat4 Camera::ViewMatrix()
 {
     vec3 pos = transform.GetPosition();

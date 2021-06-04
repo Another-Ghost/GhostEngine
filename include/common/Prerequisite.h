@@ -7,17 +7,21 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <map>
+#include <set>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "Transform.h"
+#include "File.h"
 
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
-
+using std::map;
+using std::set;
 using std::unique_ptr;
 //using std::make_unique
 
@@ -38,18 +42,19 @@ class ResourceManager;
 class Unit;
 class RenderUnit;
 class RenderModule;
+class RenderManager;
 
-class Transform;
+struct Transform;
 
 class Shader;
 class Mesh;
 class GeometryMesh;
 class TriangleMesh;
-class Texture;
-class Material;
-class PBRMaterial;
+struct Texture;
+struct Material;
+struct PBRMaterial;
 class PBRMaterialFactory;
 enum class TextureType;
 enum class MaterialType;
-class Light;
-class PointLight;
+struct Light;
+struct PointLight;

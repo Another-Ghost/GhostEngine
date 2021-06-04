@@ -8,5 +8,8 @@ struct PBRMaterial : public Material
 	Texture* normal_map;
 	Texture* metalness_map;
 	Texture* ao_map;
+
+
+	void Buffer();
 };
 

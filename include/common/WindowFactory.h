@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Window.h"
 
-class GLFWwindow;
 
 class WindowFactory //因为需要声明生成不同种类的不同工厂，所以不能继承自Singleton
 {

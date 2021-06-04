@@ -20,6 +20,10 @@ private:
 public:
 	Transform(const glm::vec3& pos = { 0, 0, 0 }, const quat& ori = {1, 0, 0, 0}, const vec3& dim = { 1, 1, 1 });
 
+	Transform(const mat4& matrix_);
+
+	mat4 GetMatrix() { return matrix; }
+
 	void SetPosition(const vec3& pos);
 
 	void SetOrientation(const quat& ori);
@@ -59,5 +63,9 @@ public:
 	Transform Rotate(vec3 axis, float angle);
 
 	Transform Scale(vec3 scale_);
+
+	Transform operator*(const Transform& other);
+
+	Transform operator*=(const Transform& other);
 };
 

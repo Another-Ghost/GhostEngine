@@ -10,7 +10,7 @@ Texture* ResourceManager::CreateTexture(const string& path, TextureType type)
     Texture* texture = new Texture(path, type);
     texture_array.emplace_back(texture);
 
-    return nullptr;
+    return texture;
 }
 
 Material* ResourceManager::CreateMaterial(MaterialType type)

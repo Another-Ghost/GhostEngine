@@ -18,7 +18,14 @@ public:
 
 	bool Initialize();
 
+	void Update(float dt);
+
+	void EndUpdate(float dt);
+
+	void Terminate();
+
 	Window* CreateWindow(WindowFactory* factory, int width, int height, const std::string& title);
+
 
 private:
 	static void FrameBufferSizeCallBack(GLFWwindow* window, int width, int height);

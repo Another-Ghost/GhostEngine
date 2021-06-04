@@ -6,3 +6,7 @@
 //{
 //
 //}
+
+void Mesh::Buffer()
+{
+}
