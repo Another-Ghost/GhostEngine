@@ -14,6 +14,7 @@ struct Material
 	//std::vector<Texture*> textures;
 
 	//Material(vector<Texture*> texs = vector<Texture*>()) :textures(texs) { }
+	MaterialType type;
 	
 	virtual ~Material();
 };

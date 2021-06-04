@@ -77,3 +77,21 @@ void RenderManager::ResetRenderArray()
 {
 	pbr_mat_module_map.clear();
 }
+
+void RenderManager::InsertRenderModule(RenderModule* rm)
+{
+	Material* material = rm->material;
+	switch (material->type)
+	{
+	case MaterialType::PBR:
+		PBRMaterial* pbr_material = dynamic_cast<PBRMaterial*>(rm);
+		auto rm_set_ite = pbr_mat_module_map.find(pbr_material);
+		if (rm_set_ite == pbr_mat_module_map.end())
+		{
+			pbr_mat_module_map.emplace(pbr_material, set<RenderModule*>());
+		}
+		pbr_mat_module_map[pbr_material].emplace(rm);
+		break;
+	}
+
+}

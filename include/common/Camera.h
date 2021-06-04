@@ -42,7 +42,7 @@ public:
 	float GetRotationSpeed() { return rotation_speed; }
 	void SetRotationSpeed(float rotation_spead_) { /*add verification*/ rotation_speed = rotation_spead_; }
 
-	float GetMoveSpeed() {}
+	float GetMoveSpeed();
 
 
 protected:	//? effective c++

@@ -24,6 +24,9 @@ struct RenderMaterialComp
 class RenderManager : public Singleton<RenderManager>
 {
 public:
+	//map<Material*, set<RenderModule*>> mat_module_map;
+	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
+
 	RenderManager();
 	
 	void Update(float dt);
@@ -32,13 +35,14 @@ public:
 
 	void ResetRenderArray();
 
+	void InsertRenderModule(RenderModule* rm);
+
 private:
 	Shader* pbr_shader;
 
 	Shader* current_shader;
 
-	//map<Material*, set<RenderModule*>> mat_module_map;
-	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
+
 	
 	//set<RenderModule*> set_map;
 	//render_module_group
