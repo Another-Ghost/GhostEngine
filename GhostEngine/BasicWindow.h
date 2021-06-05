@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "common/Window.h"
 
-class Camera;
 
 class BasicWindow : public Window
 {

@@ -4,20 +4,25 @@ SphereGeometryMesh::SphereGeometryMesh(float radius_, int x_segment_num_, int y_
 	radius(radius_), x_segment_num(x_segment_num_), y_segment_num(y_segment_num_)
 {
 	Initialize();
+
+	if (!b_buffered)
+	{
+		Buffer();
+	}
 }
 
 void SphereGeometryMesh::Initialize()
 {
 	constexpr float PI = glm::pi<float>();
-	for (int y = 0; y < y_segment_num; ++y)
+	for (int y = 0; y <= y_segment_num; ++y)
 	{
-		for (int x = 0; x < x_segment_num; ++x)
+		for (int x = 0; x <= x_segment_num; ++x)
 		{
 			float x_segment = (float)x / (float)x_segment_num;
 			float y_segment = (float)y / (float)y_segment_num;
-			float x_pos = radius * cos(x_segment * 2.f * PI) * sin(y_segment * PI);
-			float y_pos = radius * cos(y_segment * PI);
-			float z_pos = radius * sin(x_segment * 2.f * PI) * sin(y_segment * PI);
+			float x_pos = radius * std::cos(x_segment * 2.f * PI) * std::sin(y_segment * PI);
+			float y_pos = radius * std::cos(y_segment * PI);
+			float z_pos = radius * std::sin(x_segment * 2.f * PI) * std::sin(y_segment * PI);
 			
 			Vertex v{ vec3(x_pos, y_pos, z_pos), vec2(x_segment, y_segment), vec3(x_pos, y_pos, z_pos) };
 			vertex_array.push_back(v);
@@ -65,7 +70,7 @@ void SphereGeometryMesh::Buffer()
 	glEnableVertexAttribArray(0); //启用编号0的顶点属性，0对应于shader中的 layout(location = 0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex_coord));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex_coords));
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 

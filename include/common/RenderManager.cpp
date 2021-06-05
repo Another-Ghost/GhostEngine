@@ -15,6 +15,13 @@ RenderManager::RenderManager()
 bool RenderManager::Initialize()
 {
 	pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
+	pbr_shader->Use();
+	pbr_shader->SetInt("albedo_map", 0);
+	pbr_shader->SetInt("normal_map", 1);
+	pbr_shader->SetInt("metalness_map", 2);
+	pbr_shader->SetInt("roughness_map", 3);
+	pbr_shader->SetInt("ao_map", 4);
+
 	return true;
 }
 
@@ -32,6 +39,13 @@ void RenderManager::RenderPBRMaterial(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	pbr_shader->Use();
+	mat4 view = camera->ViewMatrix();
+	pbr_shader->SetMat4("view", camera->ViewMatrix());
+	mat4 projection = camera->PerspectiveMatrix();
+	pbr_shader->SetMat4("projection", camera->PerspectiveMatrix());
+	pbr_shader->SetVec3("cam_pos", camera->transform.GetPosition());
+
 	const int N = SceneManager::GetSingleton().light_array.size();
 	for (unsigned int i = 0; i < N; ++i)
 	{
@@ -39,21 +53,17 @@ void RenderManager::RenderPBRMaterial(float dt)
 		vec3 color = SceneManager::GetSingleton().light_array[i]->color;
 		float intensity = SceneManager::GetSingleton().light_array[i]->intensity;	//? 考虑也传进去
 
-		pbr_shader->SetVec3("light_pos_array[" + std::to_string(i) + "]", pos);
-		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color*intensity);
+		pbr_shader->SetVec3("light_position_array[" + std::to_string(i) + "]", pos);
+		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
+
 	}
-
-	pbr_shader->Use();
-	pbr_shader->SetMat4("view", camera->ViewMatrix());
-	pbr_shader->SetMat4("projection", camera->ViewMatrix());
-
 
 	for (const auto& pair : pbr_mat_module_map)
 	{
 		PBRMaterial* material = pair.first;
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, material->specular_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->albedo_map->id);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
 		glActiveTexture(GL_TEXTURE2);
@@ -68,14 +78,13 @@ void RenderManager::RenderPBRMaterial(float dt)
 			Mesh* mesh = render_module->mesh;
 
 			mat4 model = render_module->GetParent()->transform.GetMatrix();
-			pbr_shader->SetMat4("model", model);
+			//pbr_shader->SetMat4("model", model);
+			pbr_shader->SetMat4("model", mat4(1));
 
 			glBindVertexArray(mesh->vao_id);
 			glDrawElements(GL_TRIANGLE_STRIP, mesh->index_array.size(), GL_UNSIGNED_INT, 0);
 		}
 	}
-
-
 
 }
 

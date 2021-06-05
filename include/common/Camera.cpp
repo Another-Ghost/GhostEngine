@@ -10,6 +10,9 @@ Camera::~Camera()
 glm::mat4 Camera::ViewMatrix()
 {
     vec3 pos = transform.GetPosition();
+    vec3 forward = transform.GetForward();
+    vec3 right = transform.GetRight();
+    vec3 up = transform.GetUpword();
     return lookAt(pos, pos + transform.GetForward(), transform.GetUpword());
 }
 

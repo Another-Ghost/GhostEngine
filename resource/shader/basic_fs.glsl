@@ -12,13 +12,13 @@ in vertex
 //material
 uniform sampler2D albedo_map;
 uniform sampler2D normal_map;
-uniform sampler2D metallic_map;
+uniform sampler2D metalness_map;
 uniform sampler2D roughness_map;
 uniform sampler2D ao_map;
 
 //light
-uniform vec3 light_positons[1];
-uniform vec3 light_colors[1];
+uniform vec3 light_positon_array[1];
+uniform vec3 light_color_array[1];
 
 uniform vec3 cam_pos;
 
@@ -35,7 +35,7 @@ vec3 GetNormalFromMap()
 	vec2 d_tex_y = dFdy(IN.tex_coords);
 
 	vec3 N = normalize(IN.normal);
-	vec3 T = normalize(d_tex_y.t * d_p_x * - d_tex_x.t *d_p_y); //? t
+	vec3 T = normalize(d_p_x* d_tex_y.y - d_p_y * d_tex_x.y); //? t
 
 	vec3 B  = -normalize(cross(N, T));  
 	mat3 TBN = mat3(T, B, N); 
@@ -88,7 +88,7 @@ vec3 FresnelSchlick(vec3 H, vec3 V, vec3 F0)
 void main()
 {
 	vec3 albedo = pow(texture(albedo_map, IN.tex_coords).rgb, vec3(2.2)); //gamma correction
-    float metallic  = texture(metallic_map, IN.tex_coords).r;
+    float metalness  = texture(metalness_map, IN.tex_coords).r;
     float roughness = texture(roughness_map, IN.tex_coords).r;
     float ao = texture(ao_map, IN.tex_coords).r;
 
@@ -98,17 +98,17 @@ void main()
 	// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
     // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)  
 	vec3 F0 = vec3(0.04);
-	F0 = mix(F0, albedo, metallic);
+	F0 = mix(F0, albedo, metalness);
 
-	vec3 Lo = vec3(0.04);
+	vec3 Lo = vec3(0.f);
 	for(int i = 0; i < 1; ++i)
 	{
 		// calculate per-light radiance
-		vec3 L = normalize(light_positons[i] - IN.world_pos); //light/incident direction
+		vec3 L = normalize(light_positon_array[i] - IN.world_pos); //light/incident direction
 		vec3 H = normalize(V + L);
-		float distance = length(light_positons[i] - IN.world_pos);
-		float attenuation = 1.0 / (distance * distance);
-		vec3 radiance = light_colors[i] * attenuation;
+		float dist = length(light_positon_array[i] - IN.world_pos);
+		float attenuation = 1.0 / (dist * dist);
+		vec3 radiance = light_color_array[i] * attenuation;
 	
 		// Cook-Torrance BRDF
 		float D = DistributionGGX(N, H, roughness);
@@ -123,7 +123,7 @@ void main()
 		vec3 kS = F;
 
 		vec3 kD = vec3(1.0) - kS;
-		kD *= 1.0 - metallic;
+		kD *= 1.0 - metalness;
 
 		float NdotL = max(dot(N, L), 0.f);
 

@@ -6,7 +6,7 @@
 struct Vertex
 {
 	vec3 position;
-	vec2 tex_coord;
+	vec2 tex_coords;
 	vec3 normal;
 };
 

@@ -17,7 +17,7 @@ public:
 	//virtual bool Initialize();
 
 	//子类重写后需先调用父类的
-	virtual bool Update(float& dt);	
+	virtual void Update(float dt);	
 
 	virtual void EndUpdate();
 

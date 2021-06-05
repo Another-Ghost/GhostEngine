@@ -2,7 +2,7 @@
 
 void PBRMaterial::Buffer()
 {
-	specular_map->Buffer();
+	albedo_map->Buffer();
 	normal_map->Buffer();
 	metalness_map->Buffer();
 	roughness_map->Buffer();

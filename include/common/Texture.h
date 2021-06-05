@@ -7,6 +7,7 @@ enum class TextureType
 {
 	NONE,
 	DIFFUSE,
+	ALBEDO,
 	SPECULAR,
 	NORMAL,
 	ROUGHNESS,
@@ -28,6 +29,7 @@ struct Texture
 	int component_num;
 
 
+
 	Texture(const string& path, TextureType type_);
 
 	static std::string TypeName(TextureType type)
@@ -36,6 +38,8 @@ struct Texture
 		{
 		case TextureType::DIFFUSE:
 			return "diffuse";
+		case TextureType::ALBEDO:
+			return "albedo";
 		case TextureType::SPECULAR:
 			return "specular";
 		case TextureType::NORMAL:
@@ -57,9 +61,9 @@ struct Texture
 
 	bool b_buffered;
 
-	static unsigned int LoadTexture(const std::string& name);
+	static unsigned int LoadTexture(const std::string& name); //? 在何处进行gamma校正
 
-	static unsigned int LoadTexture(const std::string& name, const std::string& directory);	//? 在何处进行gamma校正
+	static unsigned int LoadTexture(const std::string& name, const std::string& directory);	
 
 };
 

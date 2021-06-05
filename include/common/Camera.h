@@ -27,8 +27,8 @@ public:
 	//const float kMoveSpeed = 2.5f;
 	//const float kRotationSpeed = 0.1f;
 
-	Camera(const Transform& tf = Transform(), float aspect_ = 16 / 9.0f, float fov_y_ = 90.f, float near = 0.1f, float far = 100.f, float move_speed_ = 2.5f, float roation_speed_ = 0.1f)
-	:transform(tf), aspect(aspect_), fov_y(fov_y_), near_plane(near), far_plane(far), move_speed(move_speed_), rotation_speed(roation_speed_){ }
+	Camera(const Transform& tf = Transform(), float aspect_ = 16 / 9.0f, float fov_y_ = 45.f, float near = 0.1f, float far = 100.f, float move_speed_ = 2.5f, float roation_speed_ = 0.1f)
+	:transform(tf), aspect(aspect_), fov_y(glm::radians(fov_y_)), near_plane(near), far_plane(far), move_speed(move_speed_), rotation_speed(roation_speed_){ }
 
 	virtual ~Camera();
 
@@ -54,7 +54,7 @@ protected:	//? effective c++
 	//float top;
 	//float bottom;
 
-	float fov_y;
+	float fov_y;	//radians
 	float aspect;
 
 	float move_speed;

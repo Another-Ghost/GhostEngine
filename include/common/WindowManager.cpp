@@ -26,7 +26,7 @@ bool WindowManager::Initialize()
 }
 void WindowManager::Update(float dt)
 {
-	current_window->ProcessInput();
+	current_window->Update(dt);
 
 }
 void WindowManager::EndUpdate(float dt)
@@ -69,6 +69,8 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 	glfwSetFramebufferSizeCallback(glfw_window, FrameBufferSizeCallBack);
 	glfwSetCursorPosCallback(glfw_window, MouseCallback);
 	glfwSetScrollCallback(glfw_window, ScrollCallback);
+
+	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{

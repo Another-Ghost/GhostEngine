@@ -2,7 +2,7 @@
 #include "common/Camera.h"
 #include <iostream>
 
-BasicWindow::BasicWindow(GLFWwindow* glfw_window_) : Window(glfw_window_)
+BasicWindow::BasicWindow(GLFWwindow* glfw_window_) : Window(glfw_window_), first_mouse(true)
 {
 
 }

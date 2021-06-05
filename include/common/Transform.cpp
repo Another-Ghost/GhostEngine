@@ -4,7 +4,13 @@
 
 void Transform::UpdateMatrix()
 {
+	mat4 pos = translate(mat4(1), position);
+	mat4 ori = rotate(mat4(1), angle(orientation), axis(orientation));
+	mat4 sca = scale(mat4(1), dimension);
+	mat4 identity = mat4(1);
 	matrix = translate(mat4(1), position) * rotate(mat4(1), angle(orientation), axis(orientation)) * scale(mat4(1), dimension);
+	
+	
 	//matrix = mat4_cast(orientation);
 }
 
@@ -68,12 +74,12 @@ glm::vec3 Transform::GetForward()
 
 glm::vec3 Transform::GetRight()
 {
-	return normalize(vec3(matrix[0][1], matrix[1][1], matrix[2][1]));
+	return normalize(vec3(matrix[0][2], matrix[1][2], matrix[2][2]));
 }
 
 glm::vec3 Transform::GetUpword()
 {
-	return normalize(vec3(matrix[0][2], matrix[1][2], matrix[2][2]));
+	return normalize(vec3(matrix[0][1], matrix[1][1], matrix[2][1]));
 }
 
 Transform Transform::Translate(vec3 vector)

@@ -27,6 +27,7 @@ int main()
 	Root::GetSingleton().Initialize();
 
 	BasicCamera* camera = new BasicCamera();
+	camera->transform.SetPosition(vec3(0, 0, 3));
 
 	window->SetCamera(camera);
 	SceneManager::GetSingleton().BindCamera(camera);
@@ -36,21 +37,22 @@ int main()
 	RenderModule* render_module = new RenderModule();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	material->specular_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/albedo.png"), TextureType::SPECULAR);
-	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureType::ROUGHNESS);
+	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/albedo.png"), TextureType::SPECULAR);
 	material->normal_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/normal.png"), TextureType::NORMAL);
 	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/metallic.png"), TextureType::METALNESS);
+	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureType::ROUGHNESS);
 	material->ao_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/ao.png"), TextureType::AO);
 	
 	render_module->material = material;
 	
-	SphereGeometryMesh* mesh = new SphereGeometryMesh(10.f); //? should be created be the resource manager
+	SphereGeometryMesh* mesh = new SphereGeometryMesh(1.f); //? should be created be the resource manager
 	render_module->mesh = mesh;
 
 	sphere_unit->AttachRenderModule(render_module);
 	SceneManager::GetSingleton().AddRenderUnit(sphere_unit);
 
 	PointLight* light = new PointLight();
+	light->postion = vec3(0.f, 0.f, 10.f);
 	SceneManager::GetSingleton().AddLight(light);
 
 	

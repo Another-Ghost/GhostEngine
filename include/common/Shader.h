@@ -34,7 +34,7 @@ public:
 
 	void SetFloat(const string& name, float value) const { glUniform1f(glGetUniformLocation(id, name.c_str()), value); }
 
-	void SetVec2(const string& name, const vec2& value) const{glUniform2fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);}
+	void SetVec2(const string& name, const vec2& value) const { glUniform2fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); }
 
 	void SetVec3(const string& name, const vec3& value) const { glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); }
 

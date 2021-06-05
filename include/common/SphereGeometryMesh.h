@@ -7,7 +7,7 @@ public:
 
 	void Initialize();
 
-	void Buffer();
+	void Buffer() override;
 
 	unsigned int radius;
 
