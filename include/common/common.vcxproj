@@ -146,6 +146,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Datatype.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Datatype.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />

@@ -15,7 +15,7 @@ RenderManager::RenderManager()
 bool RenderManager::Initialize()
 {
 	pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
-	pbr_shader->Use();
+	GLCall(pbr_shader->Use());
 	pbr_shader->SetInt("albedo_map", 0);
 	pbr_shader->SetInt("normal_map", 1);
 	pbr_shader->SetInt("metalness_map", 2);
@@ -27,6 +27,7 @@ bool RenderManager::Initialize()
 
 void RenderManager::Update(float dt)
 {
+	GLCall(pbr_shader->Use());
 	camera = SceneManager::GetSingleton().main_camera;
 	pbr_shader->SetVec3("cam_pos", camera->transform.GetPosition());
 	//view_matrix = camera->ViewMatrix();
@@ -63,7 +64,8 @@ void RenderManager::RenderPBRMaterial(float dt)
 		PBRMaterial* material = pair.first;
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, material->albedo_map->id);
+		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
+		GLCall(glBindTexture(GL_TEXTURE_2D, material->albedo_map->id));
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
 		glActiveTexture(GL_TEXTURE2);

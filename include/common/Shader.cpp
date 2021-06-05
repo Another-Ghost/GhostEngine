@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Debug.h"
 //#include "File.h"
 
 Shader::Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path)
@@ -39,46 +40,46 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	}
 	catch (ifstream::failure& e)
 	{
-		cout << "ERROR: Shader file is not loaded successfully \n";
+		cout << "ERROR<Shader>: Shader file is not loaded successfully \n";
 	}
 
 	const char* v_code = vertex_code.c_str();
 	const char* f_code = fragment_code.c_str();
 	//2. compile shaders
 	unsigned int vertex;
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &v_code, NULL); //second parameter is the number of string of the source code
-	glCompileShader(vertex);
+	GLCall(vertex = glCreateShader(GL_VERTEX_SHADER));
+	GLCall(glShaderSource(vertex, 1, &v_code, NULL)); //second parameter is the number of string of the source code
+	GLCall(glCompileShader(vertex));
 	CheckCompileErrors(vertex, "VERTEX");
 
 	unsigned int fragment;
-	fragment = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(fragment, 1, &f_code, NULL);
-	glCompileShader(fragment);
-	CheckCompileErrors(vertex, "FRAGMENT");
+	GLCall(fragment = glCreateShader(GL_FRAGMENT_SHADER));
+	GLCall(glShaderSource(fragment, 1, &f_code, NULL));
+	GLCall(glCompileShader(fragment));
+	CheckCompileErrors(fragment, "FRAGMENT");
 	
 	unsigned int geometry;
 	if (geometry_path != "")
 	{
 		const char* g_code = geometry_code.c_str();
-		geometry = glCreateShader(GL_GEOMETRY_SHADER);
-		glShaderSource(geometry, 1, &g_code, NULL);
-		glCompileShader(geometry);
+		GLCall(geometry = glCreateShader(GL_GEOMETRY_SHADER));
+		GLCall(glShaderSource(geometry, 1, &g_code, NULL));
+		GLCall(glCompileShader(geometry));
 		CheckCompileErrors(geometry, "GEOMETRY");
 	}
 
 	//3. shader program
-	id = glCreateProgram();
-	glAttachShader(id, vertex);
-	glAttachShader(id, fragment);
+	GLCall(id = glCreateProgram());
+	GLCall(glAttachShader(id, vertex));
+	GLCall(glAttachShader(id, fragment));
 	if (geometry_path != "")
 		glAttachShader(id, geometry);
-	glLinkProgram(id);
+	GLCall(glLinkProgram(id));
 	CheckCompileErrors(id, "PROGRAM");
 
 	//4. delete the shaders
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
+	GLCall(glDeleteShader(vertex));
+	GLCall(glDeleteShader(fragment));
 	if (geometry_path != "")
 		glDeleteShader(geometry);
 	
@@ -90,22 +91,22 @@ void Shader::CheckCompileErrors(GLuint shader, string type)
 	int log_length = 0;
 	if (type != "PROGRAM")
 	{
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+		GLCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length));
 		if (log_length)
 		{
 			GLchar* log_data = new GLchar[log_length];
-			glGetShaderInfoLog(shader, log_length, NULL, log_data);
-			std::cout << "ERROR: SHADER_COMPILATION_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
+			GLCall(glGetShaderInfoLog(shader, log_length, NULL, log_data));
+			std::cout << "ERROR<Shader>: SHADER_COMPILATION_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
 		}
 	}
 	else
 	{
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+		GLCall(glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &log_length));
 		if (log_length)
 		{
 			GLchar* log_data = new GLchar[log_length];
-			glGetShaderInfoLog(shader, log_length, NULL, log_data);
-			std::cout << "ERROR: SHADER_LINKING_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
+			GLCall(glGetProgramInfoLog(shader, log_length, NULL, log_data));
+			std::cout << "ERROR<Shader>: SHADER_LINKING_ERROR of type: " << type << "\n" << log_data << "\n -- --------------------------------------------------- -- " << std::endl;
 		}
 	}
 

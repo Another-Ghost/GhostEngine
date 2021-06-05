@@ -27,7 +27,7 @@ Texture::Texture(const string& path, TextureType type_)
 
 void Texture::Buffer()
 {
-	glGenTextures(1, &id);
+	GLCall(glGenTextures(1, &id));
 
 	if (data)
 	{
