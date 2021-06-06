@@ -15,9 +15,8 @@ private:
 
 	bool first_mouse;
 
-	float last_x;
-	float last_y;
-
+	double last_x;
+	double last_y;
 
 	//virtual void FrameBufferSizeCallBack() override;	//可以把所有CallBack移出单独写个类
 	virtual void MouseCallback(double x_pos, double y_pos) override;
@@ -25,7 +24,7 @@ private:
 	virtual void ProcessInput() override;
 
 	void CameraProcessKeyboard();
-	void CameraProcessMouseMovement(float x_offset, float y_offset);
+	void CameraProcessMouseMovement(double x_offset, double y_offset);
 	void CameraProcessMouseScroll(float y_offset);
 
 };

@@ -29,7 +29,7 @@ void RenderManager::Update(float dt)
 {
 	GLCall(pbr_shader->Use());
 	camera = SceneManager::GetSingleton().main_camera;
-	pbr_shader->SetVec3("cam_pos", camera->transform.GetPosition());
+	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
 	//view_matrix = camera->ViewMatrix();
 	//perspective_matrix = camera->PerspectiveMatrix();
 	RenderPBRMaterial(dt);
@@ -45,7 +45,7 @@ void RenderManager::RenderPBRMaterial(float dt)
 	pbr_shader->SetMat4("view", camera->ViewMatrix());
 	mat4 projection = camera->PerspectiveMatrix();
 	pbr_shader->SetMat4("projection", camera->PerspectiveMatrix());
-	pbr_shader->SetVec3("cam_pos", camera->transform.GetPosition());
+	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
 
 	const int N = SceneManager::GetSingleton().light_array.size();
 	for (unsigned int i = 0; i < N; ++i)
@@ -81,7 +81,7 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 			mat4 model = render_module->GetParent()->transform.GetMatrix();
 			//pbr_shader->SetMat4("model", model);
-			pbr_shader->SetMat4("model", mat4(1));
+			pbr_shader->SetMat4("model", mat4(1));	//?改为从物体获取的model
 
 			glBindVertexArray(mesh->vao_id);
 			glDrawElements(GL_TRIANGLE_STRIP, mesh->index_array.size(), GL_UNSIGNED_INT, 0);

@@ -27,7 +27,7 @@ int main()
 	Root::GetSingleton().Initialize();
 
 	BasicCamera* camera = new BasicCamera();
-	camera->transform.SetPosition(vec3(0, 0, 3));
+	camera->SetPosition(vec3(0, 0, 3));
 
 	window->SetCamera(camera);
 	SceneManager::GetSingleton().BindCamera(camera);
