@@ -1,5 +1,17 @@
 #include "Camera.h"
 
+
+
+
+
+Camera::Camera(vec3 postion_, float pitch_, float yaw_, float aspect_, float fov_y_, float near_, float far_, float move_speed_, float roation_speed_)
+    :pitch(pitch_), yaw(yaw_), aspect(aspect_), fov_y(glm::radians(fov_y_)), near_plane(near_), far_plane(far_), move_speed(move_speed_), rotation_speed(roation_speed_)
+{
+    transform.SetPosition(postion_);
+    transform.SetPitch(pitch);
+    transform.SetYaw(yaw);
+}
+
 Camera::~Camera()
 {
 

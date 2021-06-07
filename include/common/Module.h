@@ -1,9 +1,8 @@
 #pragma once
 #include "Prerequisite.h"
-#include "Unit.h"
 
-class Module : public Unit
+class Module 
 {
-	
+	virtual void Update(float dt) = 0;
 };
 

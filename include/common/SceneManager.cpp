@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "RenderManager.h"
+#include "CameraFactory.h"
 
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
@@ -19,6 +20,17 @@ void SceneManager::AddRenderUnit(RenderUnit* unit, Unit* parent)
 	parent->AddChild(unit);
 }
 
+Camera* SceneManager::CreateCamera(const CameraFactory& camera_factory)	//? 需改为传入枚举类型
+{
+	Camera* camera = camera_factory.CreateCamera();
+	camera_array.emplace_back(camera);
+	if (!main_camera)
+	{
+		main_camera = camera;
+	}
+	return camera;
+}
+
 void SceneManager::BindCamera(Camera* camera_)
 {
 	camera_array.push_back(camera_);
@@ -29,7 +41,7 @@ void SceneManager::Update(float dt)
 {
 	root_unit->Update(dt);
 
-
+	
 	//for (const auto& render_unit : render_unit_array)	//可以改成保存unit数组，dynamic_cast判断是否是render_unit
 	//{
 	//	RenderModule* render_module = render_unit->render_module;

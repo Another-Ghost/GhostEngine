@@ -13,7 +13,8 @@ unsigned int Texture::LoadTexture(const std::string& name, const std::string& di
 
 }
 
-Texture::Texture(const string& path, TextureType type_)
+Texture::Texture(const string& path_, TextureType type_)
+	:path(path_)
 {
 	data = stbi_load(path.c_str(), &width, &height, &component_num, 0); //倒数第二个参数为图片原始的通道数，不是输出的通道数
 	if (!data)

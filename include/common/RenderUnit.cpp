@@ -1,13 +1,13 @@
 #include "RenderUnit.h"
-#include "RenderModule.h"
+#include "RootRenderModule.h"
 
-void RenderUnit::AttachRenderModule(RenderModule* render_module_)
+void RenderUnit::AttachRenderModule(RootRenderModule* root_render_module_)
 {
-	render_module = render_module_;
-	render_module->SetParent(this);
+	root_render_module = root_render_module_;
+	root_render_module->SetParentUnit(this);
 }
 
 void RenderUnit::Update(float dt)
 {
-	render_module->Update(dt);
+	root_render_module->Update(dt);
 }

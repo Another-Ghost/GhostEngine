@@ -10,9 +10,11 @@
 #include "common/Texture.h"
 #include "common/File.h"
 #include "common/PointLight.h"
-#include "common/RenderModule.h"
+#include "common/RootRenderModule.h"
 #include "common/SphereGeometryMesh.h"
 #include "common/SceneManager.h"
+#include "common/CameraFactory.h"
+#include "common/SphereGeometryMeshFactory.h"
 #include <memory>
 
 int main()
@@ -26,15 +28,18 @@ int main()
 
 	Root::GetSingleton().Initialize();
 
-	BasicCamera* camera = new BasicCamera();
+	//BasicCamera* camera = new BasicCamera();
+
+	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
+
 	camera->SetPosition(vec3(0, 0, 3));
 
-	window->SetCamera(camera);
-	SceneManager::GetSingleton().BindCamera(camera);
+	window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
+	//SceneManager::GetSingleton().BindCamera(camera);
 
 	BasicUnit* sphere_unit = new BasicUnit();
 
-	RenderModule* render_module = new RenderModule();
+	RootRenderModule* root_render_module = new RootRenderModule();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
 	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/albedo.png"), TextureType::SPECULAR);
@@ -43,19 +48,17 @@ int main()
 	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureType::ROUGHNESS);
 	material->ao_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/ao.png"), TextureType::AO);
 	
-	render_module->material = material;
+	root_render_module->SetMaterial(material);
 	
-	SphereGeometryMesh* mesh = new SphereGeometryMesh(1.f); //? should be created be the resource manager
-	render_module->mesh = mesh;
+	SphereGeometryMesh* mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory(1.f))); //? should be created by the resource manager
+	root_render_module->SetMesh(mesh);
 
-	sphere_unit->AttachRenderModule(render_module);
+	sphere_unit->AttachRenderModule(root_render_module);
 	SceneManager::GetSingleton().AddRenderUnit(sphere_unit);
 
 	PointLight* light = new PointLight();
 	light->postion = vec3(0.f, 0.f, 10.f);
 	SceneManager::GetSingleton().AddLight(light);
-
-	
 
 	//Shader* shader = new Shader("");
 	//Loop

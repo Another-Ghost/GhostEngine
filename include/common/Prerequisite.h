@@ -36,6 +36,7 @@ class Window;
 class WindowManager;
 class WindowFactory;
 class Camera;
+class CameraFactory;
 
 class SceneManager;
 class ResourceManager;
@@ -43,12 +44,14 @@ class ResourceManager;
 class Unit;
 class RenderUnit;
 class RenderModule;
+class RootRenderModule;
 class RenderManager;
 
 struct Transform;
 
 class Shader;
 class Mesh;
+class MeshFactory;
 class GeometryMesh;
 class TriangleMesh;
 struct Texture;

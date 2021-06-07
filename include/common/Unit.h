@@ -7,10 +7,6 @@ public:
 
 	Transform transform;
 
-
-
-
-
 	virtual void Update(float dt);
 
 	void SetParent(Unit* parent_) { parent = parent_; }

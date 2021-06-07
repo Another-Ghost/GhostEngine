@@ -77,9 +77,9 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 		for (const auto& render_module : pair.second)
 		{
-			Mesh* mesh = render_module->mesh;
+			Mesh* mesh = render_module->GetMesh();
 
-			mat4 model = render_module->GetParent()->transform.GetMatrix();
+			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			//pbr_shader->SetMat4("model", model);
 			pbr_shader->SetMat4("model", mat4(1));	//?改为从物体获取的model
 
@@ -97,7 +97,7 @@ void RenderManager::ResetRenderArray()
 
 void RenderManager::InsertRenderModule(RenderModule* rm)
 {
-	Material* material = rm->material;
+	Material* material = rm->GetMaterial();
 	switch (material->type)
 	{
 	case MaterialType::PBR:

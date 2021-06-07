@@ -20,7 +20,7 @@ public:
 
 	void AddRenderUnit(RenderUnit* unit, Unit* parent = nullptr);
 
-	Camera* CreateDefaultCamera();
+	Camera* CreateCamera(const CameraFactory& camera_factory);
 
 	void BindCamera(Camera* camera_);
 
