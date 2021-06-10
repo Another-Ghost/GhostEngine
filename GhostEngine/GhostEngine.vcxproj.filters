@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasicWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,11 +38,11 @@
     <ClCompile Include="BasicRenderModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sample_IBL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BasicWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,5 +72,22 @@
     <None Include="..\resource\shader\basic_vs.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\background_fs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\background_vs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\cubemap_vs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl">
+      <Filter>shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">
+      <Filter>shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

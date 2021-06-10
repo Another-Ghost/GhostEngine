@@ -1,14 +1,17 @@
 #include "ResourceManager.h"
-#include "Texture.h"
+#include "HDRTexture.h"
 #include "Material.h"
 #include "PBRMaterialFactory.h"
 #include "MeshFactory.h"
-#include <stb_image.h>
 
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
+ResourceManager::ResourceManager()
+{
+    stbi_set_flip_vertically_on_load(true);
+}
 Texture* ResourceManager::CreateTexture(const string& path, TextureType type)
 {
-    for (const auto& tex : texture_set)
+    for (const auto& tex : texture_array)
     {
         if (path == tex->path)
         {
@@ -16,8 +19,19 @@ Texture* ResourceManager::CreateTexture(const string& path, TextureType type)
         }
     }
 
-    Texture* texture = new Texture(path, type);
-    texture_set.emplace_back(texture);
+    Texture* texture;
+    if (type == TextureType::HDRMAP)
+    {
+        texture = new HDRTexture(path, type);
+    }
+    else
+    {
+        texture = new Texture(path, type);
+    }
+    texture->LoadData();
+	texture->Buffer();
+    
+    texture_array.emplace_back(texture);
 
     return texture;
 }
@@ -41,4 +55,12 @@ Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
     Mesh* mesh = mesh_factory.CreateMesh();
     mesh_set.emplace_back(mesh);
     return mesh;
+}
+
+CubeMap* ResourceManager::CreateCubeMap(int width, int height)
+{
+    CubeMap* cube_map = new CubeMap(width, height);
+    cube_map->Buffer();
+    cube_map_array.emplace_back(cube_map);
+    return cube_map;
 }

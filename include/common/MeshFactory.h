@@ -4,6 +4,6 @@
 class MeshFactory
 {
 public:
-	virtual Mesh* CreateMesh() const;
+	virtual Mesh* CreateMesh() const = 0;
 };
 

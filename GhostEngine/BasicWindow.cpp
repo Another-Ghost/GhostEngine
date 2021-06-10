@@ -1,10 +1,10 @@
-#include "BasicWindow.h"
+﻿#include "BasicWindow.h"
 #include "common/Camera.h"
 #include <iostream>
 
 BasicWindow::BasicWindow(GLFWwindow* glfw_window_) : Window(glfw_window_), first_mouse(true)
 {
-
+	
 }
 
 
@@ -59,16 +59,22 @@ void BasicWindow::CameraProcessMouseMovement(double x_offset, double y_offset)
 
 		//cout << "Pitch Previous:" << pitch << " ";
 		//cout << "Yaw Previous:" << yaw << "\n";
+		
+		vec3 pos = camera->GetPosition();
+		//cout << "Position：" << pos.x<<" " <<pos.y << " " << pos.z<<"\n";
 
 		float rotation_speed = camera->GetRotationSpeed();
 		yaw += x_offset * rotation_speed;
 		pitch += y_offset * rotation_speed;
 
 		// make sure that when pitch is out of bounds, screen doesn't get flipped
-		if (pitch > 89.f)
-			pitch = 89.f;
-		if (pitch < -89.f)
-			pitch = -89.f;
+		//if (pitch > 89.f)
+		//	pitch = 89.f;
+		//if (pitch < -89.f)
+		//	pitch = -89.f;
+
+		pitch = std::max(pitch, -90.f);
+		pitch = std::min(pitch, 90.f);
 
 		if (yaw < 0) {
 			yaw += 360.0f;

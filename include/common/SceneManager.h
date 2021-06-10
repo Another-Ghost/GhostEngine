@@ -25,10 +25,12 @@ public:
 	void BindCamera(Camera* camera_);
 
 	void Update(float dt);
-	
-	void DrawModule(RenderModule* module);
 
-	void AddLight(Light* light);
+	Light* CreateLight(const LightFactory& light_factory);
 	//Unit* CreateUnit();
+
+
+private:
+	void AddLight(Light* light);
 };
 

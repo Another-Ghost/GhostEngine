@@ -14,16 +14,19 @@ unsigned int Texture::LoadTexture(const std::string& name, const std::string& di
 }
 
 Texture::Texture(const string& path_, TextureType type_)
-	:path(path_)
+	:path(path_), type(type_)
+{
+
+}
+
+void Texture::LoadData()
 {
 	data = stbi_load(path.c_str(), &width, &height, &component_num, 0); //倒数第二个参数为图片原始的通道数，不是输出的通道数
+
 	if (!data)
 	{
 		cout << "ERROR<Texture> Failed to load data\n";
 	}
-	type = type_;
-
-	Buffer();
 }
 
 void Texture::Buffer()
@@ -59,6 +62,7 @@ void Texture::Buffer()
 		b_buffered = false;
 	}
 }
+
 
 unsigned int Texture::LoadTexture(const std::string& name)
 {

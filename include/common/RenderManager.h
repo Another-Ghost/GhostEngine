@@ -1,7 +1,7 @@
 #pragma once
 #include "Prerequisite.h"
 #include "Singleton.h"
-#include "RenderModule.h"
+
 
 //struct RenderMaterialComp
 //{
@@ -24,6 +24,9 @@
 class RenderManager : public Singleton<RenderManager>
 {
 public:
+
+	Camera* camera;
+
 	//map<Material*, set<RenderModule*>> mat_module_map;
 	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
 
@@ -55,8 +58,10 @@ private:
 	mat4 view_matrix;
 	mat4 perspective_matrix;
 
-	Camera* camera;
+	IBLRenderer* ibl_renderer;
+
 
 	friend class RenderUnit;
+
 };
 

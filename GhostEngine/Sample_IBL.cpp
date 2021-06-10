@@ -16,24 +16,25 @@
 #include "common/CameraFactory.h"
 #include "common/SphereGeometryMeshFactory.h"
 #include "common/PointLightFactory.h"
+#include "common/HDRTexture.h"
 #include <memory>
 
-#ifdef Sample
+
 
 int main()
 {
 	//Init
-	Root* root =  new Root();
+	Root* root = new Root();
 	BasicWindowFactory* window_factory = new BasicWindowFactory();
 	BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
-	Root::GetSingleton().Initialize();	
+	Root::GetSingleton().Initialize();
 
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
 	camera->SetPosition(vec3(0, 0, 3));
-
 	window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	//SceneManager::GetSingleton().BindCamera(camera);
 
+	//add unit
 	BasicUnit* sphere_unit = new BasicUnit();
 
 	RootRenderModule* root_render_module = new RootRenderModule();
@@ -44,23 +45,23 @@ int main()
 	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/metallic.png"), TextureType::METALNESS);
 	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureType::ROUGHNESS);
 	material->ao_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/ao.png"), TextureType::AO);
-	
 	root_render_module->SetMaterial(material);
-	
-	SphereGeometryMesh* mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory(1.f))); //? should be created by the resource manager
+
+	SphereGeometryMesh* mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
 	root_render_module->SetMesh(mesh);
-
 	sphere_unit->AttachRenderModule(root_render_module);
-	SceneManager::GetSingleton().AddRenderUnit(sphere_unit);
 
+	//add light
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 0.f, 10.f);
+
+	//HDRTexture* hdr_texture = dynamic_cast<HDRTexture*>(ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("hdr/newport_loft.hdr"), TextureType::HDRMAP));
 
 
 	//Loop
 	float max_delta_time = 1.f / 60.f;
 	float current_frame_time;
-	float delta_time = 1/60.f;
+	float delta_time = 1 / 60.f;
 	float last_frame_time = 0.f;
 	while (!window->WindowShouldClose())
 	{
@@ -75,5 +76,3 @@ int main()
 
 	return 0;
 }
-
-#endif

@@ -1,8 +1,7 @@
 #include "SphereGeometryMeshFactory.h"
 #include "SphereGeometryMesh.h"
 
-SphereGeometryMeshFactory::SphereGeometryMeshFactory(float radius_):
-    radius(radius_)
+SphereGeometryMeshFactory::SphereGeometryMeshFactory()
 {
 
 }

@@ -1,9 +1,6 @@
 #pragma once
+#include "Prerequisite.h"
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-
-#include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -12,8 +9,6 @@ using std::cout;
 using std::string;
 using std::ifstream;
 using std::stringstream;
-
-using namespace glm;
 
 
 class Shader

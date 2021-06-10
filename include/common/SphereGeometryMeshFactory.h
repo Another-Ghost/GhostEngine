@@ -3,9 +3,8 @@
 class SphereGeometryMeshFactory : public MeshFactory
 {
 public:
-	SphereGeometryMeshFactory(float radius_ = 1.f);
+	SphereGeometryMeshFactory();
 	Mesh* CreateMesh() const override;
 
-	float radius;
 };
 

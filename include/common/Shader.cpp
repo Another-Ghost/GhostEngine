@@ -17,6 +17,9 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	fragment_shader_file.exceptions(ifstream::failbit | ifstream::badbit);
 	geometry_shader_file.exceptions(ifstream::failbit | ifstream::badbit);
 
+	cout << vertex_path << endl;
+	cout << fragment_path << endl;
+
 	try
 	{
 		vertex_shader_file.open(vertex_path);
@@ -82,7 +85,6 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	GLCall(glDeleteShader(fragment));
 	if (geometry_path != "")
 		glDeleteShader(geometry);
-	
 }
 
 void Shader::CheckCompileErrors(GLuint shader, string type)

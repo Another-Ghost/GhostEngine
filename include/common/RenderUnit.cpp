@@ -1,5 +1,16 @@
 #include "RenderUnit.h"
 #include "RootRenderModule.h"
+#include "SceneManager.h"
+
+RenderUnit::RenderUnit()
+{
+	SceneManager::GetSingleton().AddRenderUnit(this);
+}
+
+RenderUnit::~RenderUnit()
+{
+	parent->RemoveChild(this);
+}
 
 void RenderUnit::AttachRenderModule(RootRenderModule* root_render_module_)
 {

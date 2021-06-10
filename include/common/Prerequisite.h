@@ -28,6 +28,9 @@ using std::unique_ptr;
 
 using glm::vec2;
 using glm::vec3;
+using glm::vec4;
+using glm::mat2;
+using glm::mat3;
 using glm::mat4;
 using glm::quat;
 //const float PI = glm::pi<float>();
@@ -61,4 +64,10 @@ class PBRMaterialFactory;
 enum class TextureType;
 enum class MaterialType;
 struct Light;
+class LightFactory;
 struct PointLight;
+
+struct HDRTexture;
+struct CubeMap;
+class IBLRenderer;
+class CubeGeometryMesh;

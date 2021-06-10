@@ -14,6 +14,7 @@ enum class TextureType
 	METALNESS,
 	AO,
 	HEIGHT,
+	HDRMAP,
 };
 
 struct Texture
@@ -29,8 +30,6 @@ struct Texture
 	int width;
 	int height;
 	int component_num;
-
-
 
 	Texture(const string& path_, TextureType type_);
 
@@ -59,7 +58,9 @@ struct Texture
 		}
 	}
 
-	void Buffer();	//? 看一下如何卸载缓存的材质
+	virtual void LoadData();
+
+	virtual void Buffer();	//? 看一下如何卸载缓存的材质
 
 	bool b_buffered;
 

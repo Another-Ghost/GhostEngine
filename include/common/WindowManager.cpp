@@ -8,20 +8,27 @@ template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 Window* WindowManager::current_window = nullptr;
 
 
-bool WindowManager::Initialize()
+WindowManager::WindowManager()
 {
-    if (!glfwInit())
-    {
-        return false;
-    }
+	if (!glfwInit())
+	{
+		cout << "ERROR<Window>: glfw init failed.\n";
+		return;
+	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
+
+	//current_window = CreateWindow()
+}
+
+bool WindowManager::Initialize()
+{
     b_initialized = true;
     return true;
 }
+
 void WindowManager::Update(float dt)
 {
 	current_window->Update(dt);
@@ -77,7 +84,6 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 	}
 
 	// configure global opengl state
-	glEnable(GL_DEPTH_TEST);
 
 	return window;
 }

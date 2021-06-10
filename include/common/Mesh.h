@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Prerequisite.h"
-#include "Transform.h"
-#include <glad/glad.h> // holds all OpenGL type declarations
+
+
 
 struct Vertex
 {
@@ -20,6 +20,7 @@ public:
 
 	virtual void Buffer();
 
+	virtual void Draw() = 0;
 	//virtual void Draw() = 0;
 
 	vector<Mesh*> child_mesh_array;

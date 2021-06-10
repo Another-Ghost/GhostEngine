@@ -1,4 +1,4 @@
-#include "Root.h"
+﻿#include "Root.h"
 #include "WindowManager.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
@@ -14,6 +14,7 @@ max_delta_time(1/60.f)
 	s_render_manager = std::make_unique<RenderManager>();
 }
 
+//调用opengl接口的操作在创建窗口之后进行
 bool Root::Initialize()
 {
 	return RenderManager::GetSingleton().Initialize();

@@ -3,7 +3,7 @@
 void Unit::Update(float dt)
 {
 	//transform = local_transform * parent->transform;
-	for (const auto& child : child_unit_array)
+	for (const auto& child : child_unit_set)
 	{
 		child->Update(dt);
 	}

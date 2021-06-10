@@ -1,10 +1,12 @@
 ﻿#include "RenderManager.h"
+#include "RenderModule.h"
 #include "SceneManager.h"
 #include "PointLight.h"
 #include "PBRMaterial.h"
 #include "Camera.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "IBLRenderer.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager()
@@ -14,25 +16,38 @@ RenderManager::RenderManager()
 
 bool RenderManager::Initialize()
 {
-	pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
-	GLCall(pbr_shader->Use());
-	pbr_shader->SetInt("albedo_map", 0);
-	pbr_shader->SetInt("normal_map", 1);
-	pbr_shader->SetInt("metalness_map", 2);
-	pbr_shader->SetInt("roughness_map", 3);
-	pbr_shader->SetInt("ao_map", 4);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
+
+	//pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
+	//GLCall(pbr_shader->Use());
+	//pbr_shader->SetInt("albedo_map", 0);
+	//pbr_shader->SetInt("normal_map", 1);
+	//pbr_shader->SetInt("metalness_map", 2);
+	//pbr_shader->SetInt("roughness_map", 3);
+	//pbr_shader->SetInt("ao_map", 4);
+
+	ibl_renderer = new IBLRenderer();
 	return true;
 }
 
 void RenderManager::Update(float dt)
 {
-	GLCall(pbr_shader->Use());
+	//GLCall(pbr_shader->Use());
 	camera = SceneManager::GetSingleton().main_camera;
-	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
-	//view_matrix = camera->ViewMatrix();
-	//perspective_matrix = camera->PerspectiveMatrix();
-	RenderPBRMaterial(dt);
+	//pbr_shader->SetVec3("cam_pos", camera->GetPosition());
+
+	////view_matrix = camera->ViewMatrix();
+	////perspective_matrix = camera->PerspectiveMatrix();
+	//
+	////RenderPBRMaterial(dt);
+	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	ibl_renderer->Update(dt);
 }
 
 void RenderManager::RenderPBRMaterial(float dt)
@@ -41,9 +56,9 @@ void RenderManager::RenderPBRMaterial(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	pbr_shader->Use();
-	mat4 view = camera->ViewMatrix();
+	//mat4 view = camera->ViewMatrix();
 	pbr_shader->SetMat4("view", camera->ViewMatrix());
-	mat4 projection = camera->PerspectiveMatrix();
+	//mat4 projection = camera->PerspectiveMatrix();
 	pbr_shader->SetMat4("projection", camera->PerspectiveMatrix());
 	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
 
@@ -56,7 +71,6 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 		pbr_shader->SetVec3("light_position_array[" + std::to_string(i) + "]", pos);
 		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
-
 	}
 
 	for (const auto& pair : pbr_mat_module_map)

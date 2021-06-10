@@ -3,6 +3,7 @@
 #include "Singleton.h"
 #include "Material.h"
 #include "Texture.h"
+#include "CubeMap.h"
 
 struct TexturePredicate
 {
@@ -23,16 +24,23 @@ class ResourceManager : public Singleton<ResourceManager>
 
 	vector<Shader*> shader_array;
 
-	vector<Texture*> texture_set;
+	vector<Texture*> texture_array;
 
 	vector<Material*> material_array;
 
+	vector<CubeMap*> cube_map_array;
+
 public:
+	ResourceManager();
+
 	Texture* CreateTexture(const string& path, TextureType type);
+
+
 
 	Material* CreateMaterial(MaterialType type);
 
 	Mesh* CreateMesh(const MeshFactory& mesh_factory);
 
+	CubeMap* CreateCubeMap(int width, int height);
 };
 

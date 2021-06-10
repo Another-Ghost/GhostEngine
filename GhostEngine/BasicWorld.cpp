@@ -1,6 +1,4 @@
 ﻿#include "BasicWorld.h"
-#include "BasicRepositry.h"
-#include "BasicRenderer.h"
 //#include "common/WindowInitializer.h"
 
 //Window* WindowInitializer::window = nullptr;

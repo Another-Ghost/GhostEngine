@@ -12,8 +12,8 @@ public:
 	void SetParent(Unit* parent_) { parent = parent_; }
 	Unit* GetParent() { return parent; }
 
-	void AddChild(Unit* child) { child_unit_array.emplace(child); }
-	void RemoveChild(Unit* child) { child_unit_array.erase(child); }
+	void AddChild(Unit* child) { child_unit_set.emplace(child); }
+	void RemoveChild(Unit* child) { child_unit_set.erase(child); }
 
 	Transform GetWorldTransform();
 	void SetWorldTransform(Transform world_transform_);
@@ -22,7 +22,7 @@ public:
 protected:
 	Unit* parent;
 
-	set<Unit*> child_unit_array;
+	set<Unit*> child_unit_set;
 
 };
 

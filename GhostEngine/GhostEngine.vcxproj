@@ -151,7 +151,7 @@
     <ClCompile Include="BasicWindow.cpp" />
     <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="BasicWorld.cpp" />
-    <ClCompile Include="BasicRenderer.cpp" />
+    <ClCompile Include="Sample_IBL.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,11 +167,17 @@
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="BasicWindowFactory.h" />
     <ClInclude Include="BasicWorld.h" />
-    <ClInclude Include="BasicRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\resource\shader\background_fs.glsl" />
+    <None Include="..\resource\shader\background_vs.glsl" />
     <None Include="..\resource\shader\basic_fs.glsl" />
     <None Include="..\resource\shader\basic_vs.glsl" />
+    <None Include="..\resource\shader\cubemap_vs.glsl" />
+    <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\resource\shader\irradiance_convolution_fs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

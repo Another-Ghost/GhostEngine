@@ -16,6 +16,8 @@ public:
 
 	bool b_initialized;
 
+	WindowManager();
+
 	bool Initialize();
 
 	void Update(float dt);

@@ -6,6 +6,7 @@
 #include "Material.h"
 #include "RenderManager.h"
 #include "CameraFactory.h"
+#include "LightFactory.h"
 
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
@@ -60,6 +61,13 @@ void SceneManager::Update(float dt)
 void SceneManager::AddLight(Light* light)
 {
 	light_array.emplace_back(light);
+}
+
+Light* SceneManager::CreateLight(const LightFactory& light_factory)
+{
+	Light* light= light_factory.CreateLight();
+	light_array.emplace_back(light);
+	return light;
 }
 
 
