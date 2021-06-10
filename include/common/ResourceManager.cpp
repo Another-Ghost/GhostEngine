@@ -60,7 +60,7 @@ Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 CubeMap* ResourceManager::CreateCubeMap(int width, int height)
 {
     CubeMap* cube_map = new CubeMap(width, height);
-    cube_map->Buffer();
+    //cube_map->Buffer();
     cube_map_array.emplace_back(cube_map);
     return cube_map;
 }

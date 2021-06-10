@@ -84,9 +84,24 @@
     <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\pbr_fs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\pbr_vs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\brdf_fs.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\brdf_vs.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\resource\shader\prefilter_fs.glsl">
       <Filter>shader</Filter>
     </Text>
   </ItemGroup>

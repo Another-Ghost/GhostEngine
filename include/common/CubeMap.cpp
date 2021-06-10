@@ -3,12 +3,11 @@
 CubeMap::CubeMap(int width_, int height_):
 	width(width_),height(height_)
 {
-
+	glGenTextures(1, &texture_id);
 }
 
 void CubeMap::Buffer()
 {
-	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);
 	for (unsigned int i = 0; i < 6; ++i)
 	{

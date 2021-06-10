@@ -7,11 +7,15 @@ public:
 
 	void Update(float dt) override;
 
+
+
 private:
 	Shader* pbr_shader;
 	Shader* irradiance_shader;
 	Shader* background_shader;
 	Shader* equirectangular_cubemap_shader;
+	Shader* prefilter_shader;
+	Shader* brdf_shader;
 
 	unsigned int capture_fbo;
 	unsigned int capture_rbo;
@@ -20,5 +24,17 @@ private:
 
 	CubeMap* irradiance_cubemap;
 
+	CubeMap* prefilter_cubemap;
+
+	//Texture* brdf_Lut_texture;
+	unsigned int brdf_lut_texture;
+
 	CubeGeometryMesh* cube_mesh;	//改为从ResourceManager中获取
+	
+
+
+	unsigned int quad_vao;
+	unsigned int quad_vbo;
+
+	void RenderQuad();
 };

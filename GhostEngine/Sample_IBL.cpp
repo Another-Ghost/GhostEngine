@@ -32,7 +32,6 @@ int main()
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
 	camera->SetPosition(vec3(0, 0, 3));
 	window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
-	//SceneManager::GetSingleton().BindCamera(camera);
 
 	//add unit
 	BasicUnit* sphere_unit = new BasicUnit();
@@ -40,11 +39,11 @@ int main()
 	RootRenderModule* root_render_module = new RootRenderModule();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/albedo.png"), TextureType::SPECULAR);
-	material->normal_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/normal.png"), TextureType::NORMAL);
-	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/metallic.png"), TextureType::METALNESS);
-	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureType::ROUGHNESS);
-	material->ao_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/rusted_iron/ao.png"), TextureType::AO);
+	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/plastic/albedo.png"), TextureType::SPECULAR);
+	material->normal_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/plastic/normal.png"), TextureType::NORMAL);
+	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/plastic/metallic.png"), TextureType::METALNESS);
+	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/plastic/roughness.png"), TextureType::ROUGHNESS);
+	material->ao_map = ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("pbr/plastic/ao.png"), TextureType::AO);
 	root_render_module->SetMaterial(material);
 
 	SphereGeometryMesh* mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
@@ -54,9 +53,6 @@ int main()
 	//add light
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 0.f, 10.f);
-
-	//HDRTexture* hdr_texture = dynamic_cast<HDRTexture*>(ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("hdr/newport_loft.hdr"), TextureType::HDRMAP));
-
 
 	//Loop
 	float max_delta_time = 1.f / 60.f;
