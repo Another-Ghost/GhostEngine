@@ -58,14 +58,17 @@ public:
 
 	vec3 GetUpword();
 
-	Transform Translate(vec3 vector);
+	const Transform& Translate(vec3 vector);
 
-	Transform Rotate(vec3 axis, float angle);
+	const Transform& Rotate(vec3 axis, float angle);
 
-	Transform Scale(vec3 scale_);
+	const Transform& Scale(vec3 scale_);
 
 	Transform operator*(const Transform& other);
 
 	Transform operator*=(const Transform& other);
+
+	//debug
+	void PrintMatrix();
 };
 

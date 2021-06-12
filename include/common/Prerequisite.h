@@ -38,6 +38,8 @@ using glm::quat;
 class Window;
 class WindowManager;
 class WindowFactory;
+class WindowEventListener;
+
 class Camera;
 class CameraFactory;
 

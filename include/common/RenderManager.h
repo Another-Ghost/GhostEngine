@@ -47,8 +47,6 @@ private:
 
 	Shader* current_shader;
 
-
-	
 	//set<RenderModule*> set_map;
 	//render_module_group
 
@@ -59,7 +57,6 @@ private:
 	mat4 perspective_matrix;
 
 	IBLRenderer* ibl_renderer;
-
 
 	friend class RenderUnit;
 

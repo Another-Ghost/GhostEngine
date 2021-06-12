@@ -22,9 +22,9 @@ public:
 
 	void Terminate();
 
+	float GetDeltaTime() { return delta_time; }
+
 private:
 	float delta_time;
-	float last_frame_time;
-	float max_delta_time;
 };
 

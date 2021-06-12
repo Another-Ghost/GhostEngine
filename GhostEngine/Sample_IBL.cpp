@@ -32,6 +32,7 @@ int main()
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
 	camera->SetPosition(vec3(0, 0, 3));
 	window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
+	window->AddEventListener(camera);
 
 	//add unit
 	BasicUnit* sphere_unit = new BasicUnit();

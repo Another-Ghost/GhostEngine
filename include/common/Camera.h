@@ -2,6 +2,7 @@
 
 #include "Prerequisite.h"
 #include "Transform.h"
+#include "Window.h"
 
 enum class CameraCommand
 {
@@ -11,7 +12,7 @@ enum class CameraCommand
 	RIGHT
 };
 
-class Camera
+class Camera : public WindowEventListener
 {
 
 public:
@@ -24,7 +25,7 @@ public:
 	//const float kMoveSpeed = 2.5f;
 	//const float kRotationSpeed = 0.1f;
 
-	Camera(vec3 postion_ = {0, 0, 0}, float pitch_ = 0.f, float yaw_ = 0.f, float aspect_ = 16 / 9.0f, float fov_y_ = 45.f, float near_ = 0.1f, float far_ = 100.f, float move_speed_ = 2.5f, float roation_speed_ = 0.2f);
+	Camera(vec3 postion_ = {0, 0, 0}, float pitch_ = 0.f, float yaw_ = 0.f, float aspect_ = 16 / 9.0f, float fov_y_ = 45.f, float near_ = 0.1f, float far_ = 100.f, float move_speed_ = 2.5f, float roation_speed_ = 0.1f);
 
 	virtual ~Camera();
 
@@ -75,6 +76,11 @@ protected:	//? effective c++
 	float rotation_speed;
 
 	//parent
+
+	//WindowEventListener part
+	virtual void OnMouseMove(double x_offset, double y_offset) override;
+
+	virtual void OnKeyPressed(Window* window) override;
 
 };
 

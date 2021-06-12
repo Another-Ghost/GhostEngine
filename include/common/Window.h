@@ -3,7 +3,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-
+class WindowEventListener
+{
+public:
+	virtual void OnWindowClosed();
+	virtual void OnFrameBufferSizeChanged();	
+	virtual void OnMouseMove(double x_offset, double y_offset);
+	virtual void OnMouseScroll(double x_offset, double y_offset);
+	virtual void OnKeyPressed(Window* window);
+};
 
 class Window	//? 改为全局
 {
@@ -26,7 +34,12 @@ public:
 
 	float GetCurrentFrameTime() { return glfwGetTime(); }
 
+	GLFWwindow* GetGLFWWindow() { return glfw_window; }
+
 	bool WindowShouldClose() { return glfwWindowShouldClose(glfw_window); }
+
+	void AddEventListener(WindowEventListener* listener_) { listener_set.emplace(listener_); }
+	void RemoveEventListener(WindowEventListener* listener_) { listener_set.erase(listener_); }
 
 protected:
 	GLFWwindow* glfw_window;
@@ -39,16 +52,21 @@ protected:
 	int width; //1280, 1920
 	int height; //720, 1080
 
+	set<WindowEventListener*> listener_set;
+
+	bool first_mouse;
+
+	double last_x;
+	double last_y;
+
 	virtual void FrameBufferSizeCallBack();	//可以把所有CallBack移出单独写个类
 	virtual void MouseCallback(double x_pos, double y_pos);
 	virtual void ScrollCallback(double x_offset, double y_offset);
 	virtual void ProcessInput();
+			
+	void ProcessListenerInput();
 
 	friend class WindowManager;
 
 };
 
-class WindowEventListener
-{
-	virtual bool WindowClosed(Window* window);
-};

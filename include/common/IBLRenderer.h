@@ -7,8 +7,6 @@ public:
 
 	void Update(float dt) override;
 
-
-
 private:
 	Shader* pbr_shader;
 	Shader* irradiance_shader;
