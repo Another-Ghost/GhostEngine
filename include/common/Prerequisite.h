@@ -65,6 +65,10 @@ struct PBRMaterial;
 class PBRMaterialFactory;
 enum class TextureType;
 enum class MaterialType;
+struct TextureFile;
+enum class TextureFileType;
+struct EquirectangularMap;
+
 struct Light;
 class LightFactory;
 struct PointLight;

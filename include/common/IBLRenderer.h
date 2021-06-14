@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "Renderer.h"
 class IBLRenderer : public Renderer
 {
@@ -25,11 +26,11 @@ private:
 	CubeMap* prefilter_cubemap;
 
 	//Texture* brdf_Lut_texture;
-	unsigned int brdf_lut_texture;
+	Texture* brdf_lut_texture;
 
 	CubeGeometryMesh* cube_mesh;	//改为从ResourceManager中获取
 	
-
+	EquirectangularMap* equirectanguler_map;
 
 	unsigned int quad_vao;
 	unsigned int quad_vbo;

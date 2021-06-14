@@ -79,15 +79,15 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 		glActiveTexture(GL_TEXTURE0);
 		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		GLCall(glBindTexture(GL_TEXTURE_2D, material->albedo_map->id));
+		GLCall(glBindTexture(GL_TEXTURE_2D, material->albedo_map->texture_id));
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->metalness_map->texture_id);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->roughness_map->texture_id);
 		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
 
 		for (const auto& render_module : pair.second)
 		{

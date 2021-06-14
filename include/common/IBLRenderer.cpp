@@ -2,7 +2,6 @@
 #include "ResourceManager.h"
 #include "RenderManager.h"
 #include "SceneManager.h"
-#include "HDRTexture.h"
 #include "CubeMap.h"
 #include "CubeGeometryMeshFactory.h"
 #include "Camera.h"
@@ -11,13 +10,14 @@
 #include "PBRMaterial.h"
 #include "RenderModule.h"
 #include "Light.h"
+#include "EquirectangularMap.h"
 
 
 IBLRenderer::IBLRenderer()
 {
-	background_shader = new Shader(File::GetShaderPath("background_vs"), File::GetShaderPath("background_fs"));
-	GLCall(background_shader->Use());
-	background_shader->SetInt("environment_map", 0);
+	Window* window = WindowManager::GetSingleton().current_window;
+	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
+
 
 	//1.
 	glGenFramebuffers(1, &capture_fbo);
@@ -25,14 +25,18 @@ IBLRenderer::IBLRenderer()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, capture_rbo);	//附加一个深度纹理到帧缓冲对象中
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);	//创建一个深度渲染缓冲对象
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, capture_rbo);	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
 
-	env_cubemap = ResourceManager::GetSingleton().CreateCubeMap(512, 512);	//? 改为从SceneManager中获取
+	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
+	env_cubemap->width = 512;
+	env_cubemap->height = 512;
+	env_cubemap->b_genarate_mipmap = false;
 	env_cubemap->Buffer();
-	HDRTexture* equirectangle_tex = dynamic_cast<HDRTexture*>(ResourceManager::GetSingleton().CreateTexture(File::GetTexturePath("hdr/sky0025.hdr"), TextureType::HDRMAP));
-	env_cubemap->equirectangular_texture = equirectangle_tex;
-
+	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/sky0025.hdr"), TextureFileType::HDR));
+	equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
+	equirectanguler_map->Buffer();
+	//env_cubemap->equirectangular_texture = equirectangle_tex;
 
 	mat4 capture_projection = glm::perspective(glm::radians(90.f), 1.f, 0.1f, 10.f);
 	vector<mat4> capture_view_array =
@@ -44,43 +48,47 @@ IBLRenderer::IBLRenderer()
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
 	};
+
 	equirectangular_cubemap_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangular_to_cubemap_fs"));
 	GLCall(equirectangular_cubemap_shader->Use());
 	equirectangular_cubemap_shader->SetInt("equirectangular_map", 0);
 	equirectangular_cubemap_shader->SetMat4("projection", capture_projection);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, env_cubemap->equirectangular_texture->id);
-
-	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
+	glBindTexture(GL_TEXTURE_2D, equirectanguler_map->texture_id);
 
 	GLCall(glViewport(0, 0, 512, 512));
+
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	for (int i = 0; i < 6; ++i)
 	{
 		equirectangular_cubemap_shader->SetMat4("view", capture_view_array[i]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, env_cubemap->texture_id, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, env_cubemap->texture_id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cube_mesh->Draw();
+		cube_mesh->Draw(); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	//glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
-
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 	irradiance_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"));
-	irradiance_cubemap = ResourceManager::GetSingleton().CreateCubeMap(32, 32);
+	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
+	irradiance_cubemap->width = 32;
+	irradiance_cubemap->height = 32;
+	irradiance_cubemap->min_filter_param = GL_LINEAR;
+	irradiance_cubemap->b_genarate_mipmap = false;
 	irradiance_cubemap->Buffer();
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
-
+	
 	irradiance_shader->Use();
 	irradiance_shader->SetInt("environment_map", 0);
 	irradiance_shader->SetMat4("projection", capture_projection);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
+	
 	glViewport(0, 0, 32, 32);
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	for (unsigned int i = 0; i < 6; ++i)
@@ -91,23 +99,18 @@ IBLRenderer::IBLRenderer()
 		cube_mesh->Draw();
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, window->GetWidth(), window->GetHeight());
+
+
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
 	prefilter_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("prefilter_fs"));
-	prefilter_cubemap = ResourceManager::GetSingleton().CreateCubeMap(128, 128);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_cubemap->texture_id);
-	for (unsigned int i = 0; i < 6; ++i)
-	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 128, 128, 0, GL_RGB, GL_FLOAT, nullptr);
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // be sure to set minification filter to mip_linear 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
-	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-	//run a quasi monte-carlo simulation on the environment lighting to create a prefilter (cube)map.
+	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
+	prefilter_cubemap->width = 128; 
+	prefilter_cubemap->height = 128;
+	prefilter_cubemap->b_genarate_mipmap = true;
+	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
+
 	prefilter_shader->Use();
 	prefilter_shader->SetInt("environment_map", 0);
 	prefilter_shader->SetMat4("projection", capture_projection);
@@ -118,7 +121,7 @@ IBLRenderer::IBLRenderer()
 	unsigned int max_mip_levels = 5;
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
 	{
-		// reisze framebuffer according to mip-level size.
+		// resize framebuffer according to mip-level size.
 		unsigned int mip_width = 128 * std::pow(0.5, mip);
 		unsigned int mip_height = 128 * std::pow(0.5, mip);
 		glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
@@ -127,46 +130,42 @@ IBLRenderer::IBLRenderer()
 
 		float roughness = (float)mip / (float)(max_mip_levels - 1);
 		prefilter_shader->SetFloat("roughness", roughness);
-		for (unsigned int i = 0; i < 6; ++i)
+		for (int i = 0; i < 6; ++i)
 		{
 			prefilter_shader->SetMat4("view", capture_view_array[i]);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->texture_id, mip);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->texture_id, mip); //最后一个参数mip决定渲染到绑定的纹理的哪一层mipmap上
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //? 是否应该被加到每个drawcall之前
 			cube_mesh->Draw();
 		}
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 
 
 	//4. generate a 2D LUT from the BRDF equations used.
 	brdf_shader = new Shader(File::GetShaderPath("brdf_vs"), File::GetShaderPath("brdf_fs"));
 	
-	glGenTextures(1, &brdf_lut_texture);
-
-	//glObjectLabel(GL_TEXTURE, brdf_lut_texture, -1, "brdf");
-
-	// pre-allocate enough memory for the LUT texture.
-	glBindTexture(GL_TEXTURE_2D, brdf_lut_texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, 0);
-	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	brdf_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
+	brdf_lut_texture->data_format = GL_RG;
+	brdf_lut_texture->width = 512;
+	brdf_lut_texture->height = 512;
+	brdf_lut_texture->min_filter_param = GL_LINEAR;	//? 查一下设置成GL_LINEAR_MIPMAP_LINEAR会变黑的根本原因，仿佛是没了漫反射光
+	brdf_lut_texture->b_genarate_mipmap = false;
+	brdf_lut_texture->Buffer();
 
 	// then re-configure capture framebuffer object and render screen-space quad with BRDF shader.
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut_texture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut_texture->texture_id, 0);	
 
 	glViewport(0, 0, 512, 512);
 	brdf_shader->Use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	RenderQuad();
+	RenderQuad();	//? build a class
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 
 
 	//5.
@@ -180,16 +179,15 @@ IBLRenderer::IBLRenderer()
 	pbr_shader->SetInt("irradiance_map", 5);
 	pbr_shader->SetInt("prefilter_map", 6);
 	pbr_shader->SetInt("brdf_LUT", 7);
-
-
+	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	//pbr_shader->SetVec3("albedo", vec3(0.5f, 0.f, 0.f));
 	//pbr_shader->SetFloat("ao", 1.f);
 
 
-
-	Window* window = WindowManager::GetSingleton().current_window;
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
-
+	//6.
+	background_shader = new Shader(File::GetShaderPath("background_vs"), File::GetShaderPath("background_fs"));
+	GLCall(background_shader->Use());
+	background_shader->SetInt("environment_map", 0);
 }
 
 void IBLRenderer::Update(float dt)
@@ -217,15 +215,15 @@ void IBLRenderer::Update(float dt)
 
 		glActiveTexture(GL_TEXTURE0);
 		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		glBindTexture(GL_TEXTURE_2D, material->albedo_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->albedo_map->texture_id);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->metalness_map->texture_id);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->roughness_map->texture_id);
 		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
+		glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
 
 		// bind pre-computed IBL data
 		glActiveTexture(GL_TEXTURE5);
@@ -233,9 +231,7 @@ void IBLRenderer::Update(float dt)
 		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_cubemap->texture_id);
 		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, brdf_lut_texture);
-
-
+		glBindTexture(GL_TEXTURE_2D, brdf_lut_texture->texture_id);
 
 
 		for (const auto& render_module : pair.second)
@@ -255,7 +251,8 @@ void IBLRenderer::Update(float dt)
 	background_shader->SetMat4("projection", camera->PerspectiveMatrix());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
-	cube_mesh->Draw();
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_cubemap->texture_id);
+	cube_mesh->Draw();	//render skybox
 
 }
 

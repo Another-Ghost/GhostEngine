@@ -12,7 +12,6 @@ void Transform::UpdateMatrix()
 	
 	matrix = translate(mat4(1), position) * mat4_cast(orientation) * scale(mat4(1), dimension);
 
-	
 	//matrix = mat4_cast(orientation);
 }
 

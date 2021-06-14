@@ -1,40 +1,86 @@
 #include "ResourceManager.h"
-#include "HDRTexture.h"
+#include "EquirectangularMap.h"
 #include "Material.h"
 #include "PBRMaterialFactory.h"
 #include "MeshFactory.h"
+#include "EquirectangularMap.h"
+#include "MaterialMap.h"
+#include "CubeMap.h"
+#include "TextureFile.h"
 
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
 ResourceManager::ResourceManager()
 {
     stbi_set_flip_vertically_on_load(true);
 }
-Texture* ResourceManager::CreateTexture(const string& path, TextureType type)
+Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file)
 {
-    for (const auto& tex : texture_array)
+    if (file != nullptr)
     {
-        if (path == tex->path)
+        for (const auto& tex : texture_array)
         {
-            return tex;
+            if (file == tex->file)
+            {
+                return tex;
+            }
         }
     }
 
     Texture* texture;
-    if (type == TextureType::HDRMAP)
+    switch (type)
     {
-        texture = new HDRTexture(path, type);
+    case TextureType::EMPTY2D:
+        texture = new Texture(type, file);
+        break;
+    case TextureType::EQUIRECTANGULARMAP:
+        texture = new EquirectangularMap(type, file);
+        break;
+    case TextureType::CUBEMAP:
+        texture = new CubeMap(type, file);
+        break;
+    case TextureType::ALBEDO :
+    case TextureType::AO:
+    case TextureType::METALNESS:
+    case TextureType::NORMAL:
+    case TextureType::ROUGHNESS:
+        texture = new MaterialMap(type, file);
+        break;
+    default:
+        break;
     }
-    else
-    {
-        texture = new Texture(path, type);
-    }
-    texture->LoadData();
-	texture->Buffer();
-    
+
     texture_array.emplace_back(texture);
 
     return texture;
 }
+TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileType type)
+{
+    for (const auto& file : texture_file_array)
+    {
+        if (path == file->path)
+        {
+            return file;
+        }
+    }
+
+    TextureFile* texture_file;
+    switch (type)
+    {
+    case TextureFileType::LDR:
+        texture_file = new LDRTextureFile(path, type);
+    	break;
+    case TextureFileType::HDR:
+        texture_file = new HDRTextureFile(path, type);
+        break;
+    default:
+        break;
+    }
+    texture_file_array.push_back(texture_file);
+
+    return texture_file;
+}
+
+
 
 Material* ResourceManager::CreateMaterial(MaterialType type)
 {
@@ -53,14 +99,14 @@ Material* ResourceManager::CreateMaterial(MaterialType type)
 Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 {
     Mesh* mesh = mesh_factory.CreateMesh();
-    mesh_set.emplace_back(mesh);
+    mesh_array.emplace_back(mesh);
     return mesh;
 }
 
-CubeMap* ResourceManager::CreateCubeMap(int width, int height)
-{
-    CubeMap* cube_map = new CubeMap(width, height);
-    //cube_map->Buffer();
-    cube_map_array.emplace_back(cube_map);
-    return cube_map;
-}
+//CubeMap* ResourceManager::CreateCubeMap(int width, int height)
+//{
+//    CubeMap* cube_map = new CubeMap();
+//    //cube_map->Buffer();
+//    cube_map_array.emplace_back(cube_map);
+//    return cube_map;
+//}

@@ -1,17 +1,12 @@
 #pragma once
 #include "Prerequisite.h"
+#include "Texture.h"
 
-struct CubeMap
+
+struct CubeMap : Texture
 {
-	CubeMap(int width_, int height_);
-
-	unsigned int texture_id;
-
-	HDRTexture* equirectangular_texture;
-
-	int width;
-	int height;
-
-	void Buffer();
+	CubeMap(TextureType type_ = TextureType::CUBEMAP, TextureFile* path_ = nullptr);
+	
+	virtual bool Buffer() override;
 };
 

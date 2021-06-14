@@ -20,7 +20,7 @@ struct TexturePredicate
 
 class ResourceManager : public Singleton<ResourceManager>
 {
-	vector<Mesh*> mesh_set;
+	vector<Mesh*> mesh_array;
 
 	vector<Shader*> shader_array;
 
@@ -30,17 +30,20 @@ class ResourceManager : public Singleton<ResourceManager>
 
 	vector<CubeMap*> cube_map_array;
 
+	vector<TextureFile*> texture_file_array;
+	
+
 public:
 	ResourceManager();
 
-	Texture* CreateTexture(const string& path, TextureType type);
+	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr);
 
-
+	TextureFile* CreateTextureFile(const string& path, TextureFileType type);
 
 	Material* CreateMaterial(MaterialType type);
 
 	Mesh* CreateMesh(const MeshFactory& mesh_factory);
 
-	CubeMap* CreateCubeMap(int width, int height);
+	//CubeMap* CreateCubeMap(int width, int height);
 };
 

@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include "Prerequisite.h"
+#include "TextureFile.h"
 #include <string>
 #include <stb_image.h>
 
 enum class TextureType
 {
 	NONE,
+	EMPTY2D,
 	DIFFUSE,
 	ALBEDO,
 	SPECULAR,
@@ -14,24 +16,40 @@ enum class TextureType
 	METALNESS,
 	AO,
 	HEIGHT,
-	HDRMAP,
+	EQUIRECTANGULARMAP,
+	CUBEMAP,
 };
 
 struct Texture
 {
-	unsigned int id;
+	unsigned int texture_id;
 	
-	unsigned char* data;
-
 	TextureType type; //类型，比如是漫反射贴图或者是镜面光贴图
 	
-	string path; //通过不同路径来比较不同纹理（将所有加载过的纹理全局储存，每当我们想加载一个纹理的时候，首先去检查它有没有被加载过）
+	TextureFile* file;
 
 	int width;
 	int height;
-	int component_num;
 
-	Texture(const string& path_, TextureType type_);
+	bool b_buffered;
+
+	bool b_genarate_mipmap;
+
+	GLint internal_format;
+
+	GLenum data_format;
+
+	GLenum data_type;
+
+	GLint wrap_param;
+
+	GLint min_filter_param;
+
+	Texture(TextureType type_, TextureFile* file_ = nullptr);
+	
+	virtual void LoadData();
+
+	virtual bool Buffer();	//? 看一下如何卸载缓存的材质
 
 	static std::string TypeName(TextureType type)
 	{
@@ -58,15 +76,7 @@ struct Texture
 		}
 	}
 
-	virtual void LoadData();
-
-	virtual void Buffer();	//? 看一下如何卸载缓存的材质
-
-	bool b_buffered;
-
-	static unsigned int LoadTexture(const std::string& name); //? 在何处进行gamma校正
-
-	static unsigned int LoadTexture(const std::string& name, const std::string& directory);	
+	//static unsigned int LoadTexture(const std::string& name); //? 在何处进行gamma校正
 
 };
 
