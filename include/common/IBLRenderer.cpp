@@ -11,13 +11,13 @@
 #include "RenderModule.h"
 #include "Light.h"
 #include "EquirectangularMap.h"
+#include "QuadGeometryMesh.h"
 
 
 IBLRenderer::IBLRenderer()
 {
 	Window* window = WindowManager::GetSingleton().current_window;
 	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
-
 
 	//1.
 	glGenFramebuffers(1, &capture_fbo);
@@ -122,8 +122,8 @@ IBLRenderer::IBLRenderer()
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
 	{
 		// resize framebuffer according to mip-level size.
-		unsigned int mip_width = 128 * std::pow(0.5, mip);
-		unsigned int mip_height = 128 * std::pow(0.5, mip);
+		unsigned int mip_width = 128 * std::pow(1., mip);
+		unsigned int mip_height = 128 * std::pow(1., mip);
 		glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
 		glViewport(0, 0, mip_width, mip_height);
@@ -160,10 +160,12 @@ IBLRenderer::IBLRenderer()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut_texture->texture_id, 0);	
 
+	QuadGeometryMesh* quad_mesh = new QuadGeometryMesh();
+
 	glViewport(0, 0, 512, 512);
 	brdf_shader->Use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	RenderQuad();	//? build a class
+	quad_mesh->Draw();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 
@@ -180,7 +182,7 @@ IBLRenderer::IBLRenderer()
 	pbr_shader->SetInt("prefilter_map", 6);
 	pbr_shader->SetInt("brdf_LUT", 7);
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
-	//pbr_shader->SetVec3("albedo", vec3(0.5f, 0.f, 0.f));
+	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));
 	//pbr_shader->SetFloat("ao", 1.f);
 
 
@@ -256,29 +258,3 @@ void IBLRenderer::Update(float dt)
 
 }
 
-void IBLRenderer::RenderQuad()
-{
-	if (quad_vao == 0)
-	{
-		float quad_vertices[] = {
-			// positions        // texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		};
-		// setup plane VAO
-		glGenVertexArrays(1, &quad_vao);
-		glGenBuffers(1, &quad_vbo);
-		glBindVertexArray(quad_vao);
-		glBindBuffer(GL_ARRAY_BUFFER, quad_vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	}
-	glBindVertexArray(quad_vao);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-}

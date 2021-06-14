@@ -59,6 +59,9 @@ class Mesh;
 class MeshFactory;
 class GeometryMesh;
 class TriangleMesh;
+class CubeGeometryMesh;
+class QuadGeometryMesh;
+
 struct Texture;
 struct Material;
 struct PBRMaterial;
@@ -76,4 +79,4 @@ struct PointLight;
 struct HDRTexture;
 struct CubeMap;
 class IBLRenderer;
-class CubeGeometryMesh;
+

@@ -150,7 +150,6 @@
     <ClCompile Include="BasicUnit.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
     <ClCompile Include="BasicWindowFactory.cpp" />
-    <ClCompile Include="BasicWorld.cpp" />
     <ClCompile Include="Sample_IBL.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
@@ -166,7 +165,6 @@
     <ClInclude Include="BasicUnit.h" />
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="BasicWindowFactory.h" />
-    <ClInclude Include="BasicWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\resource\shader\background_fs.glsl" />

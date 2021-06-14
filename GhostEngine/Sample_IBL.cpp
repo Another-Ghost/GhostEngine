@@ -40,19 +40,19 @@ int main()
 	RootRenderModule* root_render_module = new RootRenderModule();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/rusted_iron/albedo.png"), TextureFileType::LDR));
+	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));
 	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ALBEDO, albedo_file);
 	material->albedo_map->Buffer();
-	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/rusted_iron/normal.png"), TextureFileType::LDR));
+	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/normal.png"), TextureFileType::LDR));
 	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, normal_file);
 	material->normal_map->Buffer();
-	LDRTextureFile* metalness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/rusted_iron/metallic.png"), TextureFileType::LDR));
+	LDRTextureFile* metalness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/metallic.png"), TextureFileType::LDR));
 	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESS, metalness_file);
 	material->metalness_map->Buffer();
-	LDRTextureFile* roughness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/rusted_iron/roughness.png"), TextureFileType::LDR));
+	LDRTextureFile* roughness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/roughness.png"), TextureFileType::LDR));
 	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ROUGHNESS, roughness_file);
 	material->roughness_map->Buffer();
-	LDRTextureFile* ao_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/rusted_iron/ao.png"), TextureFileType::LDR));
+	LDRTextureFile* ao_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/ao.png"), TextureFileType::LDR));
 	material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, ao_file);
 	material->ao_map->Buffer();
 

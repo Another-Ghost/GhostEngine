@@ -35,5 +35,4 @@ private:
 	unsigned int quad_vao;
 	unsigned int quad_vbo;
 
-	void RenderQuad();
 };

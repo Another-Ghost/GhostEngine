@@ -14,6 +14,8 @@ public:
 
 	virtual void Draw() override;
 
+	bool b_initialized;
+
 protected:
 
 	unsigned int vbo_id;
