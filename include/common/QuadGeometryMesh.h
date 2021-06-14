@@ -7,5 +7,6 @@ public:
 
 	void Initialize() override;
 
+	void Draw() override;
 };
 

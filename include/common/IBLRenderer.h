@@ -32,7 +32,4 @@ private:
 	
 	EquirectangularMap* equirectanguler_map;
 
-	unsigned int quad_vao;
-	unsigned int quad_vbo;
-
 };

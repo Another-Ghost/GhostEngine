@@ -92,13 +92,13 @@ void Camera::OnKeyPressed(Window* window)
     GLFWwindow* glfw_window = window->GetGLFWWindow();
     float delta_time = Root::GetSingleton().GetDeltaTime();
 	if (glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS)
-		SetPosition(GetPosition() + GetForward() * delta_time);
+		SetPosition(GetPosition() + GetForward() * delta_time * move_speed);
 	if (glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS)
-        SetPosition(GetPosition() - GetForward() * delta_time);
+        SetPosition(GetPosition() - GetForward() * delta_time * move_speed);
 	if (glfwGetKey(glfw_window, GLFW_KEY_A) == GLFW_PRESS)
-		SetPosition(GetPosition() - GetRight() * delta_time);
+		SetPosition(GetPosition() - GetRight() * delta_time * move_speed);
 	if (glfwGetKey(glfw_window, GLFW_KEY_D) == GLFW_PRESS)
-		SetPosition(GetPosition() + GetRight() * delta_time);
+		SetPosition(GetPosition() + GetRight() * delta_time * move_speed);
 }
 
 

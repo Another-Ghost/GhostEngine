@@ -6,6 +6,7 @@ MaterialMap::MaterialMap(TextureType type_, TextureFile* file_):
 {
 	wrap_param = GL_REPEAT;
 	b_genarate_mipmap = true;
+	min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 }
 
 bool MaterialMap::Buffer()
@@ -29,7 +30,7 @@ bool MaterialMap::Buffer()
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_param);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_param);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter_param);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			//stbi_image_free(data);

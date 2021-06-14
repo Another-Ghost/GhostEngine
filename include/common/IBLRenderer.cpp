@@ -32,6 +32,7 @@ IBLRenderer::IBLRenderer()
 	env_cubemap->width = 512;
 	env_cubemap->height = 512;
 	env_cubemap->b_genarate_mipmap = false;
+	env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	env_cubemap->Buffer();
 	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/sky0025.hdr"), TextureFileType::HDR));
 	equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
@@ -76,7 +77,7 @@ IBLRenderer::IBLRenderer()
 	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
 	irradiance_cubemap->width = 32;
 	irradiance_cubemap->height = 32;
-	irradiance_cubemap->min_filter_param = GL_LINEAR;
+	//irradiance_cubemap->min_filter_param = GL_LINEAR;
 	irradiance_cubemap->b_genarate_mipmap = false;
 	irradiance_cubemap->Buffer();
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
@@ -109,6 +110,7 @@ IBLRenderer::IBLRenderer()
 	prefilter_cubemap->width = 128; 
 	prefilter_cubemap->height = 128;
 	prefilter_cubemap->b_genarate_mipmap = true;
+	prefilter_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
 
 	prefilter_shader->Use();
@@ -122,8 +124,8 @@ IBLRenderer::IBLRenderer()
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
 	{
 		// resize framebuffer according to mip-level size.
-		unsigned int mip_width = 128 * std::pow(1., mip);
-		unsigned int mip_height = 128 * std::pow(1., mip);
+		unsigned int mip_width = 128 * std::pow(0.5, mip);
+		unsigned int mip_height = 128 * std::pow(0.5, mip);
 		glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
 		glViewport(0, 0, mip_width, mip_height);
@@ -150,7 +152,7 @@ IBLRenderer::IBLRenderer()
 	brdf_lut_texture->data_format = GL_RG;
 	brdf_lut_texture->width = 512;
 	brdf_lut_texture->height = 512;
-	brdf_lut_texture->min_filter_param = GL_LINEAR;	//? 查一下设置成GL_LINEAR_MIPMAP_LINEAR会变黑的根本原因，仿佛是没了漫反射光
+	//brdf_lut_texture->min_filter_param = GL_LINEAR;	//? 查一下设置成GL_LINEAR_MIPMAP_LINEAR会变黑的根本原因，仿佛是没了漫反射光
 	brdf_lut_texture->b_genarate_mipmap = false;
 	brdf_lut_texture->Buffer();
 

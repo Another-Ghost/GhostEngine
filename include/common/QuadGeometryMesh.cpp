@@ -25,3 +25,10 @@ void QuadGeometryMesh::Initialize()
 		1, 2, 3
 	};
 }
+
+void QuadGeometryMesh::Draw()
+{
+	glBindVertexArray(vao_id);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
