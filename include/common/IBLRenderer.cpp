@@ -12,7 +12,8 @@
 #include "Light.h"
 #include "EquirectangularMap.h"
 #include "QuadGeometryMesh.h"
-
+#include "RootRenderModule.h"
+#include "Unit.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -240,8 +241,12 @@ void IBLRenderer::Update(float dt)
 
 		for (const auto& render_module : pair.second)
 		{
+
+
 			Mesh* mesh = render_module->GetMesh();
 
+			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_module);
+			mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			//pbr_shader->SetMat4("model", model);
 			pbr_shader->SetMat4("model", mat4(1));	//? 改为从物体获取的model
