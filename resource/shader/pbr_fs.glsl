@@ -144,7 +144,7 @@ void main()
 		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 	}
 
-
+	//环境光部分与直接光源是独立的，互不影响
 	vec3 F = FresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
 
 	vec3 kS = F;
@@ -152,7 +152,7 @@ void main()
     kD *= 1.0 - metalness;	
 
 	vec3 irradiance = texture(irradiance_map, N).rgb;
-    vec3 diffuse = irradiance * albedo;
+    vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
 
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
@@ -160,10 +160,10 @@ void main()
     vec2 brdf  = texture(brdf_LUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = prefiltered_color * (F * brdf.x + brdf.y);
 
-	vec3 ambient = (kD * diffuse + specular) * ao;
+	vec3 ambient = (kD * diffuse + specular) * ao;	//? 指定光线较难逃逸出来的暗色边缘 为什么只作用于环境光，而没有作用于直接光照？
 	//vec3 ambient = (kD * diffuse + specular);
 
-	vec3 color = ambient + Lo;
+	vec3 color = ambient + Lo;	
 	//vec3 color = ambient;
 	//vec3 color = Lo;
 

@@ -75,7 +75,7 @@ IBLRenderer::IBLRenderer()
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 	irradiance_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"));
 	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
-	irradiance_cubemap->width = 32;
+	irradiance_cubemap->width = 32;	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
 	irradiance_cubemap->height = 32;
 	//irradiance_cubemap->min_filter_param = GL_LINEAR;
 	irradiance_cubemap->b_genarate_mipmap = false;
@@ -124,8 +124,8 @@ IBLRenderer::IBLRenderer()
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
 	{
 		// resize framebuffer according to mip-level size.
-		unsigned int mip_width = 128 * std::pow(0.5, mip);
-		unsigned int mip_height = 128 * std::pow(0.5, mip);
+		unsigned int mip_width = 128 * std::pow(0.5f, mip);	//大小很关键
+		unsigned int mip_height = 128 * std::pow(0.5f, mip);
 		glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
 		glViewport(0, 0, mip_width, mip_height);

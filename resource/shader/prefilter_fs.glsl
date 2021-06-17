@@ -23,7 +23,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
 // ----------------------------------------------------------------------------
 // http://holger.dammertz.org/stuff/notes_HammersleyOnHemisphere.html
 // efficient VanDerCorpus calculation.
-float RadicalInverse_VdC(uint bits) 
+float RadicalInverse_VdC(uint bits) //Van Der Corput序列， Hammersley序列的基础    
 {
      bits = (bits << 16u) | (bits >> 16u);
      bits = ((bits & 0x55555555u) << 1u) | ((bits & 0xAAAAAAAAu) >> 1u);
@@ -33,7 +33,7 @@ float RadicalInverse_VdC(uint bits)
      return float(bits) * 2.3283064365386963e-10; // / 0x100000000
 }
 // ----------------------------------------------------------------------------
-vec2 Hammersley(uint i, uint N)
+vec2 Hammersley(uint i, uint N) //低差异序列
 {
 	return vec2(float(i)/float(N), RadicalInverse_VdC(i));
 }
@@ -66,7 +66,7 @@ void main()
     vec3 N = normalize(World_Pos);
     
     // make the simplyfying assumption that V equals R equals the normal 
-    vec3 R = N;
+    vec3 R = N; //镜面反射方向
     vec3 V = R;
 
     const uint SAMPLE_COUNT = 1024u;
@@ -78,24 +78,26 @@ void main()
         // generates a sample vector that's biased towards the preferred alignment direction (importance sampling).
         vec2 Xi = Hammersley(i, SAMPLE_COUNT);
         vec3 H = ImportanceSampleGGX(Xi, N, roughness);
-        vec3 L  = normalize(2.0 * dot(V, H) * H - V);
+        vec3 L  = normalize(2.0 * dot(V, H) * H - V);   //根据平面反射定理，通过V和H求光照方向（光入射方向）
 
         float NdotL = max(dot(N, L), 0.0);
         if(NdotL > 0.0)
         {
             // sample from the environment's mip level based on roughness/pdf
-            float D   = DistributionGGX(N, H, roughness);
-            float NdotH = max(dot(N, H), 0.0);
+            float D   = DistributionGGX(N, H, roughness);   //根据夹角theta和roughness，求出与中间向量h取向一致的微平面的比率
+            float NdotH = max(dot(N, H), 0.0);  //代表微平面法线（half vector）与世界坐标法线（N）的夹角余弦
             float HdotV = max(dot(H, V), 0.0);
             float pdf = D * NdotH / (4.0 * HdotV) + 0.0001; 
 
             float resolution = 512.0; // resolution of source cubemap (per face)
-            float saTexel  = 4.0 * PI / (6.0 * resolution * resolution);
-            float saSample = 1.0 / (float(SAMPLE_COUNT) * pdf + 0.0001);
+            float saTexel  = 4.0 * PI / (6.0 * resolution * resolution);    //单个纹素所占的solid angle // Solid angle associated to a texel of the cubemap
+            float saSample = 1.0 / (float(SAMPLE_COUNT) * pdf + 0.0001);    //所有中间向量为H方向的采样点所占的solid angle
+            // Solid angle associated to a sample
 
-            float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel); 
-            
-            prefilteredColor += textureLod(environment_map, L, mipLevel).rgb * NdotL;
+            float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel); //providing a better approximation of the overall integration
+            //https://developer.nvidia.com/gpugems/gpugems3/part-iii-rendering/chapter-20-gpu-based-importance-sampling
+
+            prefilteredColor += textureLod(environment_map, L, mipLevel).rgb * NdotL; //pdf越小，采样的level越高，即其平均的像素越多
             totalWeight      += NdotL;
         }
     }
