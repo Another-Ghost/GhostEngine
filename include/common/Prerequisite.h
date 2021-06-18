@@ -55,6 +55,8 @@ class RenderManager;
 struct Transform;
 
 class Shader;
+class PBRShader;
+
 class Mesh;
 class MeshFactory;
 class GeometryMesh;

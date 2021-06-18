@@ -17,7 +17,7 @@ uniform sampler2D ao_map;
 //IBL
 uniform samplerCube irradiance_map;
 uniform samplerCube prefilter_map;
-uniform sampler2D brdf_LUT;
+uniform sampler2D brdf_lut;
 
 //light
 uniform vec3 light_position_array[1];
@@ -157,7 +157,7 @@ void main()
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
     vec3 prefiltered_color = textureLod(prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
-    vec2 brdf  = texture(brdf_LUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+    vec2 brdf  = texture(brdf_lut, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = prefiltered_color * (F * brdf.x + brdf.y);
 
 	vec3 ambient = (kD * diffuse + specular) * ao;	//? 指定光线较难逃逸出来的暗色边缘 为什么只作用于环境光，而没有作用于直接光照？

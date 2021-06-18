@@ -189,6 +189,12 @@
     <ClCompile Include="QuadGeometryMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PBRShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MVPShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -346,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="TextureFile.h">
       <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MVPShader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

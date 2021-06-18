@@ -9,7 +9,7 @@ public:
 	void Update(float dt) override;
 
 private:
-	Shader* pbr_shader;
+	PBRShader* pbr_shader;
 	Shader* irradiance_shader;
 	Shader* background_shader;
 	Shader* equirectangular_cubemap_shader;

@@ -14,6 +14,7 @@
 #include "QuadGeometryMesh.h"
 #include "RootRenderModule.h"
 #include "Unit.h"
+#include "PBRShader.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -174,16 +175,19 @@ IBLRenderer::IBLRenderer()
 
 
 	//5.
-	pbr_shader = new Shader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_fs"));
-	GLCall(pbr_shader->Use());
-	pbr_shader->SetInt("albedo_map", 0);
-	pbr_shader->SetInt("normal_map", 1);
-	pbr_shader->SetInt("metalness_map", 2);
-	pbr_shader->SetInt("roughness_map", 3);
-	pbr_shader->SetInt("ao_map", 4);
-	pbr_shader->SetInt("irradiance_map", 5);
-	pbr_shader->SetInt("prefilter_map", 6);
-	pbr_shader->SetInt("brdf_LUT", 7);
+	pbr_shader = new PBRShader();
+
+	//pbr_shader = new Shader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_fs"));
+	//GLCall(pbr_shader->Use());
+	//pbr_shader->SetInt("albedo_map", 0);
+	//pbr_shader->SetInt("normal_map", 1);
+	//pbr_shader->SetInt("metalness_map", 2);
+	//pbr_shader->SetInt("roughness_map", 3);
+	//pbr_shader->SetInt("ao_map", 4);
+	//pbr_shader->SetInt("irradiance_map", 5);
+	//pbr_shader->SetInt("prefilter_map", 6);
+	//pbr_shader->SetInt("brdf_LUT", 7);
+
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));
 	//pbr_shader->SetFloat("ao", 1.f);
@@ -198,58 +202,74 @@ IBLRenderer::IBLRenderer()
 void IBLRenderer::Update(float dt)
 {
 	Camera* camera = RenderManager::GetSingleton().camera;
-	pbr_shader->Use();
-	pbr_shader->SetMat4("projection", RenderManager::GetSingleton().camera->PerspectiveMatrix());
-	pbr_shader->SetMat4("view", camera->ViewMatrix());
-	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
 
-	const int N = SceneManager::GetSingleton().light_array.size();
-	for (unsigned int i = 0; i < N; ++i)
-	{
-		vec3 pos = SceneManager::GetSingleton().light_array[i]->postion;
-		vec3 color = SceneManager::GetSingleton().light_array[i]->color;
-		float intensity = SceneManager::GetSingleton().light_array[i]->intensity;	//? 考虑也传进去
+	pbr_shader->SetProjectionMatrix(camera->PerspectiveMatrix());	//用观察者模式订阅机制改成只在初始化时设置一次，在camera更新projection matrix时通知订阅者
+	pbr_shader->SetViewMatrix(camera->ViewMatrix());
+	pbr_shader->SetCameraPosition(camera->GetPosition());
 
-		pbr_shader->SetVec3("light_position_array[" + std::to_string(i) + "]", pos);
-		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
-	}
+	//pbr_shader->Use();
+	//pbr_shader->SetMat4("projection", RenderManager::GetSingleton().camera->PerspectiveMatrix());
+	//pbr_shader->SetMat4("view", camera->ViewMatrix());
+	//pbr_shader->SetVec3("cam_pos", camera->GetPosition());
+
+	pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
+
+	//const int N = SceneManager::GetSingleton().light_array.size();
+
+	//for (unsigned int i = 0; i < N; ++i)
+	//{
+	//	vec3 pos = SceneManager::GetSingleton().light_array[i]->postion;
+	//	vec3 color = SceneManager::GetSingleton().light_array[i]->color;
+	//	float intensity = SceneManager::GetSingleton().light_array[i]->intensity;	//? 考虑也传进去
+
+	//	pbr_shader->SetVec3("light_position_array[" + std::to_string(i) + "]", pos);
+	//	pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
+	//}
 
 	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_module_map)
 	{
 		PBRMaterial* material = pair.first;
 
-		glActiveTexture(GL_TEXTURE0);
-		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		glBindTexture(GL_TEXTURE_2D, material->albedo_map->texture_id);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, material->metalness_map->texture_id);
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, material->roughness_map->texture_id);
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
+		//glActiveTexture(GL_TEXTURE0);
+		////cout << "albedo_map ID: " << material->albedo_map->id << "\n";
+		//glBindTexture(GL_TEXTURE_2D, material->albedo_map->texture_id);
+		//glActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
+		//glActiveTexture(GL_TEXTURE2);
+		//glBindTexture(GL_TEXTURE_2D, material->metalness_map->texture_id);
+		//glActiveTexture(GL_TEXTURE3);
+		//glBindTexture(GL_TEXTURE_2D, material->roughness_map->texture_id);
+		//glActiveTexture(GL_TEXTURE4);
+		//glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
 
-		// bind pre-computed IBL data
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_cubemap->texture_id);
-		glActiveTexture(GL_TEXTURE6);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_cubemap->texture_id);
-		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, brdf_lut_texture->texture_id);
+		//// bind pre-computed IBL data
+		//glActiveTexture(GL_TEXTURE5);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_cubemap->texture_id);
+		//glActiveTexture(GL_TEXTURE6);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_cubemap->texture_id);
+		//glActiveTexture(GL_TEXTURE7);
+		//glBindTexture(GL_TEXTURE_2D, brdf_lut_texture->texture_id);
 
+		pbr_shader->BindAlbedoMap(material->albedo_map->texture_id);
+		pbr_shader->BindNormalMap(material->normal_map->texture_id);
+		pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
+		pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
+		pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
+		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
+		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
+		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->texture_id);
 
 		for (const auto& render_module : pair.second)
 		{
-
-
 			Mesh* mesh = render_module->GetMesh();
 
 			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_module);
 			mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			//pbr_shader->SetMat4("model", model);
-			pbr_shader->SetMat4("model", mat4(1));	//? 改为从物体获取的model
+			pbr_shader->SetModelMatrix(mat4(1));
+
+			//pbr_shader->SetMat4("model", mat4(1));	//? 改为从物体获取的model
 
 			mesh->Draw();
 		}
