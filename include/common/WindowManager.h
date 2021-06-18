@@ -10,9 +10,9 @@
 class WindowManager : public Singleton<WindowManager>
 {
 public:
-	std::vector<Window*> window_array;	//? 改成监听/观察者列表
+	static vector<Window*> window_array;	//? 改成监听/观察者列表
 
-	static Window* current_window;
+	static Window* current_window;	//因为callback函数为static，只能获取static成员变量
 
 	bool b_initialized;
 

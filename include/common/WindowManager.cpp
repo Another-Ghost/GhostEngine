@@ -6,9 +6,10 @@
 
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 Window* WindowManager::current_window = nullptr;
+vector<Window*> WindowManager::window_array;
 
-
-WindowManager::WindowManager()
+WindowManager::WindowManager():
+	b_initialized(false)
 {
 	if (!glfwInit())
 	{
@@ -20,7 +21,6 @@ WindowManager::WindowManager()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	//current_window = CreateWindow()
 }
 
 bool WindowManager::Initialize()
@@ -44,12 +44,6 @@ void WindowManager::Terminate()
 }
 Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int height, const std::string& title)
 {
-	if (!b_initialized)
-	{
-		if (!Initialize())
-			return nullptr;
-	}
-
 	GLFWwindow* glfw_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (glfw_window == nullptr)
 	{
@@ -77,13 +71,17 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "ERROR<GLAD> from Initialize: Failed to initialize GLAD" << std::endl;
-		return nullptr;
-	}
 
 	// configure global opengl state
+	if (!b_initialized)
+	{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			std::cout << "ERROR<GLAD> from Initialize: Failed to initialize GLAD" << std::endl;
+			assert(0);
+		}
+		b_initialized = true;
+	}
 
 	return window;
 }

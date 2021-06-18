@@ -20,9 +20,6 @@ PBRShader::PBRShader() :
 		Use();
 		SetInt(name_unit.first, name_unit.second);
 	}
-
-
-	
 }
 
 void PBRShader::SetRoughness(float roughness_)
@@ -52,7 +49,7 @@ void PBRShader::SetPointLightArray(const vector<Light*>& light_array)
 
 void PBRShader::BindAlbedoMap(unsigned int tex_id)
 {
-	Use();
+	//Use();
 	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["albedo_map"]);
 	glBindTexture(GL_TEXTURE_2D, tex_id);
 }

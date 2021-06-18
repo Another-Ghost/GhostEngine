@@ -155,6 +155,7 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />

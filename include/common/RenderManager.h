@@ -27,6 +27,11 @@ public:
 
 	Camera* camera;
 
+	unsigned int capture_fbo;
+	unsigned int capture_rbo;
+
+	vector<mat4> capture_view_array;
+
 	//map<Material*, set<RenderModule*>> mat_module_map;
 	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
 
@@ -41,6 +46,7 @@ public:
 	void ResetRenderArray();
 
 	void InsertRenderModule(RenderModule* rm);
+
 
 private:
 	Shader* pbr_shader;
@@ -58,7 +64,8 @@ private:
 
 	IBLRenderer* ibl_renderer;
 
-	friend class RenderUnit;
 
+
+	friend class RenderUnit;
 };
 

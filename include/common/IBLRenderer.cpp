@@ -22,7 +22,7 @@ IBLRenderer::IBLRenderer()
 	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
 	//1.
-	glGenFramebuffers(1, &capture_fbo);
+	glGenFramebuffers(1, &capture_fbo);	//? 移至manager
 	glGenRenderbuffers(1, &capture_rbo);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
@@ -250,6 +250,8 @@ void IBLRenderer::Update(float dt)
 		//glActiveTexture(GL_TEXTURE7);
 		//glBindTexture(GL_TEXTURE_2D, brdf_lut_texture->texture_id);
 
+
+
 		pbr_shader->BindAlbedoMap(material->albedo_map->texture_id);
 		pbr_shader->BindNormalMap(material->normal_map->texture_id);
 		pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
@@ -258,6 +260,7 @@ void IBLRenderer::Update(float dt)
 		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
 		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
 		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->texture_id);
+
 
 		for (const auto& render_module : pair.second)
 		{
@@ -273,6 +276,8 @@ void IBLRenderer::Update(float dt)
 
 			mesh->Draw();
 		}
+
+
 	}
 
 	background_shader->Use();

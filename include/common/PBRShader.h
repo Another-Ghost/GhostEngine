@@ -42,8 +42,6 @@ public:
 
 private:
 
-	map<string, int> texture_name_unit_map;	//名字和纹理单元（texture unit）的映射
-
 	float roughness;
 
 	vec3 cam_pos;
