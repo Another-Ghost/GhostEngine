@@ -19,6 +19,7 @@
 #include "PrefilterShader.h"
 #include "IrradianceShader.h"
 #include "BRDFLUTShader.h"
+#include "SkyboxShader.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -26,8 +27,8 @@ IBLRenderer::IBLRenderer()
 	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
 	//1.
-	glGenFramebuffers(1, &capture_fbo);	//? 移至manager
-	glGenRenderbuffers(1, &capture_rbo);
+	//glGenFramebuffers(1, &capture_fbo);	//? 移至manager
+	//glGenRenderbuffers(1, &capture_rbo);
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	//glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
@@ -45,16 +46,16 @@ IBLRenderer::IBLRenderer()
 	equirectanguler_map->Buffer();
 	//env_cubemap->equirectangular_texture = equirectangle_tex;
 
-	mat4 capture_projection = glm::perspective(glm::radians(90.f), 1.f, 0.1f, 10.f);
-	vector<mat4> capture_view_array =
-	{
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
-	};
+	//mat4 capture_projection = glm::perspective(glm::radians(90.f), 1.f, 0.1f, 10.f);
+	//vector<mat4> capture_view_array =
+	//{
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+	//};
 
 
 	HDRIShader* hdri_cubemap_shader = new HDRIShader();
@@ -213,9 +214,10 @@ IBLRenderer::IBLRenderer()
 
 
 	//6.
-	background_shader = new Shader(File::GetShaderPath("background_vs"), File::GetShaderPath("background_fs"));
-	GLCall(background_shader->Use());
-	background_shader->SetInt("environment_map", 0);
+	skybox_shader = new SkyboxShader();
+	//background_shader = new Shader(File::GetShaderPath("background_vs"), File::GetShaderPath("background_fs"));
+	//GLCall(background_shader->Use());
+	//background_shader->SetInt("environment_map", 0);
 }
 
 void IBLRenderer::Update(float dt)
@@ -296,13 +298,13 @@ void IBLRenderer::Update(float dt)
 
 	}
 
-	background_shader->Use();
-	background_shader->SetMat4("view", camera->ViewMatrix());
-	background_shader->SetMat4("projection", camera->PerspectiveMatrix());
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_cubemap->texture_id);
-	cube_mesh->Draw();	//render skybox
-
+	//background_shader->Use();
+	//background_shader->SetMat4("view", camera->ViewMatrix());
+	//background_shader->SetMat4("projection", camera->PerspectiveMatrix());
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
+	////glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_cubemap->texture_id);
+	//cube_mesh->Draw();	//render skybox
+	skybox_shader->RenderSkybox(env_cubemap->texture_id);
 }
 

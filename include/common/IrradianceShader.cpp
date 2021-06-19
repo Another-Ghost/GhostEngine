@@ -17,7 +17,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 
 
 	SetInt("environment_map", 0);
-	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjecctionMatrix());
+	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, ori_cubemap_id);

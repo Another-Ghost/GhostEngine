@@ -54,7 +54,7 @@ public:
 
 	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
-	const mat4& GetCaptureProjecctionMatrix() { return capture_projection; }
+	const mat4& GetCaptureProjectionMatrix() { return capture_projection; }
 
 
 

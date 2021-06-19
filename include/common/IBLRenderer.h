@@ -10,6 +10,7 @@ public:
 
 private:
 	PBRShader* pbr_shader;
+	SkyboxShader* skybox_shader;
 	Shader* irradiance_shader;
 	Shader* background_shader;
 	Shader* equirectangular_cubemap_shader;

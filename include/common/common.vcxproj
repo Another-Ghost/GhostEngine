@@ -190,6 +190,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Singleton.cpp" />
+    <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="Texture.h" />

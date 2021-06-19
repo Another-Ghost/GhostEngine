@@ -10,7 +10,7 @@ MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangula
 	Use();
 	SetInt("equirectangular_map", 0);
 	
-	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjecctionMatrix());
+	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
 
 	
 }

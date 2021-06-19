@@ -56,6 +56,7 @@ struct Transform;
 
 class Shader;
 class PBRShader;
+class SkyboxShader;
 
 class Mesh;
 class MeshFactory;
