@@ -12,7 +12,7 @@ PBRShader::PBRShader() :
 		{"ao_map", 4}, 
 		{"irradiance_map", 5}, //environment diffuse irradiance map
 		{"prefilter_map", 6}, //environment specular Split Sum 1st stage 
-		{"brdf_lut", 7} 
+		{"brdf_lut", 7} //environment specular Split Sum 2nd stage 
 	}; //environment specular Split Sum 2nd stage
 
 	for (const auto& name_unit : texture_name_unit_map)

@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFactory.cpp" />
     <ClCompile Include="Config.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
+    <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -200,6 +202,7 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFactory.h" />
     <ClInclude Include="Config.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
+    <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
     <ClInclude Include="Material.h" />

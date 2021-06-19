@@ -2,6 +2,7 @@
 #include "Prerequisite.h"
 #include "Singleton.h"
 #include "CubeGeometryMesh.h"
+#include "QuadGeometryMesh.h"
 
 //struct RenderMaterialComp
 //{
@@ -27,9 +28,6 @@ public:
 
 	Camera* camera;
 
-
-
-
 	//map<Material*, set<RenderModule*>> mat_module_map;
 	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
 
@@ -52,9 +50,13 @@ public:
 
 	void DrawCaptureCubeMesh() { capture_cube_mesh->Draw(); }
 
+	void DrawCaptureQuadMesh() { capture_quad_mesh->Draw(); }
+
 	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
 	const mat4& GetCaptureProjecctionMatrix() { return capture_projection; }
+
+
 
 private:
 	Shader* pbr_shader;
@@ -77,6 +79,8 @@ private:
 	vector<mat4> capture_view_array;
 	mat4 capture_projection;
 	CubeGeometryMesh* capture_cube_mesh;
+
+	QuadGeometryMesh* capture_quad_mesh;
 
 	friend class RenderUnit;
 };

@@ -17,6 +17,8 @@
 #include "PBRShader.h"
 #include "HDRIShader.h"
 #include "PrefilterShader.h"
+#include "IrradianceShader.h"
+#include "BRDFLUTShader.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -82,13 +84,17 @@ IBLRenderer::IBLRenderer()
 	//glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
-	irradiance_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"));
+
 	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
 	irradiance_cubemap->width = 32;	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
 	irradiance_cubemap->height = 32;
 	//irradiance_cubemap->min_filter_param = GL_LINEAR;
 	irradiance_cubemap->b_genarate_mipmap = false;
 	irradiance_cubemap->Buffer();
+
+	IrradianceShader* irradiance_shader = new IrradianceShader();
+	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->texture_id);
+	/*irradiance_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"));
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
@@ -109,7 +115,7 @@ IBLRenderer::IBLRenderer()
 		cube_mesh->Draw();
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
+	glViewport(0, 0, window->GetWidth(), window->GetHeight());*/
 
 
 
@@ -158,7 +164,7 @@ IBLRenderer::IBLRenderer()
 
 
 	//4. generate a 2D LUT from the BRDF equations used.
-	brdf_shader = new Shader(File::GetShaderPath("brdf_vs"), File::GetShaderPath("brdf_fs"));
+
 	
 	brdf_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
 	brdf_lut_texture->data_format = GL_RG;
@@ -168,20 +174,23 @@ IBLRenderer::IBLRenderer()
 	brdf_lut_texture->b_genarate_mipmap = false;
 	brdf_lut_texture->Buffer();
 
-	// then re-configure capture framebuffer object and render screen-space quad with BRDF shader.
-	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut_texture->texture_id, 0);	
+	BRDFLUTShader* brdflut_shader = new BRDFLUTShader();
+	brdflut_shader->RenderBRDFLUT(brdf_lut_texture);
+	//brdf_shader = new Shader(File::GetShaderPath("brdf_vs"), File::GetShaderPath("brdf_fs"));
+	//// then re-configure capture framebuffer object and render screen-space quad with BRDF shader.
+	//glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
+	//glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut_texture->texture_id, 0);	
 
-	QuadGeometryMesh* quad_mesh = new QuadGeometryMesh();
+	//QuadGeometryMesh* quad_mesh = new QuadGeometryMesh();
 
-	glViewport(0, 0, 512, 512);
-	brdf_shader->Use();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	quad_mesh->Draw();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
+	//glViewport(0, 0, 512, 512);
+	//brdf_shader->Use();
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//quad_mesh->Draw();
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glViewport(0, 0, window->GetWidth(), window->GetHeight());
 
 
 	//5.

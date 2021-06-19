@@ -10,6 +10,7 @@
 #include "CubeGeometryMeshFactory.h"
 #include "ResourceManager.h"
 
+
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager()
 {
@@ -32,6 +33,7 @@ RenderManager::RenderManager()
 	capture_projection = glm::perspective(glm::radians(90.f), 1.f, 0.1f, 10.f);
 	capture_cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
+	capture_quad_mesh = new QuadGeometryMesh();
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
@@ -131,7 +133,6 @@ void RenderManager::InsertRenderModule(RenderModule* rm)
 		}
 		pbr_mat_module_map[pbr_material].emplace(rm);
 		break;
-
 	}
 
 }

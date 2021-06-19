@@ -201,6 +201,12 @@
     <ClCompile Include="PrefilterShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IrradianceShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BRDFLUTShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -369,6 +375,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrefilterShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IrradianceShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BRDFLUTShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
