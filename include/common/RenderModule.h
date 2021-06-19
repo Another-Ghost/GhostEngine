@@ -8,7 +8,7 @@ protected:
 
 	Mesh* mesh;
 
-	Material* material;
+	Material* material;	//? 给一个默认material和mesh
 
 public:
 	RenderModule() : b_rendered(true) {}

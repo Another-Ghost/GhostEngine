@@ -15,6 +15,7 @@
 #include "RootRenderModule.h"
 #include "Unit.h"
 #include "PBRShader.h"
+#include "HDRIShader.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -25,10 +26,10 @@ IBLRenderer::IBLRenderer()
 	glGenFramebuffers(1, &capture_fbo);	//? 移至manager
 	glGenRenderbuffers(1, &capture_rbo);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);	//创建一个深度渲染缓冲对象
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, capture_rbo);	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
+	//glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
+	//glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);	//创建一个深度渲染缓冲对象
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, capture_rbo);	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
 
 	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
 	env_cubemap->width = 512;
@@ -52,27 +53,32 @@ IBLRenderer::IBLRenderer()
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
 	};
 
-	equirectangular_cubemap_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangular_to_cubemap_fs"));
-	GLCall(equirectangular_cubemap_shader->Use());
-	equirectangular_cubemap_shader->SetInt("equirectangular_map", 0);
-	equirectangular_cubemap_shader->SetMat4("projection", capture_projection);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, equirectanguler_map->texture_id);
 
-	GLCall(glViewport(0, 0, 512, 512));
+	HDRIShader* hdri_cubemap_shader = new HDRIShader();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
-	for (int i = 0; i < 6; ++i)
-	{
-		equirectangular_cubemap_shader->SetMat4("view", capture_view_array[i]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, env_cubemap->texture_id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cube_mesh->Draw(); //? 是否能像下文中的一样一次渲染整个cubemap
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glViewport(0, 0, window->GetWidth(), window->GetHeight());
-	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
-	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	hdri_cubemap_shader->RenderCubeMap(env_cubemap, equirectanguler_map->texture_id);
+
+	//equirectangular_cubemap_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangular_to_cubemap_fs"));
+	//GLCall(equirectangular_cubemap_shader->Use());
+	//equirectangular_cubemap_shader->SetInt("equirectangular_map", 0);
+	//equirectangular_cubemap_shader->SetMat4("projection", capture_projection);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, equirectanguler_map->texture_id);
+
+	//GLCall(glViewport(0, 0, 512, 512));
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
+	//for (int i = 0; i < 6; ++i)
+	//{
+	//	equirectangular_cubemap_shader->SetMat4("view", capture_view_array[i]);
+	//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, env_cubemap->texture_id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//	cube_mesh->Draw(); //? 是否能像下文中的一样一次渲染整个cubemap
+	//}
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	////glViewport(0, 0, window->GetWidth(), window->GetHeight());
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
+	//glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 	irradiance_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"));
@@ -269,7 +275,6 @@ void IBLRenderer::Update(float dt)
 			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_module);
 			mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
-			//pbr_shader->SetMat4("model", model);
 			pbr_shader->SetModelMatrix(model);
 
 			mesh->Draw();

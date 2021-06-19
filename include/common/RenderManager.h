@@ -1,7 +1,7 @@
 #pragma once
 #include "Prerequisite.h"
 #include "Singleton.h"
-
+#include "CubeGeometryMesh.h"
 
 //struct RenderMaterialComp
 //{
@@ -27,10 +27,8 @@ public:
 
 	Camera* camera;
 
-	unsigned int capture_fbo;
-	unsigned int capture_rbo;
 
-	vector<mat4> capture_view_array;
+
 
 	//map<Material*, set<RenderModule*>> mat_module_map;
 	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
@@ -47,6 +45,14 @@ public:
 
 	void InsertRenderModule(RenderModule* rm);
 
+	unsigned int GetCaptureFBO() { return capture_fbo; }
+	unsigned int GetCaptureRBO() { return capture_rbo; }
+
+	const CubeGeometryMesh* GetCaptureCubeMesh() { return capture_cube_mesh; }	//底层const，指向常量的指针
+
+	void DrawCaptureCubeMesh() { capture_cube_mesh->Draw(); }
+
+	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
 private:
 	Shader* pbr_shader;
@@ -64,7 +70,10 @@ private:
 
 	IBLRenderer* ibl_renderer;
 
-
+	unsigned int capture_fbo;
+	unsigned int capture_rbo;
+	vector<mat4> capture_view_array;
+	CubeGeometryMesh* capture_cube_mesh;
 
 	friend class RenderUnit;
 };

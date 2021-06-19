@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "CubeMap.h"
 
+
 struct TexturePredicate
 {
 	bool operator()(Texture* tex_a, Texture* tex_b)
@@ -34,6 +35,9 @@ class ResourceManager : public Singleton<ResourceManager>
 	
 
 public:
+
+
+
 	ResourceManager();
 
 	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr);

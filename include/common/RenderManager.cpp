@@ -7,10 +7,19 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "IBLRenderer.h"
+#include "CubeGeometryMeshFactory.h"
+#include "ResourceManager.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager()
 {
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+	glGenFramebuffers(1, &capture_fbo);	
+	glGenRenderbuffers(1, &capture_rbo);
+
 	capture_view_array =
 	{
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
@@ -20,26 +29,16 @@ RenderManager::RenderManager()
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
 	};
+
+	capture_cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
+
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
 }
 
 bool RenderManager::Initialize()
 {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-
-	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CW);
-
-	//pbr_shader = new Shader(File::GetShaderPath("basic_vs"), File::GetShaderPath("basic_fs"));
-	//GLCall(pbr_shader->Use());
-	//pbr_shader->SetInt("albedo_map", 0);
-	//pbr_shader->SetInt("normal_map", 1);
-	//pbr_shader->SetInt("metalness_map", 2);
-	//pbr_shader->SetInt("roughness_map", 3);
-	//pbr_shader->SetInt("ao_map", 4);
-
 	ibl_renderer = new IBLRenderer();
 	return true;
 }
@@ -72,7 +71,7 @@ void RenderManager::RenderPBRMaterial(float dt)
 	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
 
 	const int N = SceneManager::GetSingleton().light_array.size();
-	for (unsigned int i = 0; i < N; ++i)
+	for (int i = 0; i < N; ++i)
 	{
 		vec3 pos = SceneManager::GetSingleton().light_array[i]->postion;
 		vec3 color = SceneManager::GetSingleton().light_array[i]->color;

@@ -32,7 +32,7 @@ public:
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
 
-	float GetCurrentFrameTime() { return glfwGetTime(); }
+	double GetCurrentFrameTime() { return glfwGetTime(); }
 
 	GLFWwindow* GetGLFWWindow() { return glfw_window; }
 

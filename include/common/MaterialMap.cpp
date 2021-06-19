@@ -37,6 +37,7 @@ bool MaterialMap::Buffer()
 
 			b_buffered = true;
 		}
-		return b_buffered;
+
 	}
+	return b_buffered;
 }

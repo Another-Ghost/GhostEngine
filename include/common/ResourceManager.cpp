@@ -84,7 +84,6 @@ TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileT
 
 Material* ResourceManager::CreateMaterial(MaterialType type)
 {
-    Material* material;
     unique_ptr<MaterialFactory> factory;
     switch (type)
     {

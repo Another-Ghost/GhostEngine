@@ -74,7 +74,7 @@ struct Texture
 		case TextureType::ROUGHNESS:
 			return "roughness";
 		default:
-			return nullptr;
+			return string();
 		}
 	}
 
