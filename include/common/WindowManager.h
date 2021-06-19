@@ -16,7 +16,7 @@ public:
 
 	bool b_initialized;
 
-	WindowManager();
+	WindowManager(int width, int height, const string& title);
 
 	bool Initialize();
 
@@ -26,7 +26,7 @@ public:
 
 	void Terminate();
 
-	Window* CreateWindow(WindowFactory* factory, int width, int height, const std::string& title);
+	Window* CreateWindow(int width, int height, const std::string& title);
 
 
 private:

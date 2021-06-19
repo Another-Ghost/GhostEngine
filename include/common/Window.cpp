@@ -60,7 +60,8 @@ void Window::ScrollCallback(double x_offset, double y_offset)
 
 void Window::ProcessInput()
 {
-
+	if (glfwGetKey(glfw_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(glfw_window, true);
 }
 
 void Window::ProcessListenerInput()

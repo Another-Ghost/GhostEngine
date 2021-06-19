@@ -270,9 +270,7 @@ void IBLRenderer::Update(float dt)
 			mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			//pbr_shader->SetMat4("model", model);
-			pbr_shader->SetModelMatrix(mat4(1));
-
-			//pbr_shader->SetMat4("model", mat4(1));	//? 改为从物体获取的model
+			pbr_shader->SetModelMatrix(model);
 
 			mesh->Draw();
 		}

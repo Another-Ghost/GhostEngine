@@ -17,7 +17,6 @@ public:
 	PBRShader();
 
 
-
 	void SetRoughness(float roughness_);
 
 	void SetCameraPosition(const vec3& pos);

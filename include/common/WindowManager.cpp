@@ -1,4 +1,5 @@
 ﻿#include "WindowManager.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -8,7 +9,8 @@ template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 Window* WindowManager::current_window = nullptr;
 vector<Window*> WindowManager::window_array;
 
-WindowManager::WindowManager():
+
+WindowManager::WindowManager(int width, int height, const string& title) :
 	b_initialized(false)
 {
 	if (!glfwInit())
@@ -21,6 +23,8 @@ WindowManager::WindowManager():
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	CreateWindow(width, height, title);
+	//current_window = 
 }
 
 bool WindowManager::Initialize()
@@ -42,7 +46,7 @@ void WindowManager::Terminate()
 {
 	glfwTerminate();
 }
-Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int height, const std::string& title)
+Window* WindowManager::CreateWindow(int width, int height, const std::string& title)
 {
 	GLFWwindow* glfw_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (glfw_window == nullptr)
@@ -53,7 +57,7 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 		return nullptr;
 	}
 
-	Window* window = factory->CreateWindow(glfw_window);
+	Window* window = new Window(glfw_window);//factory.CreateWindow(glfw_window);
 	if (!window)
 	{
 		glfwTerminate();
@@ -70,7 +74,6 @@ Window* WindowManager::CreateWindow(WindowFactory* factory, int width, int heigh
 	glfwSetScrollCallback(glfw_window, ScrollCallback);
 
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 
 	// configure global opengl state
 	if (!b_initialized)

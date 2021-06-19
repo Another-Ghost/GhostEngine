@@ -5,14 +5,12 @@
 #include "RenderManager.h"
 
 template<> Root* Singleton<Root>::singleton = nullptr;
-Root::Root()
+Root::Root(int win_width, int win_height, const string& win_title)
 {
-	s_window_manager = std::make_unique<WindowManager>();
+	s_window_manager = std::make_unique<WindowManager>(win_width, win_height, win_title);
 	s_scene_manager = std::make_unique<SceneManager>();
 	s_resource_manager = std::make_unique<ResourceManager>();
 	s_render_manager = std::make_unique<RenderManager>();
-
-
 }
 
 //调用opengl接口的操作在创建窗口之后进行

@@ -10,7 +10,7 @@ public:
 	unique_ptr<SceneManager> s_scene_manager;
 	unique_ptr<RenderManager> s_render_manager;
 
-	Root();
+	Root(int win_width, int win_height, const string& win_title);
 
 	bool Initialize();
 
