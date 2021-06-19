@@ -54,6 +54,8 @@ public:
 
 	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
+	const mat4& GetCaptureProjecctionMatrix() { return capture_projection; }
+
 private:
 	Shader* pbr_shader;
 
@@ -73,6 +75,7 @@ private:
 	unsigned int capture_fbo;
 	unsigned int capture_rbo;
 	vector<mat4> capture_view_array;
+	mat4 capture_projection;
 	CubeGeometryMesh* capture_cube_mesh;
 
 	friend class RenderUnit;

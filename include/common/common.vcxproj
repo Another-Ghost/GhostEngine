@@ -172,6 +172,7 @@
     <ClCompile Include="PBRShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
+    <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
     <ClCompile Include="QuadGeometryMesh.cpp" />
     <ClCompile Include="Quat.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="PBRShader.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
+    <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
     <ClInclude Include="QuadGeometryMesh.h" />
     <ClInclude Include="Quat.h" />

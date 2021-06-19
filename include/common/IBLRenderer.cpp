@@ -16,6 +16,7 @@
 #include "Unit.h"
 #include "PBRShader.h"
 #include "HDRIShader.h"
+#include "PrefilterShader.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -113,7 +114,7 @@ IBLRenderer::IBLRenderer()
 
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
-	prefilter_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("prefilter_fs"));
+
 	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
 	prefilter_cubemap->width = 128; 
 	prefilter_cubemap->height = 128;
@@ -121,36 +122,39 @@ IBLRenderer::IBLRenderer()
 	prefilter_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
 
-	prefilter_shader->Use();
-	prefilter_shader->SetInt("environment_map", 0);
-	prefilter_shader->SetMat4("projection", capture_projection);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
+	PrefilterShader* prefilter_shader = new PrefilterShader();
+	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->texture_id);
+	//prefilter_shader = new Shader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("prefilter_fs"));
+	//prefilter_shader->Use();
+	//prefilter_shader->SetInt("environment_map", 0);
+	//prefilter_shader->SetMat4("projection", capture_projection);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, env_cubemap->texture_id);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
-	unsigned int max_mip_levels = 5;
-	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
-	{
-		// resize framebuffer according to mip-level size.
-		unsigned int mip_width = 128 * std::pow(0.5f, mip);	//大小很关键
-		unsigned int mip_height = 128 * std::pow(0.5f, mip);
-		glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
-		glViewport(0, 0, mip_width, mip_height);
+	//glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
+	//unsigned int max_mip_levels = 5;
+	//for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
+	//{
+	//	// resize framebuffer according to mip-level size.
+	//	unsigned int mip_width = 128 * std::pow(0.5f, mip);	//大小很关键
+	//	unsigned int mip_height = 128 * std::pow(0.5f, mip);
+	//	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
+	//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
+	//	glViewport(0, 0, mip_width, mip_height);
 
-		float roughness = (float)mip / (float)(max_mip_levels - 1);
-		prefilter_shader->SetFloat("roughness", roughness);
-		for (int i = 0; i < 6; ++i)
-		{
-			prefilter_shader->SetMat4("view", capture_view_array[i]);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->texture_id, mip); //最后一个参数mip决定渲染到绑定的纹理的哪一层mipmap上
+	//	float roughness = (float)mip / (float)(max_mip_levels - 1);
+	//	prefilter_shader->SetFloat("roughness", roughness);
+	//	for (int i = 0; i < 6; ++i)
+	//	{
+	//		prefilter_shader->SetMat4("view", capture_view_array[i]);
+	//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->texture_id, mip); //最后一个参数mip决定渲染到绑定的纹理的哪一层mipmap上
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //? 是否应该被加到每个drawcall之前
-			cube_mesh->Draw();
-		}
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
+	//		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //? 是否应该被加到每个drawcall之前
+	//		cube_mesh->Draw();
+	//	}
+	//}
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glViewport(0, 0, window->GetWidth(), window->GetHeight());
 
 
 	//4. generate a 2D LUT from the BRDF equations used.

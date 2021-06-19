@@ -198,6 +198,9 @@
     <ClCompile Include="HDRIShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PrefilterShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -363,6 +366,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HDRIShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefilterShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
