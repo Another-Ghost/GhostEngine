@@ -173,8 +173,8 @@ void main()
 	//vec3 ambient = (kD * diffuse + specular);
 
 	//vec3 color = ambient + Lo;	
-	vec3 color = multi_scattering + specular;
-	//vec3 color = specular;
+	//vec3 color = multi_scattering + specular;
+	vec3 color = specular;
 	//vec3 color = multi_scattering;
 
 	//HDR tone mapping

@@ -36,7 +36,8 @@ WFTestRenderer::WFTestRenderer()
 	//equirectanguler_map->Buffer();
 
 	CubeMapShader* cubemap_shader = new CubeMapShader();
-	cubemap_shader->SetColor({ 0.5f, 0.5f, 0.5f });
+	//cubemap_shader->SetColor({ 0.5f, 0.5f, 0.5f });
+	cubemap_shader->SetColor({ 1.f, 1.f, 1.f });
 	cubemap_shader->RenderCubeMap(env_cubemap);
 
 
@@ -67,7 +68,7 @@ WFTestRenderer::WFTestRenderer()
 
 	//4. generate a 2D LUT from the BRDF equations used.
 	brdf_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
-	brdf_lut_texture->data_format = GL_RGB;
+	brdf_lut_texture->data_format = GL_RG;
 	brdf_lut_texture->width = 512;
 	brdf_lut_texture->height = 512;
 	//brdf_lut_texture->min_filter_param = GL_LINEAR;	//? 查一下设置成GL_LINEAR_MIPMAP_LINEAR会变黑的根本原因，仿佛是没了漫反射光
