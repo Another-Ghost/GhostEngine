@@ -81,5 +81,6 @@ struct PointLight;
 
 struct HDRTexture;
 struct CubeMap;
+class Renderer;
 class IBLRenderer;
 

@@ -12,7 +12,7 @@ public:
 
 	Root(int win_width, int win_height, const string& win_title);
 
-	bool Initialize();
+	bool Initialize(Renderer * renderer = nullptr);
 
 	void Loop();
 

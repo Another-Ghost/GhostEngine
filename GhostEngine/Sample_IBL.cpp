@@ -19,7 +19,8 @@
 #include "common/TextureFile.h"
 #include <memory>
 
-
+//#define SAMPLE_IBL
+#ifdef SAMPLE_IBL
 
 int main()
 {
@@ -30,7 +31,7 @@ int main()
 	Root::GetSingleton().Initialize();
 
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
-	camera->SetPosition(vec3(0, 0, 3));
+	camera->SetPosition(vec3(0, 0, 3.5));
 	Window* window = WindowManager::GetSingleton().current_window;
 	//window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	window->AddEventListener(camera);
@@ -85,3 +86,5 @@ int main()
 
 	return 0;
 }
+
+#endif

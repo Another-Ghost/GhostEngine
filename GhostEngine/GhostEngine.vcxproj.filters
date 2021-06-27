@@ -38,6 +38,15 @@
     <ClCompile Include="Sample_IBL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WFTestRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WFTestShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample_WhiteFurnaceTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRepositry.h">
@@ -56,6 +65,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicRenderModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WFTestRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WFTestShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -90,6 +108,12 @@
     <None Include="..\resource\shader\brdf_vs.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\white_furnace_test_pbr_f.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\single_scattering_energy_f.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">
@@ -98,5 +122,11 @@
     <Text Include="..\resource\shader\prefilter_fs.glsl">
       <Filter>shader</Filter>
     </Text>
+    <Text Include="..\resource\shader\cubemap_fs.glsl">
+      <Filter>shader</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GhostEngine.rc" />
   </ItemGroup>
 </Project>

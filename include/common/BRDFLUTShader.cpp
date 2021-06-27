@@ -1,10 +1,10 @@
 #include "BRDFLUTShader.h"
 #include "Texture.h"
 
-BRDFLUTShader::BRDFLUTShader():
-	MVPShader(File::GetShaderPath("brdf_vs"), File::GetShaderPath("brdf_fs"))
-{
 
+BRDFLUTShader::BRDFLUTShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
+	MVPShader(vertex_path, fragment_path, geometry_path)
+{
 }
 
 void BRDFLUTShader::RenderBRDFLUT(const Texture* brdf_lut)

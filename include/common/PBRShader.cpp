@@ -1,18 +1,20 @@
 #include "PBRShader.h"
-#include "File.h"
+#include "Light.h"
+#include "Camera.h"
 
-PBRShader::PBRShader() :
-	MVPShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_fs"))
+PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
+	MVPShader(vertex_path, fragment_path, geometry_path)
 {
-	texture_name_unit_map = { 
-		{"albedo_map", 0}, 
+	texture_name_unit_map = {
+		{"albedo_map", 0},
 		{"normal_map", 1},
 		{"metalness_map", 2},
-		{"roughness_map", 3}, 
-		{"ao_map", 4}, 
+		{"roughness_map", 3},
+		{"ao_map", 4},
 		{"irradiance_map", 5}, //environment diffuse irradiance map
 		{"prefilter_map", 6}, //environment specular Split Sum 1st stage 
-		{"brdf_lut", 7} //environment specular Split Sum 2nd stage 
+		{"brdf_lut", 7}, //environment specular Split Sum 2nd stage 
+		{"ssda_lut", 8}
 	}; //environment specular Split Sum 2nd stage
 
 	for (const auto& name_unit : texture_name_unit_map)
@@ -22,18 +24,21 @@ PBRShader::PBRShader() :
 	}
 }
 
-void PBRShader::SetRoughness(float roughness_)
-{
-	Use();
-	roughness = roughness_;
-	SetFloat("roughness", roughness);
-}
+
 
 void PBRShader::SetCameraPosition(const vec3& pos)
 {
 	Use();
 	cam_pos = pos;
 	SetVec3("cam_pos", cam_pos);
+}
+
+void PBRShader::SetCamera(Camera* camera)
+{
+	Use();
+	SetProjectionMatrix(camera->PerspectiveMatrix());
+	SetViewMatrix(camera->ViewMatrix());
+	SetCameraPosition(camera->GetPosition());
 }
 
 void PBRShader::SetPointLightArray(const vector<Light*>& light_array)

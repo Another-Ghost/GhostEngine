@@ -152,6 +152,9 @@
     <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="Sample_IBL.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Sample_WhiteFurnaceTest.cpp" />
+    <ClCompile Include="WFTestRenderer.cpp" />
+    <ClCompile Include="WFTestShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\include\common\common.vcxproj">
@@ -165,6 +168,9 @@
     <ClInclude Include="BasicUnit.h" />
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="BasicWindowFactory.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="WFTestRenderer.h" />
+    <ClInclude Include="WFTestShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\resource\shader\background_fs.glsl" />
@@ -177,10 +183,16 @@
     <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl" />
     <None Include="..\resource\shader\pbr_fs.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />
+    <None Include="..\resource\shader\single_scattering_energy_f.glsl" />
+    <None Include="..\resource\shader\white_furnace_test_pbr_f.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\resource\shader\cubemap_fs.glsl" />
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl" />
     <Text Include="..\resource\shader\prefilter_fs.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GhostEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

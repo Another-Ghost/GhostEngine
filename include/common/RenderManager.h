@@ -4,6 +4,7 @@
 #include "CubeGeometryMesh.h"
 #include "QuadGeometryMesh.h"
 
+
 //struct RenderMaterialComp
 //{
 //	bool operator()(RenderModule* a, RenderModule* b)
@@ -33,7 +34,7 @@ public:
 
 	RenderManager();
 
-	bool Initialize();
+	bool Initialize(Renderer* renderer_ = nullptr);
 	
 	void Update(float dt);
 
@@ -72,7 +73,7 @@ private:
 	mat4 view_matrix;
 	mat4 perspective_matrix;
 
-	IBLRenderer* ibl_renderer;
+	Renderer* current_renderer;
 
 	unsigned int capture_fbo;
 	unsigned int capture_rbo;
@@ -83,5 +84,7 @@ private:
 	QuadGeometryMesh* capture_quad_mesh;
 
 	friend class RenderUnit;
+
+	bool b_initialized = false;
 };
 

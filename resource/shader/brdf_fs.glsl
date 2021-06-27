@@ -21,7 +21,7 @@ vec2 Hammersley(uint i, uint N)
 	return vec2(float(i)/float(N), RadicalInverse_VdC(i));
 }
 // ----------------------------------------------------------------------------
-vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)
+vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)  //采样集中分布在法线附近
 {
 	float a = roughness*roughness;
 	

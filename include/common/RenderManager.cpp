@@ -39,11 +39,23 @@ RenderManager::RenderManager()
 	//glFrontFace(GL_CW);
 }
 
-bool RenderManager::Initialize()
+bool RenderManager::Initialize(Renderer* renderer_)
 {
-	ibl_renderer = new IBLRenderer();
-	return true;
+	if (!b_initialized)
+	{
+		if (renderer_ == nullptr)
+		{
+			renderer_ = new IBLRenderer();
+		}
+		current_renderer = renderer_;
+
+		b_initialized = true;
+	}
+
+	return b_initialized;
 }
+
+
 
 void RenderManager::Update(float dt)
 {
@@ -57,7 +69,7 @@ void RenderManager::Update(float dt)
 	////RenderPBRMaterial(dt);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	ibl_renderer->Update(dt);
+	current_renderer->Update(dt);
 }
 
 void RenderManager::RenderPBRMaterial(float dt)

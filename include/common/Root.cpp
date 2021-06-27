@@ -14,9 +14,9 @@ Root::Root(int win_width, int win_height, const string& win_title)
 }
 
 //调用opengl接口的操作在创建窗口之后进行
-bool Root::Initialize()
+bool Root::Initialize(Renderer* renderer)
 {
-	return RenderManager::GetSingleton().Initialize();
+	return RenderManager::GetSingleton().Initialize(renderer);
 }
 
 //void Root::Loop()

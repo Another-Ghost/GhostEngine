@@ -16,15 +16,8 @@ MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangula
 }
 
 
-void HDRIShader::BindEquirectangulerMap(unsigned int tex_id)
-{
 
-
-
-
-}
-
-unsigned int HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id)
+void HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id)
 {
 	Use();
 
@@ -54,5 +47,4 @@ unsigned int HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->texture_id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap
 
-	return 0;
 }

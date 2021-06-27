@@ -2,8 +2,6 @@
 #include "ResourceManager.h"
 #include "RenderManager.h"
 #include "SceneManager.h"
-#include "CubeMap.h"
-#include "CubeGeometryMeshFactory.h"
 #include "Camera.h"
 #include "Window.h"
 #include "WindowManager.h"
@@ -11,7 +9,6 @@
 #include "RenderModule.h"
 #include "Light.h"
 #include "EquirectangularMap.h"
-#include "QuadGeometryMesh.h"
 #include "RootRenderModule.h"
 #include "Unit.h"
 #include "PBRShader.h"
@@ -24,7 +21,6 @@
 IBLRenderer::IBLRenderer()
 {
 	Window* window = WindowManager::GetSingleton().current_window;
-	cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
 	//1.
 	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
@@ -94,12 +90,13 @@ IBLRenderer::IBLRenderer()
 
 void IBLRenderer::Update(float dt)
 {
-	Camera* camera = RenderManager::GetSingleton().camera;
+	//Camera* camera = RenderManager::GetSingleton().camera;
 
-	pbr_shader->SetProjectionMatrix(camera->PerspectiveMatrix());	//用观察者模式订阅机制改成只在初始化时设置一次，在camera更新projection matrix时通知订阅者
-	pbr_shader->SetViewMatrix(camera->ViewMatrix());
-	pbr_shader->SetCameraPosition(camera->GetPosition());
+	//pbr_shader->SetProjectionMatrix(camera->PerspectiveMatrix());	//用观察者模式订阅机制改成只在初始化时设置一次，在camera更新projection matrix时通知订阅者
+	//pbr_shader->SetViewMatrix(camera->ViewMatrix());
+	//pbr_shader->SetCameraPosition(camera->GetPosition());
 
+	pbr_shader->SetCamera(RenderManager::GetSingleton().camera);
 
 	pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
 

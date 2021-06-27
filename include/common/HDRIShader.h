@@ -8,7 +8,7 @@ public:
 
 	void BindEquirectangulerMap(unsigned int tex_id);
 
-	unsigned int RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id);
+	void RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id);
 
 private:
 	

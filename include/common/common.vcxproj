@@ -150,6 +150,7 @@
     <ClCompile Include="CubeGeometryMesh.cpp" />
     <ClCompile Include="CubeGeometryMeshFactory.cpp" />
     <ClCompile Include="CubeMap.cpp" />
+    <ClCompile Include="CubeMapShader.cpp" />
     <ClCompile Include="Datatype.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="CubeGeometryMesh.h" />
     <ClInclude Include="CubeGeometryMeshFactory.h" />
     <ClInclude Include="CubeMap.h" />
+    <ClInclude Include="CubeMapShader.h" />
     <ClInclude Include="Datatype.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />

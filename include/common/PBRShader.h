@@ -1,6 +1,6 @@
 #pragma once
 #include "MVPShader.h"
-#include "Light.h"
+#include "File.h"
 
 union Uniform
 {
@@ -14,12 +14,14 @@ class PBRShader : public MVPShader
 	Uniform u;
 
 public:
-	PBRShader();
+	PBRShader(const string& vertex_path = File::GetShaderPath("pbr_vs"), const string& fragment_path = File::GetShaderPath("pbr_fs"), const string& geometry_path = "");
 
 
-	void SetRoughness(float roughness_);
+
 
 	void SetCameraPosition(const vec3& pos);
+
+	void SetCamera(Camera* camera);
 
 	void SetPointLightArray(const vector<Light*>& light_array);	//? 改为传入PointLight class
 
@@ -41,7 +43,7 @@ public:
 
 private:
 
-	float roughness;
+
 
 	vec3 cam_pos;
 

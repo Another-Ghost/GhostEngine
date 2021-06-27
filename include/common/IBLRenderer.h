@@ -29,8 +29,6 @@ private:
 	//Texture* brdf_Lut_texture;
 	Texture* brdf_lut_texture;
 
-	CubeGeometryMesh* cube_mesh;	//改为从ResourceManager中获取
-	
 	EquirectangularMap* equirectanguler_map;
 
 };
