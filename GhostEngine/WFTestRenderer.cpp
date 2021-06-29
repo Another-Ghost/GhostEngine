@@ -25,23 +25,6 @@ WFTestRenderer::WFTestRenderer()
 	Window* window = WindowManager::GetSingleton().current_window;
 
 	//1.
-	//env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
-	//env_cubemap->width = 512;
-	//env_cubemap->height = 512;
-	//env_cubemap->b_genarate_mipmap = false;
-	//env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
-	//env_cubemap->Buffer();
-	//HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/old_hall.hdr"), TextureFileType::HDR));
-	//equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
-	//equirectanguler_map->Buffer();
-
-	//HDRIShader* hdri_cubemap_shader = new HDRIShader();
-	//hdri_cubemap_shader->RenderCubeMap(env_cubemap, equirectanguler_map->texture_id);
-
-	//CubeMapShader* cubemap_shader = new CubeMapShader();
-	////cubemap_shader->SetColor({ 0.5f, 0.5f, 0.5f });
-	//cubemap_shader->SetColor({ 1.f, 1.f, 1.f });
-	//cubemap_shader->RenderCubeMap(env_cubemap);
 
 	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
@@ -69,17 +52,6 @@ WFTestRenderer::WFTestRenderer()
 	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->texture_id);
 
 
-	//4. generate a 2D LUT from the BRDF equations used.
-	brdf_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
-	brdf_lut_texture->data_format = GL_RG;
-	brdf_lut_texture->width = 512;
-	brdf_lut_texture->height = 512;
-	//brdf_lut_texture->min_filter_param = GL_LINEAR;	//? 查一下设置成GL_LINEAR_MIPMAP_LINEAR会变黑的根本原因，仿佛是没了漫反射光
-	brdf_lut_texture->b_genarate_mipmap = false;
-	brdf_lut_texture->Buffer();
-
-	BRDFLUTShader* brdflut_shader = new BRDFLUTShader();
-	brdflut_shader->RenderBRDFLUT(brdf_lut_texture);
 
 	//single scattering directional albedo
 	ssda_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
@@ -124,7 +96,7 @@ void WFTestRenderer::Update(float dt)
 		pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
 		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
 		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
-		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->texture_id);
+		pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->texture_id);
 		pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->texture_id);
 
 		int column_num = 9;

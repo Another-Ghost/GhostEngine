@@ -13,6 +13,7 @@
 #include "TextureFile.h"
 #include "EquirectangularMap.h"
 #include "HDRIShader.h"
+#include "File.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -38,6 +39,11 @@ RenderManager::RenderManager():
 	capture_cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
 	capture_quad_mesh = new QuadGeometryMesh();
+
+	LDRTextureFile* brdf_lut_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("system/brdf_lut.png"), TextureFileType::LDR));
+	brdf_lut = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D, brdf_lut_file, true);
+	//brdf_lut->data_format = GL_RG;
+
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);

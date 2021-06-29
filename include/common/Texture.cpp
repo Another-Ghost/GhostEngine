@@ -20,32 +20,45 @@ void Texture::LoadData()
 bool Texture::Buffer()
 {
 	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
 
 	if (!file)
 	{
-		glBindTexture(GL_TEXTURE_2D, texture_id);
+
 		glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, data_format, data_type, 0);
 		
-		if (b_genarate_mipmap)
-		{
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_param);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_param);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter_param);	
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		//stbi_image_free(data);
-		
-		b_buffered = true;
 	}
 	else
 	{
+		if (!file->b_loaded)
+			file->LoadData();
+
+		if (dynamic_cast<LDRTextureFile*>(file))
+		{
+			LDRTextureFile* ldr_file = dynamic_cast<LDRTextureFile*>(file);
+			glTexImage2D(GL_TEXTURE_2D, 0, ldr_file->format, ldr_file->width, ldr_file->height, 0, ldr_file->format, GL_UNSIGNED_BYTE, ldr_file->data);
+		}
 		//stbi_image_free(data);
 		//std::cout << "ERROR<Texture> from Buffer: texture failed to load at path: " << path << endl;
 		
 		//b_buffered = false;
 	}
-	return false;
+
+	if (b_genarate_mipmap)
+	{
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_param);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_param);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter_param);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	b_buffered = true;
+
+	return b_buffered;
 }

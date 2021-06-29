@@ -61,6 +61,8 @@ public:
 
 	CubeMap* GetSkybox() { return skybox_cubemap; }
 
+	Texture* GetBRDFLUT() { return brdf_lut; }
+
 private:
 	Shader* pbr_shader;
 
@@ -92,5 +94,7 @@ private:
 	CubeMap* skybox_cubemap;
 
 	bool b_skybox_initialized;
+
+	Texture* brdf_lut;
 };
 
