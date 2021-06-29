@@ -9,10 +9,14 @@
 #include "IBLRenderer.h"
 #include "CubeGeometryMeshFactory.h"
 #include "ResourceManager.h"
-
+#include "CubeMap.h"
+#include "TextureFile.h"
+#include "EquirectangularMap.h"
+#include "HDRIShader.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
-RenderManager::RenderManager()
+RenderManager::RenderManager():
+	b_skybox_initialized(false)
 {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -148,3 +152,26 @@ void RenderManager::InsertRenderModule(RenderModule* rm)
 	}
 
 }
+
+void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
+{
+	if (!b_skybox_initialized)
+	{
+		skybox_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
+		skybox_cubemap->width = 512;
+		skybox_cubemap->height = 512;
+		skybox_cubemap->b_genarate_mipmap = false;
+		skybox_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+		skybox_cubemap->Buffer();
+	}
+
+	//HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/old_hall.hdr"), TextureFileType::HDR));
+	EquirectangularMap* equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));	//? 先删除旧的
+	equirectanguler_map->Buffer();
+
+	HDRIShader hdri_cubemap_shader;
+	hdri_cubemap_shader.RenderCubeMap(skybox_cubemap, equirectanguler_map->texture_id);
+
+}
+
+

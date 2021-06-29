@@ -114,6 +114,9 @@
     <None Include="..\resource\shader\single_scattering_energy_f.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\kulla_conty_pbr_f.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">

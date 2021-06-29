@@ -16,7 +16,7 @@ private:
 	unsigned int capture_fbo;
 	unsigned int capture_rbo;
 
-	CubeMap* env_cubemap;
+	//CubeMap* env_cubemap;
 
 	CubeMap* irradiance_cubemap;
 
@@ -27,6 +27,6 @@ private:
 
 	Texture* ssda_lut_texture;
 
-	EquirectangularMap* equirectanguler_map;
+	//EquirectangularMap* equirectanguler_map;
 };
 

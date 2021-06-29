@@ -25,22 +25,25 @@ WFTestRenderer::WFTestRenderer()
 	Window* window = WindowManager::GetSingleton().current_window;
 
 	//1.
-	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
-	env_cubemap->width = 512;
-	env_cubemap->height = 512;
-	env_cubemap->b_genarate_mipmap = false;
-	env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
-	env_cubemap->Buffer();
-	//HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/sky0025.hdr"), TextureFileType::HDR));
+	//env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
+	//env_cubemap->width = 512;
+	//env_cubemap->height = 512;
+	//env_cubemap->b_genarate_mipmap = false;
+	//env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+	//env_cubemap->Buffer();
+	//HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/old_hall.hdr"), TextureFileType::HDR));
 	//equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
 	//equirectanguler_map->Buffer();
 
-	CubeMapShader* cubemap_shader = new CubeMapShader();
-	//cubemap_shader->SetColor({ 0.5f, 0.5f, 0.5f });
-	cubemap_shader->SetColor({ 1.f, 1.f, 1.f });
-	cubemap_shader->RenderCubeMap(env_cubemap);
+	//HDRIShader* hdri_cubemap_shader = new HDRIShader();
+	//hdri_cubemap_shader->RenderCubeMap(env_cubemap, equirectanguler_map->texture_id);
 
+	//CubeMapShader* cubemap_shader = new CubeMapShader();
+	////cubemap_shader->SetColor({ 0.5f, 0.5f, 0.5f });
+	//cubemap_shader->SetColor({ 1.f, 1.f, 1.f });
+	//cubemap_shader->RenderCubeMap(env_cubemap);
 
+	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 
 	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
@@ -89,7 +92,7 @@ WFTestRenderer::WFTestRenderer()
 	ssda_shader->RenderBRDFLUT(ssda_lut_texture);
 
 	//5.
-	pbr_shader = new WFTestShader();
+	pbr_shader = new WFTestShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("kulla_conty_pbr_f"));
 
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));
@@ -144,5 +147,5 @@ void WFTestRenderer::Update(float dt)
 		}
 	}
 
-	skybox_shader->RenderSkybox(env_cubemap->texture_id);
+	skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->texture_id);
 }

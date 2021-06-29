@@ -57,7 +57,9 @@ public:
 
 	const mat4& GetCaptureProjectionMatrix() { return capture_projection; }
 
+	void BindSkyboxTexture(HDRTextureFile* hdr_file);
 
+	CubeMap* GetSkybox() { return skybox_cubemap; }
 
 private:
 	Shader* pbr_shader;
@@ -86,5 +88,9 @@ private:
 	friend class RenderUnit;
 
 	bool b_initialized = false;
+
+	CubeMap* skybox_cubemap;
+
+	bool b_skybox_initialized;
 };
 

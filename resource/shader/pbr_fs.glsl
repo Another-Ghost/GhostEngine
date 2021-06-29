@@ -151,6 +151,7 @@ void main()
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metalness;	
 
+
 	vec3 irradiance = texture(irradiance_map, N).rgb;
     vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
 

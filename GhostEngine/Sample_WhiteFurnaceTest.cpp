@@ -30,8 +30,12 @@ int main()
 	//Init
 	Root* root = new Root(1280, 720, "PBR_Demo");
 	//Root* root = new Root(1920, 1080, "PBR Demo");
-	BasicWindowFactory* window_factory = new BasicWindowFactory();
+	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
+	
+	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/old_hall.hdr"), TextureFileType::HDR));
+	RenderManager::GetSingleton().BindSkyboxTexture(hdr_file);	//? 改成绑定到SceneManager中的skybox class 对象
+	
 	WFTestRenderer* renderer = new WFTestRenderer();
 	Root::GetSingleton().Initialize(renderer);
 
@@ -41,14 +45,16 @@ int main()
 	//window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	window->AddEventListener(camera);
 
+
+
 	//add unit
 	//BasicUnit* sphere_unit = new BasicUnit();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));
+	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));	//rusted_iron, painted_metal, gold
 	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ALBEDO, albedo_file);
 	material->albedo_map->Buffer();
-	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/normal.png"), TextureFileType::LDR));
+	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/normal.png"), TextureFileType::LDR));	
 	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, normal_file);
 	material->normal_map->Buffer();
 	LDRTextureFile* metalness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/metallic.png"), TextureFileType::LDR));

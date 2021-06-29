@@ -181,6 +181,7 @@
     <None Include="..\resource\shader\brdf_vs.glsl" />
     <None Include="..\resource\shader\cubemap_vs.glsl" />
     <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl" />
+    <None Include="..\resource\shader\kulla_conty_pbr_f.glsl" />
     <None Include="..\resource\shader\pbr_fs.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />
     <None Include="..\resource\shader\single_scattering_energy_f.glsl" />

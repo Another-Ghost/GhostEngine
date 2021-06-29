@@ -30,6 +30,7 @@ public:
 	//Unit* CreateUnit();
 
 
+
 private:
 	void AddLight(Light* light);
 };

@@ -1,9 +1,8 @@
 #include "WFTestShader.h"
 
-WFTestShader::WFTestShader()
-	:PBRShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("white_furnace_test_pbr_f"))
+WFTestShader::WFTestShader(const string& vertex_path, const string& fragment_path, const string& geometry_path)
+	:PBRShader(vertex_path, fragment_path, geometry_path)
 {
-
 }
 
 void WFTestShader::SetRoughness(float roughness_)

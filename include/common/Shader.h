@@ -18,6 +18,8 @@ class Shader
 public:
 	Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path = "");
 
+	~Shader() { glDeleteProgram(id); }
+
 	// utility function for checking shader compilation/linking errors
 	void CheckCompileErrors(GLuint shader, string type);
 

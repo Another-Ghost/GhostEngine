@@ -72,6 +72,7 @@ class PBRMaterialFactory;
 enum class TextureType;
 enum class MaterialType;
 struct TextureFile;
+struct HDRTextureFile;
 enum class TextureFileType;
 struct EquirectangularMap;
 
