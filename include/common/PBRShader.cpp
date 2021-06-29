@@ -24,6 +24,16 @@ PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, con
 	}
 }
 
+void PBRShader::Reload()
+{
+	Shader::Reload();
+	for (const auto& name_unit : texture_name_unit_map)
+	{
+		Use();
+		SetInt(name_unit.first, name_unit.second);
+	}
+}
+
 
 
 void PBRShader::SetCameraPosition(const vec3& pos)

@@ -40,7 +40,7 @@ public:
 
 	ResourceManager();
 
-	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr);
+	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr, bool b_buffer = false);
 
 	TextureFile* CreateTextureFile(const string& path, TextureFileType type);
 

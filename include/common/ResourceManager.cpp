@@ -13,7 +13,7 @@ ResourceManager::ResourceManager()
 {
     stbi_set_flip_vertically_on_load(true);
 }
-Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file)
+Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, bool b_buffer)
 {
     if (file != nullptr)
     {
@@ -26,7 +26,7 @@ Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file)
         }
     }
 
-    Texture* texture;
+    Texture* texture = nullptr;
     switch (type)
     {
     case TextureType::EMPTY2D:
@@ -49,10 +49,16 @@ Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file)
         break;
     }
 
+    if (b_buffer)
+    {
+        texture->Buffer();
+    }
+
     texture_array.emplace_back(texture);
 
     return texture;
 }
+
 TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileType type)
 {
     for (const auto& file : texture_file_array)
@@ -75,6 +81,8 @@ TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileT
     default:
         break;
     }
+
+
     texture_file_array.push_back(texture_file);
 
     return texture_file;

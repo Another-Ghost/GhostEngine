@@ -45,6 +45,7 @@ int main()
 	//window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	window->AddEventListener(camera);
 
+	window->AddEventListener(renderer);
 
 
 	//add unit
@@ -52,20 +53,20 @@ int main()
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
 	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));	//rusted_iron, painted_metal, gold
-	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ALBEDO, albedo_file);
-	material->albedo_map->Buffer();
+	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ALBEDO, albedo_file, true);
+	//material->albedo_map->Buffer();
 	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/normal.png"), TextureFileType::LDR));	
-	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, normal_file);
-	material->normal_map->Buffer();
+	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, normal_file, true);
+	//material->normal_map->Buffer();
 	LDRTextureFile* metalness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/metallic.png"), TextureFileType::LDR));
-	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESS, metalness_file);
-	material->metalness_map->Buffer();
+	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESS, metalness_file, true);
+	//material->metalness_map->Buffer();
 	LDRTextureFile* roughness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/roughness.png"), TextureFileType::LDR));
-	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ROUGHNESS, roughness_file);
-	material->roughness_map->Buffer();
+	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ROUGHNESS, roughness_file, true);
+	//material->roughness_map->Buffer();
 	LDRTextureFile* ao_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/ao.png"), TextureFileType::LDR));
-	material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, ao_file);
-	material->ao_map->Buffer();
+	material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, ao_file, true);
+	//material->ao_map->Buffer();
 	
 	SphereGeometryMesh* mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
 

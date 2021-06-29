@@ -16,9 +16,16 @@ class Shader
 
 
 public:
-	Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path = "");
+	Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_ = "");
 
-	~Shader() { glDeleteProgram(id); }
+	~Shader() { Destroy(); }
+
+	void Generate();
+
+	void Destroy();
+
+	virtual void Reload();	//？怎么改可以让子类重写的函数在结束时会自动调用基类的相应的被重写的函数
+
 
 	// utility function for checking shader compilation/linking errors
 	void CheckCompileErrors(GLuint shader, string type);
@@ -47,5 +54,9 @@ public:
 
 private:
 	unsigned int id;
+
+	string vertex_path;
+	string fragment_path;
+	string geometry_path;
 };
 

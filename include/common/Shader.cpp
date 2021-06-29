@@ -2,7 +2,13 @@
 #include "Debug.h"
 //#include "File.h"
 
-Shader::Shader(const string& vertex_path, const string& fragment_path, const string& geometry_path)
+Shader::Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_):
+	vertex_path(vertex_path_), fragment_path(fragment_path_), geometry_path(geometry_path_)
+{
+	Generate();
+}
+
+void Shader::Generate()
 {
 	//1.retrieve the source code from filePath
 	string vertex_code;
@@ -60,7 +66,7 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	GLCall(glShaderSource(fragment, 1, &f_code, NULL));
 	GLCall(glCompileShader(fragment));
 	CheckCompileErrors(fragment, "FRAGMENT");
-	
+
 	unsigned int geometry;
 	if (geometry_path != "")
 	{
@@ -85,6 +91,21 @@ Shader::Shader(const string& vertex_path, const string& fragment_path, const str
 	GLCall(glDeleteShader(fragment));
 	if (geometry_path != "")
 		glDeleteShader(geometry);
+}
+
+void Shader::Destroy()
+{
+	if (!id)
+		return;
+
+	glDeleteProgram(id);
+	id = 0;
+}
+
+void Shader::Reload()
+{
+	Destroy();
+	Generate();
 }
 
 void Shader::CheckCompileErrors(GLuint shader, string type)
@@ -113,3 +134,5 @@ void Shader::CheckCompileErrors(GLuint shader, string type)
 	}
 
 }
+
+

@@ -111,9 +111,7 @@ void WFTestRenderer::Update(float dt)
 	pbr_shader->SetViewMatrix(camera->ViewMatrix());
 	pbr_shader->SetCameraPosition(camera->GetPosition());
 
-
 	pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
-
 
 	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_module_map)
 	{
@@ -148,4 +146,13 @@ void WFTestRenderer::Update(float dt)
 	}
 
 	skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->texture_id);
+}
+
+void WFTestRenderer::OnKeyPressed(Window* window)
+{
+	GLFWwindow* glfw_window = window->GetGLFWWindow();
+	if (glfwGetKey(glfw_window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		pbr_shader->Reload();
+	}
 }

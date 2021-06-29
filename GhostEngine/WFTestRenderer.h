@@ -9,6 +9,8 @@ public:
 
 	void Update(float dt) override;
 
+	void OnKeyPressed(Window* window) override;
+
 private:
 	WFTestShader* pbr_shader;
 	SkyboxShader* skybox_shader;

@@ -1,8 +1,10 @@
 #pragma once
 #include "Prerequisite.h"
+#include "Window.h"
 #include "Shader.h"
 
-class Renderer
+
+class Renderer : public WindowEventListener
 {
 	Shader* shader;
 

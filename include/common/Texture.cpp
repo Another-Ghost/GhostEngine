@@ -9,7 +9,7 @@ Texture::Texture(TextureType type_, TextureFile* file_) :
 	type(type_), file(file_), b_genarate_mipmap(false), wrap_param(GL_CLAMP_TO_EDGE), min_filter_param(GL_LINEAR),
 	internal_format(GL_RGB16F), data_format(GL_RGB), data_type(GL_FLOAT), width(512), height(512), texture_id(0)
 {
-
+	//因为constructor不应该调用virtual方法，所有不能调用Buffer
 }
 
 void Texture::LoadData()

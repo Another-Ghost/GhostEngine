@@ -166,8 +166,8 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 	}
 
 	//HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/old_hall.hdr"), TextureFileType::HDR));
-	EquirectangularMap* equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));	//? 先删除旧的
-	equirectanguler_map->Buffer();
+	EquirectangularMap* equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file, true));	//? 先删除旧的
+	//equirectanguler_map->Buffer();
 
 	HDRIShader hdri_cubemap_shader;
 	hdri_cubemap_shader.RenderCubeMap(skybox_cubemap, equirectanguler_map->texture_id);

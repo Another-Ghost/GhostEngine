@@ -3,7 +3,7 @@
 
 struct MaterialMap : Texture
 {
-	MaterialMap(TextureType type_, TextureFile* file_ = nullptr);
+	MaterialMap(TextureType type_, TextureFile* file_ = nullptr, bool b_buffer = true);
 	
 	bool Buffer() override;
 };

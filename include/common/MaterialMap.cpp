@@ -1,12 +1,13 @@
 #include "MaterialMap.h"
 #include "TextureFile.h"
 
-MaterialMap::MaterialMap(TextureType type_, TextureFile* file_):
+MaterialMap::MaterialMap(TextureType type_, TextureFile* file_, bool b_buffer):
 	Texture(type_, file_)
 {
 	wrap_param = GL_REPEAT;
 	b_genarate_mipmap = true;
 	min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+
 }
 
 bool MaterialMap::Buffer()
