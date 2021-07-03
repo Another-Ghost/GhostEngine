@@ -56,6 +56,7 @@ class RenderManager;
 struct Transform;
 
 class Shader;
+class MVPShader;
 class PBRShader;
 class SkyboxShader;
 

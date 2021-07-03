@@ -2,6 +2,7 @@
 #include "RenderUnit.h"
 #include "SceneManager.h"
 #include "PointLight.h"
+#include "BasicMaterial.h"
 #include "PBRMaterial.h"
 #include "Camera.h"
 #include "Shader.h"
@@ -105,7 +106,7 @@ void RenderManager::RenderPBRMaterial(float dt)
 		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
 	}
 
-	for (const auto& pair : pbr_mat_module_map)
+	for (const auto& pair : pbr_mat_unit_map)
 	{
 		PBRMaterial* material = pair.first;
 
@@ -138,23 +139,33 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 void RenderManager::ResetRenderArray()
 {
-	pbr_mat_module_map.clear();
+	pbr_mat_unit_map.clear();
 }
 
 void RenderManager::InsertRenderUnit(RenderUnit* ru)
 {
 	Material* material = ru->GetMaterial();
-	switch (material->type)
+	if (material->type == MaterialType::BASIC)
 	{
-	case MaterialType::PBR:
-		PBRMaterial* pbr_material = dynamic_cast<PBRMaterial*>(material);
-		auto rm_set_ite = pbr_mat_module_map.find(pbr_material);
-		if (rm_set_ite == pbr_mat_module_map.end())
+		BasicMaterial* basic_mat = dynamic_cast<BasicMaterial*>(material);
+		if (basic_mat_unit_map.count(basic_mat))
 		{
-			pbr_mat_module_map.emplace(pbr_material, set<RenderUnit*>());
+			basic_mat_unit_map[basic_mat].emplace(ru);
 		}
-		pbr_mat_module_map[pbr_material].emplace(ru);
-		break;
+		else
+		{
+			basic_mat_unit_map.emplace(basic_mat, set<RenderUnit*>());
+		}
+	}
+	else if(material->type == MaterialType::PBR)
+	{
+		PBRMaterial* pbr_mat = dynamic_cast<PBRMaterial*>(material);
+		auto ru_set_ite = pbr_mat_unit_map.find(pbr_mat);
+		if (ru_set_ite == pbr_mat_unit_map.end())
+		{
+			pbr_mat_unit_map.emplace(pbr_mat, set<RenderUnit*>());
+		}
+		pbr_mat_unit_map[pbr_mat].emplace(ru);
 	}
 
 }
@@ -164,8 +175,8 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 	if (!b_skybox_initialized)
 	{
 		skybox_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
-		skybox_cubemap->width = 512;
-		skybox_cubemap->height = 512;
+		skybox_cubemap->width = 1024;
+		skybox_cubemap->height = 1024;
 		skybox_cubemap->b_genarate_mipmap = false;
 		skybox_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 		skybox_cubemap->Buffer();

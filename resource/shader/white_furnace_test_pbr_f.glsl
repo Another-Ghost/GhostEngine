@@ -1,4 +1,4 @@
-﻿#version 330 core
+﻿#version 450 core
 
 out vec4 frag_color;
 
@@ -26,6 +26,8 @@ uniform sampler2D ssda_lut;
 //light
 uniform vec3 light_position_array[1];
 uniform vec3 light_color_array[1];
+
+
 
 uniform vec3 cam_pos;
 

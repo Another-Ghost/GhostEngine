@@ -69,8 +69,11 @@ vector<Texture*> Model::ProcessTexture(aiMaterial* mat, aiTextureType ai_type, T
 		mat->GetTexture(ai_type, i, &str);
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 		TextureFile* tex_file = ResourceManager::GetSingleton().CreateTextureFile(str.C_Str(), TextureFileType::LDR);
-		Texture* tex = ResourceManager::GetSingleton().CreateTexture(type, tex_file, true);
-
+		Texture* tex = ResourceManager::GetSingleton().CreateTexture(type, tex_file);
+		tex->b_genarate_mipmap = true;
+		tex->wrap_param = GL_REPEAT;
+		tex->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+		tex->Buffer();
 		tex_array.emplace_back(tex);
 	}
 

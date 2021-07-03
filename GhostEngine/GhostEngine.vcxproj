@@ -175,6 +175,7 @@
   <ItemGroup>
     <None Include="..\resource\shader\background_fs.glsl" />
     <None Include="..\resource\shader\background_vs.glsl" />
+    <None Include="..\resource\shader\basic_f.glsl" />
     <None Include="..\resource\shader\basic_fs.glsl" />
     <None Include="..\resource\shader\basic_vs.glsl" />
     <None Include="..\resource\shader\brdf_fs.glsl" />

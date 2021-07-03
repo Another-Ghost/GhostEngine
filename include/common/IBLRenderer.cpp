@@ -102,7 +102,7 @@ void IBLRenderer::Update(float dt)
 	pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
 
 
-	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_module_map)
+	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_unit_map)
 	{
 		PBRMaterial* material = pair.first;
 

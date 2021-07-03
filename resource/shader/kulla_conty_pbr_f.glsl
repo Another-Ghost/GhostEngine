@@ -27,6 +27,16 @@ uniform sampler2D ssda_lut;
 uniform vec3 light_position_array[1];
 uniform vec3 light_color_array[1];
 
+//layout (std430, binding = 0) buffer LightPosition
+//{
+//	vec3 light_position_array[];
+//};
+//
+//layout (std430, binding = 1) buffer LightColor
+//{
+//	vec3 light_color_array[];
+//};
+
 uniform vec3 cam_pos;
 
 const float PI = 3.14159265359;
@@ -121,35 +131,36 @@ void main()
 	vec3 F0 = vec3(0.04);
 	F0 = mix(F0, albedo, metalness);
 
-//	vec3 Lo = vec3(0.f);
-//	for(int i = 0; i < 1; ++i)
-//	{
-//		// calculate per-light radiance
-//		vec3 L = normalize(light_position_array[i] - World_Pos); //light/incident direction
-//		vec3 H = normalize(V + L);
-//		float dist = length(light_position_array[i] - World_Pos);
-//		float attenuation = 1.0 / (dist * dist);
-//		vec3 radiance = light_color_array[i] * attenuation;
-//	
-//		// Cook-Torrance BRDF
-//		float D = DistributionGGX(N, H, roughness);
-//		float G = GeometrySmith(N, V, L, roughness);
-//		vec3 F = FresnelSchlick(H, V, F0);
-//
-//		vec3 num = D * G * F;
-//		float denom = 4 * max(dot(N, V), 0.f) * max(dot(N, L), 0.f); 
-//		vec3 specular = num / max(denom, 0.001); // 0.001 to prevent divide by zero
-//
-//		// kS is equal to Fresnel
-//		vec3 kS = F;
-//
-//		vec3 kD = vec3(1.0) - kS;
-//		kD *= 1.0 - metalness;
-//
-//		float NdotL = max(dot(N, L), 0.f);
-//
-//		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-//	}
+	//? need to change the kD term
+	vec3 Lo = vec3(0.f);	
+	for(int i = 0; i < 1; ++i)
+	{
+		// calculate per-light radiance
+		vec3 L = normalize(light_position_array[i] - World_Pos); //light/incident direction
+		vec3 H = normalize(V + L);
+		float dist = length(light_position_array[i] - World_Pos);
+		float attenuation = 1.0 / (dist * dist);
+		vec3 radiance = light_color_array[i] * attenuation;
+	
+		// Cook-Torrance BRDF
+		float D = DistributionGGX(N, H, roughness);
+		float G = GeometrySmith(N, V, L, roughness);
+		vec3 F = FresnelSchlick(H, V, F0);
+
+		vec3 num = D * G * F;
+		float denom = 4 * max(dot(N, V), 0.f) * max(dot(N, L), 0.f); 
+		vec3 specular = num / max(denom, 0.001); // 0.001 to prevent divide by zero
+
+		// kS is equal to Fresnel
+		vec3 kS = F;
+
+		vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0 - metalness;
+
+		float NdotL = max(dot(N, L), 0.f);
+
+		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+	}
 
 	//环境光部分与直接光源是独立的，互不影响
 	vec3 F = FresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
@@ -185,7 +196,7 @@ void main()
 	//vec3 color = Edss;
 
 	color = color * ao;
-
+	color += Lo;
     //vec3 specular = prefiltered_color * (F * brdf.x + brdf.y);
 
 	//float ssda = texture(ssda_lut, vec2(max(dot(N, V), 0.0), roughness)).r;

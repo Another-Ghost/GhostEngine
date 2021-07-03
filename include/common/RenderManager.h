@@ -30,7 +30,8 @@ public:
 	Camera* camera;
 
 	//map<Material*, set<RenderModule*>> mat_module_map;
-	map<PBRMaterial*, set<RenderUnit*>> pbr_mat_module_map;
+	map<PBRMaterial*, set<RenderUnit*>> pbr_mat_unit_map;
+	map<BasicMaterial*, set<RenderUnit*>> basic_mat_unit_map;
 
 	RenderManager();
 
