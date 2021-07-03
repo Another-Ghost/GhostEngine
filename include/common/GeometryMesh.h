@@ -2,7 +2,6 @@
 #include "Mesh.h"
 
 
-
 class GeometryMesh : public Mesh
 {
 public:
@@ -16,10 +15,7 @@ public:
 
 	bool b_initialized;
 
-protected:
 
-	unsigned int vbo_id;
-	unsigned int ebo_id;
 
 
 };

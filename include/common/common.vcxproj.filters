@@ -72,9 +72,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Repositry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,10 +108,10 @@
     <ClCompile Include="RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Unit.cpp">
+    <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUnit.cpp">
+    <ClCompile Include="RenderNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Module.cpp">
@@ -213,6 +210,24 @@
     <ClCompile Include="CubeMapShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleMeshFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicMaterialFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -248,16 +263,13 @@
     <ClInclude Include="Module.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="PointLight.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="RenderModule.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUnit.h">
+    <ClInclude Include="RenderNode.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -269,7 +281,7 @@
     <ClInclude Include="Transform.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Unit.h">
+    <ClInclude Include="Node.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
@@ -315,9 +327,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="IBLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QuadGeometryMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CubeGeometryMesh.h">
@@ -393,6 +402,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CubeMapShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicMaterialFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadGeometryMesh.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleMeshFactory.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

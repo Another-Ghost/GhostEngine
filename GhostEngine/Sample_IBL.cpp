@@ -3,7 +3,7 @@
 #include "BasicWindowFactory.h"
 #include "BasicWindow.h"
 #include "BasicCamera.h"
-#include "BasicUnit.h"
+#include "BasicNode.h"
 #include "common/RenderModule.h"
 #include "common/ResourceManager.h"
 #include "common/PBRMaterial.h"
@@ -37,7 +37,7 @@ int main()
 	window->AddEventListener(camera);
 
 	//add unit
-	BasicUnit* sphere_unit = new BasicUnit();
+	BasicNode* sphere_unit = new BasicNode();
 
 	RootRenderModule* root_render_module = new RootRenderModule();
 

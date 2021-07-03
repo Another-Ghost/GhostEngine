@@ -9,8 +9,8 @@
 class Datatype
 {
 public:
-	static glm::vec3 ToGLMVec3(const aiVector3D& vec);
+	static glm::vec3 ToGLVec3(const aiVector3D& vec);
 
-	static glm::vec2 ToGLMVec2(const aiVector2D& vec);
+	static glm::vec2 ToGLVec2(const aiVector2D& vec);
 };
 

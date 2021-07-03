@@ -7,10 +7,10 @@ private:
 	virtual RenderModule* GetParent() { return RenderModule::parent; };
 	virtual void SetParent(RenderModule* parent_) { RenderModule::parent = parent_; };
 public:
-	void SetParentUnit(Unit* parent_) { parent = parent_; }
-	Unit* GetParentUnit() { return parent; }
+	void SetParentNode(Node* parent_) { parent = parent_; }
+	Node* GetParentNode() { return parent; }
 
-	Unit* parent;
+	Node* parent;
 	
 };
 

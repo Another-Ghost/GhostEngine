@@ -38,5 +38,5 @@ void GeometryMesh::Draw()
 {
 	glBindVertexArray(vao_id);
 	glDrawElements(GL_TRIANGLE_STRIP, index_array.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(vao_id);
+	glBindVertexArray(0);
 }

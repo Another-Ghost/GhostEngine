@@ -1,6 +1,6 @@
 ﻿#include "SceneManager.h"
 #include "RenderManager.h"
-#include "RenderUnit.h"
+#include "RenderNode.h"
 #include "RenderModule.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -11,9 +11,9 @@
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
 {
-	root_unit = new Unit();
+	root_unit = new Node();
 }
-void SceneManager::AddRenderUnit(RenderUnit* unit, Unit* parent)
+void SceneManager::AddRenderNode(RenderNode* unit, Node* parent)
 {
 	if (!parent)
 		parent = root_unit;

@@ -10,13 +10,14 @@
 #include "Light.h"
 #include "EquirectangularMap.h"
 #include "RootRenderModule.h"
-#include "Unit.h"
+#include "Node.h"
 #include "PBRShader.h"
 #include "HDRIShader.h"
 #include "PrefilterShader.h"
 #include "IrradianceShader.h"
 #include "BRDFLUTShader.h"
 #include "SkyboxShader.h"
+#include "RenderUnit.h"
 
 IBLRenderer::IBLRenderer()
 {
@@ -115,19 +116,17 @@ void IBLRenderer::Update(float dt)
 		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->texture_id);
 
 
-		for (const auto& render_module : pair.second)
+		for (const auto& render_unit : pair.second)
 		{
-			Mesh* mesh = render_module->GetMesh();
+			Mesh* mesh = render_unit->GetMesh();
 
-			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_module);
-			mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
+			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_unit);
+			mat4 model = root_rm->GetParentNode()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			pbr_shader->SetModelMatrix(model);
 
 			mesh->Draw();
 		}
-
-
 	}
 
 	skybox_shader->RenderSkybox(env_cubemap->texture_id);

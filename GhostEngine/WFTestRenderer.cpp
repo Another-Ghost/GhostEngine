@@ -10,8 +10,8 @@
 #include "common/Light.h"
 #include "common/EquirectangularMap.h"
 #include "common/RootRenderModule.h"
-#include "common/Unit.h"
-
+#include "common/Node.h"
+#include "common/RenderUnit.h"
 #include "common/HDRIShader.h"
 #include "common/PrefilterShader.h"
 #include "common/IrradianceShader.h"
@@ -101,12 +101,12 @@ void WFTestRenderer::Update(float dt)
 
 		int column_num = 9;
 
-		for (const auto& render_module : pair.second)
+		for (const auto& render_unit : pair.second)
 		{
-			Mesh* mesh = render_module->GetMesh();
+			Mesh* mesh = render_unit->GetMesh();
 			for (int col = 0; col < column_num; ++col) {
-				RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_module);
-				mat4 model = root_rm->GetParentUnit()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
+				
+				mat4 model = render_unit->GetParent()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 				model = translate(model, vec3((col - column_num / 2) * 2.5f, 0.f, 0.f));
 				pbr_shader->SetModelMatrix(model);
 

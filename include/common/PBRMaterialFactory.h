@@ -4,7 +4,7 @@
 class PBRMaterialFactory : public MaterialFactory
 {
 public:
-	Material* CreateMaterial() override;
+	Material* CreateMaterial() const override;
 
 };
 

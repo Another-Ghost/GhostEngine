@@ -3,7 +3,7 @@
 #include "BasicWindowFactory.h"
 #include "BasicWindow.h"
 #include "BasicCamera.h"
-#include "BasicUnit.h"
+#include "BasicNode.h"
 #include "common/RenderModule.h"
 #include "common/ResourceManager.h"
 #include "common/PBRMaterial.h"
@@ -34,7 +34,7 @@ int main()
 	window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	//SceneManager::GetSingleton().BindCamera(camera);
 
-	BasicUnit* sphere_unit = new BasicUnit();
+	BasicNode* sphere_unit = new BasicNode();
 
 	RootRenderModule* root_render_module = new RootRenderModule();
 
@@ -51,7 +51,7 @@ int main()
 	root_render_module->SetMesh(mesh);
 
 	sphere_unit->AttachRenderModule(root_render_module);
-	SceneManager::GetSingleton().AddRenderUnit(sphere_unit);
+	SceneManager::GetSingleton().AddRenderNode(sphere_unit);
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 0.f, 10.f);

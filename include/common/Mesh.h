@@ -1,7 +1,11 @@
 ﻿#pragma once
 #include "Prerequisite.h"
 
-
+enum class MeshType
+{
+	GEOMETRY,
+	TRIANGLE
+};
 
 struct Vertex
 {
@@ -32,6 +36,11 @@ public:
 
 	vector<Vertex> vertex_array;
 	vector<unsigned int> index_array;
+
+protected:
+
+	unsigned int vbo_id;
+	unsigned int ebo_id;
 };
 
 

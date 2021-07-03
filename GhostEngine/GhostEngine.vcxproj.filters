@@ -29,7 +29,7 @@
     <ClCompile Include="BasicCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicUnit.cpp">
+    <ClCompile Include="BasicNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicRenderModule.cpp">
@@ -61,7 +61,7 @@
     <ClInclude Include="BasicCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BasicUnit.h">
+    <ClInclude Include="BasicNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicRenderModule.h">

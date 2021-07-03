@@ -1,31 +1,31 @@
 #pragma once
 #include "Module.h"
 
+enum class RenderModuleType
+{
+	DEFAULT,
+	ROOT,
+};
+
 class RenderModule : public Module
 {
 protected:
 	RenderModule* parent;
 
-	Mesh* mesh;
-
-	Material* material;	//? 给一个默认material和mesh
+	bool b_rendered;
 
 public:
-	RenderModule() : b_rendered(true) {}
-
 	Transform transform;
+
+	vector<RenderUnit*> render_unit_array;
+
+	RenderModule() : b_rendered(true) {}
 
 	virtual void Update(float dt) override;
 
 	virtual RenderModule* GetParent() { return parent; }
 	virtual void SetParent(RenderModule* parent_) { parent = parent_; }
 
-	Mesh* GetMesh() { return mesh; }
-	void SetMesh(Mesh* mesh_) { mesh = mesh_; }
 
-	Material* GetMaterial() { return material; }
-	void SetMaterial(Material* material_) { material = material_; }
-
-	bool b_rendered;
 };
 

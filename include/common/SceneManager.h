@@ -8,17 +8,17 @@ class SceneManager : public Singleton<SceneManager>
 public:
 	vector<Camera*> camera_array;
 
-	vector<RenderUnit*> render_unit_array;
+	vector<RenderNode*> render_unit_array;
 
 	vector<Light*> light_array;
 
 	Camera* main_camera;
 
-	Unit* root_unit;
+	Node* root_unit;
 
 	SceneManager();
 
-	void AddRenderUnit(RenderUnit* unit, Unit* parent = nullptr);
+	void AddRenderNode(RenderNode* unit, Node* parent = nullptr);
 
 	Camera* CreateCamera(const CameraFactory& camera_factory);
 
@@ -27,7 +27,7 @@ public:
 	void Update(float dt);
 
 	Light* CreateLight(const LightFactory& light_factory);
-	//Unit* CreateUnit();
+	//Node* CreateNode();
 
 
 

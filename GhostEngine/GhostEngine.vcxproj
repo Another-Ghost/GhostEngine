@@ -147,7 +147,7 @@
     <ClCompile Include="BasicCamera.cpp" />
     <ClCompile Include="BasicRenderModule.cpp" />
     <ClCompile Include="BasicRepositry.cpp" />
-    <ClCompile Include="BasicUnit.cpp" />
+    <ClCompile Include="BasicNode.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
     <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="Sample_IBL.cpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="BasicCamera.h" />
     <ClInclude Include="BasicRenderModule.h" />
     <ClInclude Include="BasicRepositry.h" />
-    <ClInclude Include="BasicUnit.h" />
+    <ClInclude Include="BasicNode.h" />
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="BasicWindowFactory.h" />
     <ClInclude Include="resource.h" />

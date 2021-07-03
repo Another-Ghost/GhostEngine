@@ -5,12 +5,13 @@
 
 enum class MaterialType
 {
+	BASIC,
 	PBR,
 };
 
 struct Material
 {
-
+	Material(MaterialType type_ = MaterialType::BASIC) : type(type_){}
 	//std::vector<Texture*> textures;
 
 	//Material(vector<Texture*> texs = vector<Texture*>()) :textures(texs) { }

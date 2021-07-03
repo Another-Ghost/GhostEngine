@@ -46,9 +46,10 @@ class CameraFactory;
 class SceneManager;
 class ResourceManager;
 
-class Unit;
-class RenderUnit;
+class Node;
+class RenderNode;
 class RenderModule;
+class RenderUnit;
 class RootRenderModule;
 class RenderManager;
 
@@ -64,13 +65,16 @@ class GeometryMesh;
 class TriangleMesh;
 class CubeGeometryMesh;
 class QuadGeometryMesh;
+struct ExpandedVertex;
 
 struct Texture;
 struct Material;
+struct BasicMaterial;
 struct PBRMaterial;
+class MaterialFactory;
 class PBRMaterialFactory;
-enum class TextureType;
 enum class MaterialType;
+enum class TextureType;
 struct TextureFile;
 struct HDRTextureFile;
 enum class TextureFileType;

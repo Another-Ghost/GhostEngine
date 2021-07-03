@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "Texture.h"
 #include "CubeMap.h"
+#include "RenderModule.h"
 
 
 struct TexturePredicate
@@ -23,6 +24,8 @@ class ResourceManager : public Singleton<ResourceManager>
 {
 	vector<Mesh*> mesh_array;
 
+	//map<string, TriangleMesh*> tri_mesh_array;
+
 	vector<Shader*> shader_array;
 
 	vector<Texture*> texture_array;
@@ -33,6 +36,9 @@ class ResourceManager : public Singleton<ResourceManager>
 
 	vector<TextureFile*> texture_file_array;
 	
+	vector<RenderModule*> render_module_array;
+
+	vector<RenderUnit*> render_unit_array;
 
 public:
 
@@ -46,8 +52,15 @@ public:
 
 	Material* CreateMaterial(MaterialType type);
 
-	Mesh* CreateMesh(const MeshFactory& mesh_factory);
+	Material* CreateMaterial(const MaterialFactory& mat_factory);
 
+	Mesh* CreateMesh(const MeshFactory& mesh_factory);	//- 只用来生成Geometry mesh
+
+	TriangleMesh* CreateTriangleMesh(const vector<ExpandedVertex>& vertex_array, const vector<unsigned int>& index_array = vector<unsigned int>());
+
+	RenderModule* CreateRenderModule(RenderModule* parent, RenderModuleType type = RenderModuleType::DEFAULT);
+
+	RenderUnit* CreateRenderUnit(RenderModule* parent, Mesh* mesh = nullptr, Material* material = nullptr);
 	//CubeMap* CreateCubeMap(int width, int height);
 };
 

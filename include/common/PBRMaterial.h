@@ -1,8 +1,10 @@
 #pragma once
 #include "Material.h"
 
-struct PBRMaterial : public Material
+struct PBRMaterial : Material
 {
+	PBRMaterial(): Material(MaterialType::PBR){}
+
 	Texture* albedo_map;
 	Texture* roughness_map;
 	Texture* normal_map;

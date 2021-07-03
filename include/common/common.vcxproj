@@ -143,6 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicMaterial.cpp" />
+    <ClCompile Include="BasicMaterialFactory.cpp" />
+    <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFactory.cpp" />
@@ -167,9 +170,9 @@
     <ClCompile Include="MaterialMap.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFactory.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="MVPShader.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="PBRMaterial.cpp" />
     <ClCompile Include="PBRMaterialFacotry.cpp" />
     <ClCompile Include="PBRShader.cpp" />
@@ -182,6 +185,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="RenderModule.cpp" />
+    <ClCompile Include="RenderNode.cpp" />
     <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="Repositry.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -198,12 +202,16 @@
     <ClCompile Include="TextureFile.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
-    <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="TriangleMeshFactory.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicMaterial.h" />
+    <ClInclude Include="BasicMaterialFactory.h" />
+    <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFactory.h" />
@@ -228,9 +236,9 @@
     <ClInclude Include="MaterialMap.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFactory.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="MVPShader.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="PBRMaterial.h" />
     <ClInclude Include="PBRMaterialFactory.h" />
     <ClInclude Include="PBRShader.h" />
@@ -243,6 +251,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="RenderModule.h" />
+    <ClInclude Include="RenderNode.h" />
     <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="Repositry.h" />
     <ClInclude Include="resource.h" />
@@ -260,7 +269,8 @@
     <ClInclude Include="TextureFile.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleMesh.h" />
-    <ClInclude Include="Unit.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="TriangleMeshFactory.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowFactory.h" />
     <ClInclude Include="WindowManager.h" />

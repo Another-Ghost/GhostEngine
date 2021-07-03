@@ -3,7 +3,7 @@
 #include "BasicWindowFactory.h"
 #include "BasicWindow.h"
 #include "BasicCamera.h"
-#include "BasicUnit.h"
+#include "BasicNode.h"
 #include "common/RenderModule.h"
 #include "common/ResourceManager.h"
 #include "common/PBRMaterial.h"
@@ -17,6 +17,7 @@
 #include "common/SphereGeometryMeshFactory.h"
 #include "common/PointLightFactory.h"
 #include "common/TextureFile.h"
+#include "common/RenderUnit.h"
 
 #include "WFTestRenderer.h"
 
@@ -49,7 +50,7 @@ int main()
 
 
 	//add unit
-	//BasicUnit* sphere_unit = new BasicUnit();
+	//BasicNode* sphere_unit = new BasicNode();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
 	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));	//rusted_iron, painted_metal, gold
@@ -72,12 +73,15 @@ int main()
 
 	//int column_num = 7;
 	//for (int col = 0; col < column_num; ++col) {
-		BasicUnit* sphere_unit = new BasicUnit();
+		BasicNode* sphere_node = new BasicNode();
 		RootRenderModule* root_render_module = new RootRenderModule();
-		root_render_module->SetMaterial(material);
-		root_render_module->SetMesh(mesh);
+		
+		root_render_module->render_unit_array.emplace_back(ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, mesh, material));
 
-		sphere_unit->AttachRenderModule(root_render_module);
+		//root_render_module->SetMaterial(material);
+		//root_render_module->SetMesh(mesh);
+
+		sphere_node->AttachRenderModule(root_render_module);
 	//	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
 	//}
 

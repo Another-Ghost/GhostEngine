@@ -1,5 +1,5 @@
 ﻿#include "RenderManager.h"
-#include "RenderModule.h"
+#include "RenderUnit.h"
 #include "SceneManager.h"
 #include "PointLight.h"
 #include "PBRMaterial.h"
@@ -141,9 +141,9 @@ void RenderManager::ResetRenderArray()
 	pbr_mat_module_map.clear();
 }
 
-void RenderManager::InsertRenderModule(RenderModule* rm)
+void RenderManager::InsertRenderUnit(RenderUnit* ru)
 {
-	Material* material = rm->GetMaterial();
+	Material* material = ru->GetMaterial();
 	switch (material->type)
 	{
 	case MaterialType::PBR:
@@ -151,9 +151,9 @@ void RenderManager::InsertRenderModule(RenderModule* rm)
 		auto rm_set_ite = pbr_mat_module_map.find(pbr_material);
 		if (rm_set_ite == pbr_mat_module_map.end())
 		{
-			pbr_mat_module_map.emplace(pbr_material, set<RenderModule*>());
+			pbr_mat_module_map.emplace(pbr_material, set<RenderUnit*>());
 		}
-		pbr_mat_module_map[pbr_material].emplace(rm);
+		pbr_mat_module_map[pbr_material].emplace(ru);
 		break;
 	}
 

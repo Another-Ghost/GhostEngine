@@ -9,8 +9,8 @@
 //{
 //	bool operator()(RenderModule* a, RenderModule* b)
 //	{
-//		Unit* parent_a = a->GetParent();
-//		Unit* parent_b = b->GetParent();
+//		Node* parent_a = a->GetParent();
+//		Node* parent_b = b->GetParent();
 //		if (parent_a && parent_b)
 //		{
 //			return parent_a->transform.GetPosition().z > parent_b->transform.GetPosition().z;
@@ -30,7 +30,7 @@ public:
 	Camera* camera;
 
 	//map<Material*, set<RenderModule*>> mat_module_map;
-	map<PBRMaterial*, set<RenderModule*>> pbr_mat_module_map;
+	map<PBRMaterial*, set<RenderUnit*>> pbr_mat_module_map;
 
 	RenderManager();
 
@@ -42,7 +42,7 @@ public:
 
 	void ResetRenderArray();
 
-	void InsertRenderModule(RenderModule* rm);
+	void InsertRenderUnit(RenderUnit* ru);
 
 	unsigned int GetCaptureFBO() { return capture_fbo; }
 	unsigned int GetCaptureRBO() { return capture_rbo; }
@@ -87,7 +87,7 @@ private:
 
 	QuadGeometryMesh* capture_quad_mesh;
 
-	friend class RenderUnit;
+	friend class RenderNode;
 
 	bool b_initialized = false;
 

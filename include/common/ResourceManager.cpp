@@ -7,6 +7,10 @@
 #include "MaterialMap.h"
 #include "CubeMap.h"
 #include "TextureFile.h"
+#include "RootRenderModule.h"
+#include "TriangleMesh.h"
+#include "RenderUnit.h"
+#include "BasicMaterialFactory.h"
 
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
 ResourceManager::ResourceManager()
@@ -95,20 +99,73 @@ Material* ResourceManager::CreateMaterial(MaterialType type)
     unique_ptr<MaterialFactory> factory;
     switch (type)
     {
+    case MaterialType::BASIC:
+        factory = std::make_unique<BasicMaterialFactory>();
+        break;
+
     case MaterialType::PBR:
         factory = std::make_unique<PBRMaterialFactory>();
     	break;
     }
 
-    return factory->CreateMaterial();
+	Material* material = factory->CreateMaterial();
+	material_array.emplace_back(material);
+	return material;
+
+}
+
+Material* ResourceManager::CreateMaterial(const MaterialFactory& mat_factory)
+{
+    Material* material = mat_factory.CreateMaterial();
+    material_array.emplace_back(material);
+    return material;
 }
 
 Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 {
+
     Mesh* mesh = mesh_factory.CreateMesh();
     mesh_array.emplace_back(mesh);
     return mesh;
 }
+
+TriangleMesh* ResourceManager::CreateTriangleMesh(const vector<ExpandedVertex>& vertex_array, const vector<unsigned int>& index_array)
+{
+    TriangleMesh* mesh = new TriangleMesh(vertex_array, index_array);
+    mesh_array.emplace_back(mesh);
+    return mesh;
+}
+
+
+
+RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderModuleType type /*= RenderModuleType::DEFAULT*/)
+{
+    RenderModule* render_module = nullptr;
+    switch (type)
+    {
+    case RenderModuleType::DEFAULT:
+        render_module = new RenderModule();
+        break;
+    case RenderModuleType::ROOT:
+        render_module = new RootRenderModule();
+        break;
+    default:
+        break;
+    }
+    render_module->SetParent(parent);
+    render_module_array.emplace_back(render_module);
+
+    return render_module;
+}
+
+RenderUnit* ResourceManager::CreateRenderUnit(RenderModule* parent, Mesh* mesh, Material* material)
+{
+	RenderUnit* ru = new RenderUnit(parent, mesh, material);
+	render_unit_array.push_back(ru);
+	return ru;
+}
+
+
 
 //CubeMap* ResourceManager::CreateCubeMap(int width, int height)
 //{
