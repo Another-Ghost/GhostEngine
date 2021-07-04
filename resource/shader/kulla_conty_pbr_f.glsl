@@ -24,19 +24,6 @@ uniform sampler2D brdf_lut;
 uniform sampler2D ssda_lut;
 
 //light
-//uniform vec3 light_position_array[1];
-//uniform vec3 light_color_array[1];
-
-layout (std430, binding = 0) buffer LightPosition
-{
-	vec4 light_position_array[];
-};
-
-layout (std430, binding = 2) buffer LightColor
-{
-	vec4 light_color_array[];
-};
-
 struct LightInfo
 {
 vec4 position;
@@ -49,7 +36,20 @@ layout (std430, binding = 1) buffer LightInfoArray
 	LightInfo light_info_array[]; 
 };
 
-uniform vec3 cam_pos;
+//camera
+//uniform vec3 cam_pos;
+
+struct CameraInfo
+{
+    vec4 position;
+    mat4 view;
+    mat4 projection;
+};
+
+layout(std140, binding = 0) uniform Camera
+{
+    CameraInfo camera;
+};
 
 const float PI = 3.14159265359;
 
@@ -135,7 +135,7 @@ void main()
     //float ao = 1.f;
 
 	vec3 N = GetNormalFromMap();
-	vec3 V = normalize(cam_pos - World_Pos);	//view direction/solid angle, point to outside
+	vec3 V = normalize(camera.position.xyz - World_Pos);	//view direction/solid angle, point to outside
 	vec3 R = reflect(-V, N);
 	
 	// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 

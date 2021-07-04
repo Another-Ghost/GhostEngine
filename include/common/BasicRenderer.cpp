@@ -14,6 +14,4 @@ void BasicRenderer::Update(float dt)
 	basic_shader->SetProjectionMatrix(camera->PerspectiveMatrix());
 	basic_shader->SetViewMatrix(camera->ViewMatrix());
 	//basic_shader->SetCameraPosition(camera->GetPosition());
-
-
 }

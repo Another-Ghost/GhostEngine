@@ -23,11 +23,18 @@
 //	}
 //};
 
-struct LightInfo	// shader”√
+struct PointLightInfo	// shader”√
 {
 	vec4 position;
 	vec4 color;
 	//bool b_rendering;
+};
+
+struct CameraInfo
+{
+	vec4 position;
+	mat4 view;
+	mat4 projection;
 };
 
 class RenderManager : public Singleton<RenderManager>
@@ -45,6 +52,8 @@ public:
 	bool Initialize(Renderer* renderer_ = nullptr);
 	
 	void Update(float dt);
+
+	void UpdateCamera();
 
 	void UpdateLightArray();
 
@@ -112,6 +121,8 @@ private:
 	Texture* brdf_lut;
 
 	GLuint light_ssbo;
+
+	GLuint camera_ubo;
 	//GLuint light_color_ssbo;
 };
 
