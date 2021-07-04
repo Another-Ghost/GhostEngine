@@ -66,7 +66,11 @@ void SceneManager::AddLight(Light* light)
 Light* SceneManager::CreateLight(const LightFactory& light_factory)
 {
 	Light* light= light_factory.CreateLight();
+	
 	light_array.emplace_back(light);
+
+	//RenderManager::GetSingleton().UpdateLightArray();
+
 	return light;
 }
 

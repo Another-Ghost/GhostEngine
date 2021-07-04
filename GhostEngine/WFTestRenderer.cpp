@@ -73,6 +73,8 @@ WFTestRenderer::WFTestRenderer()
 
 	//6.
 	skybox_shader = new SkyboxShader();
+
+
 }
 
 void WFTestRenderer::Update(float dt)
@@ -83,7 +85,9 @@ void WFTestRenderer::Update(float dt)
 	pbr_shader->SetViewMatrix(camera->ViewMatrix());
 	pbr_shader->SetCameraPosition(camera->GetPosition());
 
-	pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
+	//pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
+
+	//pbr_shader->SetPointLight();
 
 	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_unit_map)
 	{

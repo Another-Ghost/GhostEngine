@@ -52,9 +52,10 @@ public:
 
 	unsigned int GetID() { return id; }
 
-private:
+protected:
 	unsigned int id;
 
+private:
 	string vertex_path;
 	string fragment_path;
 	string geometry_path;

@@ -85,11 +85,10 @@ int main()
 	//	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
 	//}
 
-
-
 	//add light
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 0.f, 10.f);
+
 
 	//Loop
 	float max_delta_time = 1.f / 60.f;

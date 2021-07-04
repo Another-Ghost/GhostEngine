@@ -16,7 +16,7 @@ public:
 
     void SetProjectionMatrix(const mat4& matrix) { Use(); projection_matrix = matrix; SetMat4("projection", matrix); }
 
-
+	void SetPointLight();
 
 protected:
 	mat4 model_matrix;

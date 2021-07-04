@@ -48,6 +48,34 @@ RenderManager::RenderManager():
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
+
+
+	//vec4 pos_array[2];
+	//pos_array[0] = { 0, 0, 10, 0};
+	//pos_array[1] = { 5, 0, 10, 0 };
+	//vec4 color_array[2];
+	//color_array[0] = { 200, 200, 200, 0 };
+	//color_array[1] = { 200, 0, 200, 0 };
+	glGenBuffers(1, &light_ssbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
+	//glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(pos_array), pos_array, GL_DYNAMIC_DRAW);	//? GL_STREAM_COPY
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	//glGenBuffers(1, &light_color_ssbo);
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_color_ssbo);
+	////glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(color_array), color_array, GL_DYNAMIC_DRAW);
+	//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, light_color_ssbo);
+
+
+
+
+
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_pos_ssbo);
+
+	////glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_pos_ssbo);
+
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_color_ssbo);
+
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -70,6 +98,7 @@ bool RenderManager::Initialize(Renderer* renderer_)
 
 void RenderManager::Update(float dt)
 {
+	UpdateLightArray();
 	//GLCall(pbr_shader->Use());
 	camera = SceneManager::GetSingleton().main_camera;
 	//pbr_shader->SetVec3("cam_pos", camera->GetPosition());
@@ -81,7 +110,75 @@ void RenderManager::Update(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	current_renderer->Update(dt);
+
+
 }
+
+
+void RenderManager::UpdateLightArray()
+{
+	//int n = SceneManager::GetSingleton().light_array.size();
+	////unique_ptr<vec4>  pos_array(new vec4[n]);
+	//unique_ptr<LightInfo[]> light_info_array(new LightInfo[n]);
+
+	//vector<vec4> light_pos_array;
+	//vector<vec4> light_color_array;
+
+	vector<LightInfo> info_array;
+	for (const auto& light : SceneManager::GetSingleton().light_array)
+	{
+		if (light->b_enabled)
+		{
+			//vec4 pos = { light->postion, 0.f };
+			//vec4 color = { light->color * light->intensity, 0.f };
+			//light_pos_array.emplace_back(pos);
+			//light_color_array.emplace_back(color);
+			LightInfo light_info;
+			light_info.position = { light->postion, 0.f };
+			light_info.color = { light->color * light->intensity, 0.f };
+			info_array.emplace_back(light_info);
+		}
+	}
+
+	//const vector<Light*>& light_array = SceneManager::GetSingleton().light_array;
+	//for (int i = 0; i < n; ++i)
+	//{
+	//	LightInfo light_info;
+	//	light_info.position = { light_array[i]->postion, 0.f };
+	//	light_info.color = { 200, 200, 200, 0 }; // { light_array[i]->color* light_array[i]->intensity, 0.f };
+	//	//light_info.b_rendering = light_array[i]->b_enabled;
+	//	light_info_array[i] = light_info;
+	//}
+
+	////vec3 pos_array[1];
+	////pos_array[0] = light_pos_array[0];
+
+	////vec3 color_array[1]; 
+	////color_array[0] = light_color_array[0];
+
+	////vec4 pos_array[2];
+	//vec4 pos_array[1];
+	//pos_array[0] = { 0, 0, 10, 0 };
+	////pos_array[1] = { 5, 0, 10, 0 };
+
+	//unique_ptr<vec4[]>  color_array(new vec4[n]);
+	//color_array[0] = { 200, 200, 200, 0 };
+	////color_array[1] = { 200, 0, 200, 0 };
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
+	//glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4) * light_pos_array.size(), light_pos_array, GL_DYNAMIC_COPY);	//? GL_STREAM_COPY
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(LightInfo)* info_array.size(), &info_array[0], GL_STREAM_COPY);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_color_ssbo);
+	////glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4) * light_color_array.size(), &light_color_array, GL_DYNAMIC_COPY);
+	//glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4)*n, &color_array[0], GL_STREAM_COPY);
+	//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, light_color_ssbo);
+
+
+}
+
+
 
 void RenderManager::RenderPBRMaterial(float dt)
 {

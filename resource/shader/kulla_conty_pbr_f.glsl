@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 
 out vec4 frag_color;
 
@@ -24,18 +24,30 @@ uniform sampler2D brdf_lut;
 uniform sampler2D ssda_lut;
 
 //light
-uniform vec3 light_position_array[1];
-uniform vec3 light_color_array[1];
+//uniform vec3 light_position_array[1];
+//uniform vec3 light_color_array[1];
 
-//layout (std430, binding = 0) buffer LightPosition
-//{
-//	vec3 light_position_array[];
-//};
-//
-//layout (std430, binding = 1) buffer LightColor
-//{
-//	vec3 light_color_array[];
-//};
+layout (std430, binding = 0) buffer LightPosition
+{
+	vec4 light_position_array[];
+};
+
+layout (std430, binding = 2) buffer LightColor
+{
+	vec4 light_color_array[];
+};
+
+struct LightInfo
+{
+vec4 position;
+vec4 color;
+//bool b_rendering;
+};
+
+layout (std430, binding = 1) buffer LightInfoArray
+{
+	LightInfo light_info_array[]; 
+};
 
 uniform vec3 cam_pos;
 
@@ -133,14 +145,44 @@ void main()
 
 	//? need to change the kD term
 	vec3 Lo = vec3(0.f);	
-	for(int i = 0; i < 1; ++i)
+//	for(int i = 0; i < light_position_array.length(); ++i)
+//	{
+//		// calculate per-light radiance
+//		vec3 L = normalize(light_position_array[i].xyz - World_Pos); //light/incident direction
+//		vec3 H = normalize(V + L);
+//		float dist = length(light_position_array[i].xyz - World_Pos);
+//		float attenuation = 1.0 / (dist * dist);
+//		vec3 radiance = light_color_array[i].xyz * attenuation;
+//	
+//		// Cook-Torrance BRDF
+//		float D = DistributionGGX(N, H, roughness);
+//		float G = GeometrySmith(N, V, L, roughness);
+//		vec3 F = FresnelSchlick(H, V, F0);
+//
+//		vec3 num = D * G * F;
+//		float denom = 4 * max(dot(N, V), 0.f) * max(dot(N, L), 0.f); 
+//		vec3 specular = num / max(denom, 0.001); // 0.001 to prevent divide by zero
+//
+//		// kS is equal to Fresnel
+//		vec3 kS = F;
+//
+//		vec3 kD = vec3(1.0) - kS;
+//		kD *= 1.0 - metalness;
+//
+//		float NdotL = max(dot(N, L), 0.f);
+//
+//		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+//	}
+
+	for(int i = 0; i < light_info_array.length(); ++i)
+	//for(int i = 0; i < 1; ++i)
 	{
 		// calculate per-light radiance
-		vec3 L = normalize(light_position_array[i] - World_Pos); //light/incident direction
+		vec3 L = normalize(light_info_array[i].position.xyz - World_Pos); //light/incident direction
 		vec3 H = normalize(V + L);
-		float dist = length(light_position_array[i] - World_Pos);
+		float dist = length(light_info_array[i].position.xyz - World_Pos);
 		float attenuation = 1.0 / (dist * dist);
-		vec3 radiance = light_color_array[i] * attenuation;
+		vec3 radiance = light_info_array[i].color.xyz * attenuation;
 	
 		// Cook-Torrance BRDF
 		float D = DistributionGGX(N, H, roughness);
@@ -160,6 +202,8 @@ void main()
 		float NdotL = max(dot(N, L), 0.f);
 
 		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+
+		//Lo+=1000;
 	}
 
 	//环境光部分与直接光源是独立的，互不影响

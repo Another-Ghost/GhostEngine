@@ -23,6 +23,13 @@
 //	}
 //};
 
+struct LightInfo	// shader”√
+{
+	vec4 position;
+	vec4 color;
+	//bool b_rendering;
+};
+
 class RenderManager : public Singleton<RenderManager>
 {
 public:
@@ -38,6 +45,8 @@ public:
 	bool Initialize(Renderer* renderer_ = nullptr);
 	
 	void Update(float dt);
+
+	void UpdateLightArray();
 
 	void RenderPBRMaterial(float dt);
 
@@ -63,6 +72,10 @@ public:
 	CubeMap* GetSkybox() { return skybox_cubemap; }
 
 	Texture* GetBRDFLUT() { return brdf_lut; }
+
+	GLuint GetLightSSBO() { return light_ssbo; }
+	//GLuint GetLightColorSSBO() { return light_color_ssbo; }
+
 
 private:
 	Shader* pbr_shader;
@@ -97,5 +110,8 @@ private:
 	bool b_skybox_initialized;
 
 	Texture* brdf_lut;
+
+	GLuint light_ssbo;
+	//GLuint light_color_ssbo;
 };
 
