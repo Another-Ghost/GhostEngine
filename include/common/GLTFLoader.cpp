@@ -208,9 +208,10 @@ map<string, Mesh*> GLTFLoader::ProcessMesh(const Microsoft::glTF::Document& docu
 
 				vertex_array.resize(accessor.count);
 
-				for (unsigned int i = 0; i < accessor.count * 3; i += 3)
+				for (unsigned int i = 0; i < accessor.count; ++i)
 				{
-					vertex_array[i / 3].position = vec3(data[i], data[i + 1], data[i + 2]);
+					int num = i * 3;
+					vertex_array[i].position = vec3(data[num], data[num + 1], data[num + 2]);
 				}
 			}
 
@@ -224,9 +225,10 @@ map<string, Mesh*> GLTFLoader::ProcessMesh(const Microsoft::glTF::Document& docu
 				//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)byte_count);
 				//byte_count += data.size() * sizeof(float);
 
-				for (unsigned int i = 0; i < accessor.count * 2; i += 2)
+				for (unsigned int i = 0; i < accessor.count; ++i)
 				{
-					vertex_array[i / 2].tex_coords = { data[i], data[i + 1] };
+					int num = i * 2;
+					vertex_array[i].tex_coords = { data[num], -data[num + 1] };
 				}
 			}
 
@@ -240,9 +242,10 @@ map<string, Mesh*> GLTFLoader::ProcessMesh(const Microsoft::glTF::Document& docu
 				//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)byte_count);
 				//byte_count += data.size() * sizeof(float);
 
-				for (unsigned int i = 0; i < accessor.count * 3; i += 3)
+				for (unsigned int i = 0; i < accessor.count; ++i)
 				{
-					vertex_array[i / 3].normal = { data[i], data[i + 1], data[i + 2] };
+					int num = i * 3;
+					vertex_array[i].normal = { data[num], data[num + 1], data[num + 2] };
 				}
 			}
 
@@ -256,9 +259,10 @@ map<string, Mesh*> GLTFLoader::ProcessMesh(const Microsoft::glTF::Document& docu
 				//glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)byte_count);
 				//byte_count += data.size() * sizeof(float);
 
-				for (unsigned int i = 0; i < accessor.count * 3; i += 4)
+				for (unsigned int i = 0; i < accessor.count; ++i)
 				{
-					vertex_array[i / 3].tangent = { data[i], data[i + 1], data[i + 2] };
+					int num = i * 4;
+					vertex_array[i].tangent = { data[num], data[num + 1], data[num + 2] };
 				}
 			}
 			//bitangent = cross(normal, tangent.xyz) * tangent.w

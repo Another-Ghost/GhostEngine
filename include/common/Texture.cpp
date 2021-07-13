@@ -26,8 +26,6 @@ bool Texture::Buffer()
 	{
 
 		glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, data_format, data_type, 0);
-		
-
 
 		//stbi_image_free(data);
 	}
