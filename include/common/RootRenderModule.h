@@ -10,6 +10,8 @@ public:
 	void SetParentNode(Node* parent_) { parent = parent_; }
 	Node* GetParentNode() { return parent; }
 
+	Transform GetWorldTransform() override;
+
 	Node* parent;
 	
 };

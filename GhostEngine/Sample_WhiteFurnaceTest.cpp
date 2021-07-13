@@ -18,6 +18,7 @@
 #include "common/PointLightFactory.h"
 #include "common/TextureFile.h"
 #include "common/RenderUnit.h"
+#include "common/Model.h"
 
 #include "WFTestRenderer.h"
 
@@ -53,8 +54,8 @@ int main()
 	//BasicNode* sphere_unit = new BasicNode();
 
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	LDRTextureFile* albedo_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));	//rusted_iron, painted_metal, gold
-	material->albedo_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ALBEDO, albedo_file, true);
+	LDRTextureFile* basecolor_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/albedo.png"), TextureFileType::LDR));	//rusted_iron, painted_metal, gold
+	material->basecolor_map = ResourceManager::GetSingleton().CreateTexture(TextureType::BASECOLOR, basecolor_file, true);
 	//material->albedo_map->Buffer();
 	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("pbr/painted_metal/normal.png"), TextureFileType::LDR));	
 	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, normal_file, true);
@@ -76,7 +77,8 @@ int main()
 		BasicNode* sphere_node = new BasicNode();
 		RootRenderModule* root_render_module = new RootRenderModule();
 		
-		root_render_module->render_unit_array.emplace_back(ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, mesh, material));
+		ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, mesh, material);
+		//root_render_module->render_unit_array.emplace_back();
 
 		//root_render_module->SetMaterial(material);
 		//root_render_module->SetMesh(mesh);
@@ -89,6 +91,23 @@ int main()
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 0.f, 10.f);
 
+	light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
+	light->postion = vec3(0.f, 3.f, 7.f);
+	light->color = vec3(1.f, 0.f, 1.f);
+
+	Model model;
+
+
+	
+
+	//tri_node->AttachRenderModule(model.LoadScene(File::GetModelPath("BoomBoxSpecularGlossiness/BoomBox-Default.gltf"), MaterialType::PBR));	//backpack/backpack.obj, nanosuit/nanosuit.obj BoomBoxSpecularGlossiness/BoomBox-Default.gltf
+	//tri_node->local_transform.SetPosition({ 0, 5, 0 });
+	//tri_node->local_transform.SetDimension({ 10, 10, 10 });
+
+	RenderNode* tri_node = new RenderNode();
+	tri_node->AttachRenderModule(ResourceManager::GetSingleton().gltf_loader->LoadFile(File::GetModelPath("glTF-pbrSpecularGlossiness/BoomBox.gltf")));	//BoomBoxSpecularGlossiness/BoomBox.gltf, glTF-pbrSpecularGlossiness/BoomBox.gltf, WaterBottle/WaterBottle.gltf
+	tri_node->local_transform.SetPosition({ 0, 5, 0 });
+	tri_node->local_transform.SetDimension({ 100, 100, 100 });
 
 	//Loop
 	float max_delta_time = 1.f / 60.f;

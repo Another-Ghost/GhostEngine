@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "IBLRenderer.h"
+#include "BasicRenderer.h"
 #include "CubeGeometryMeshFactory.h"
 #include "ResourceManager.h"
 #include "CubeMap.h"
@@ -15,6 +16,7 @@
 #include "EquirectangularMap.h"
 #include "HDRIShader.h"
 #include "File.h"
+#include "ChannelCombinationShader.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -49,7 +51,7 @@ RenderManager::RenderManager():
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
 
-	glGenBuffers(1, &camera_ubo);	// bounding point is 0
+	glGenBuffers(1, &camera_ubo);	// binding point is 0
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -57,9 +59,10 @@ RenderManager::RenderManager():
 	glGenBuffers(1, &light_ssbo);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// bounding point is 1
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+	channel_combination_shader = new ChannelCombinationShader();
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -73,6 +76,8 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		current_renderer = renderer_;
 
 		b_initialized = true;
+
+		basic_renderer = new BasicRenderer();
 	}
 
 	return b_initialized;
@@ -96,7 +101,8 @@ void RenderManager::Update(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	current_renderer->Update(dt);
-
+	
+	basic_renderer->Update(dt);
 
 }
 
@@ -169,7 +175,7 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 		glActiveTexture(GL_TEXTURE0);
 		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		GLCall(glBindTexture(GL_TEXTURE_2D, material->albedo_map->texture_id));
+		GLCall(glBindTexture(GL_TEXTURE_2D, material->basecolor_map->texture_id));
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
 		glActiveTexture(GL_TEXTURE2);
@@ -246,6 +252,11 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 	HDRIShader hdri_cubemap_shader;
 	hdri_cubemap_shader.RenderCubeMap(skybox_cubemap, equirectanguler_map->texture_id);
 
+}
+
+void RenderManager::CombineChannels(Texture* out_tex, Texture* tex_1, Texture* tex_2)
+{
+	channel_combination_shader->RenderTexture(out_tex, tex_1, tex_2);
 }
 
 

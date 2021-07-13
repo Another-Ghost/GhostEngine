@@ -15,9 +15,12 @@ protected:
 	bool b_rendered;
 
 public:
-	Transform transform;
+
+	Transform local_transform;
 
 	vector<RenderUnit*> render_unit_array;
+
+	vector<RenderModule*> child_array;
 
 	RenderModule() : b_rendered(true) {}
 
@@ -26,6 +29,10 @@ public:
 	virtual RenderModule* GetParent() { return parent; }
 	virtual void SetParent(RenderModule* parent_) { parent = parent_; }
 
+	void AddChild(RenderModule* child); 
 
+	void AddRenderUnit(RenderUnit* ru);
+
+	virtual Transform GetWorldTransform();
 };
 

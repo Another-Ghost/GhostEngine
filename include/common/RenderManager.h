@@ -85,12 +85,15 @@ public:
 	GLuint GetLightSSBO() { return light_ssbo; }
 	//GLuint GetLightColorSSBO() { return light_color_ssbo; }
 
+	void CombineChannels(Texture* out_tex, Texture* tex_1, Texture* tex_2);
 
 private:
-	Shader* pbr_shader;
 
 	Shader* current_shader;
 
+	Shader* pbr_shader;
+
+	ChannelCombinationShader* channel_combination_shader;
 	//set<RenderModule*> set_map;
 	//render_module_group
 
@@ -101,6 +104,8 @@ private:
 	mat4 perspective_matrix;
 
 	Renderer* current_renderer;
+
+	BasicRenderer* basic_renderer;
 
 	unsigned int capture_fbo;
 	unsigned int capture_rbo;

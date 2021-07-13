@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -103,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -118,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -133,6 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -146,6 +150,7 @@
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
+    <ClCompile Include="BasicShader.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFactory.cpp" />
@@ -160,11 +165,13 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
+    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="MaterialMap.cpp" />
@@ -198,6 +205,7 @@
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
+    <ClCompile Include="ChannelCombinationShader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureFile.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -212,6 +220,7 @@
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
     <ClInclude Include="BasicRenderer.h" />
+    <ClInclude Include="BasicShader.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFactory.h" />
@@ -226,11 +235,13 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
+    <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MaterialMap.h" />
@@ -265,6 +276,7 @@
     <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
+    <ClInclude Include="ChannelCombinationShader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureFile.h" />
     <ClInclude Include="Transform.h" />

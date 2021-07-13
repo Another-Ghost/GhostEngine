@@ -37,7 +37,7 @@ public:
 	vector<Vertex> vertex_array;
 	vector<unsigned int> index_array;
 
-protected:
+//protected:
 
 	unsigned int vbo_id;
 	unsigned int ebo_id;

@@ -20,8 +20,8 @@ layout(std140, binding = 0) uniform Camera
     CameraInfo camera;
 };
 
-uniform mat4 projection;
-uniform mat4 view;
+//uniform mat4 projection;
+//uniform mat4 view;
 uniform mat4 model;
 
 void main()

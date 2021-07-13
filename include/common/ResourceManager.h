@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "CubeMap.h"
 #include "RenderModule.h"
+#include "GLTFLoader.h"
 
 
 struct TexturePredicate
@@ -42,11 +43,11 @@ class ResourceManager : public Singleton<ResourceManager>
 
 public:
 
-
-
 	ResourceManager();
 
 	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr, bool b_buffer = false);
+
+	Texture* CreateMetalnessRoughnessMap(Texture* metalness_map, Texture* roughness_map);
 
 	TextureFile* CreateTextureFile(const string& path, TextureFileType type);
 
@@ -56,11 +57,16 @@ public:
 
 	Mesh* CreateMesh(const MeshFactory& mesh_factory);	//- 只用来生成Geometry mesh
 
-	TriangleMesh* CreateTriangleMesh(const vector<ExpandedVertex>& vertex_array, const vector<unsigned int>& index_array = vector<unsigned int>());
+	TriangleMesh* CreateTriangleMesh(bool b_buffer = false, const vector<ExpandedVertex>& vertex_array = vector<ExpandedVertex>(), const vector<unsigned int>& index_array = vector<unsigned int>());
 
 	RenderModule* CreateRenderModule(RenderModule* parent, RenderModuleType type = RenderModuleType::DEFAULT);
 
 	RenderUnit* CreateRenderUnit(RenderModule* parent, Mesh* mesh = nullptr, Material* material = nullptr);
+
 	//CubeMap* CreateCubeMap(int width, int height);
+
+	unique_ptr<GLTFLoader> gltf_loader;
+
+
 };
 

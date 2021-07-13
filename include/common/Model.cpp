@@ -5,30 +5,74 @@
 #include "Texture.h"
 #include "TriangleMeshFactory.h"
 #include "RenderUnit.h"
+#include "PBRMaterial.h"
 
-Model::Model(const string& path)
+Model::Model()
 {
-	LoadScene(path);
+
 }
 
 
-void Model::LoadScene(const string& path)
+RootRenderModule* Model::LoadScene(const string& path, MaterialType mat_type)
 {
 	// read file via ASSIMP
 	Assimp::Importer importer;
-	scene = importer.ReadFile(File::GetScenePath(path), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+	scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		std::cout << "ERROR<Assimp>: " << importer.GetErrorString() << endl;
-		return;
+		return nullptr;
 	}
+	//path = "D:/Codes/Another-Ghost/GhostEngine/resource/object/backpack/backpack.obj"
+			//D:\Codes\Another-Ghost\GhostEngine\resource\object\backpack
+	//path = "D:/Codes/Another-Ghost/LearnOpenGL/resources/objects/backpack/backpack.obj"
+	directory = path.substr(0, path.find_last_of('/')) + '/';
 
 	material_map.clear();
 	for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
 	{
-		Material* material = ProcessMaterial(scene->mMaterials[i]);
+		Material* material = ProcessMaterial(scene->mMaterials[i], mat_type);
 		material_map.emplace(i, material);
+
+		int n = scene->mMaterials[i]->GetTextureCount(aiTextureType_NONE);
+		cout << "aiTextureType_NONE" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_DIFFUSE);
+		cout << "aiTextureType_DIFFUSE" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_SPECULAR);
+		cout << "aiTextureType_SPECULAR" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_AMBIENT);
+		cout << "aiTextureType_AMBIENT" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_EMISSIVE);
+		cout << "aiTextureType_EMISSIVE" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_HEIGHT);
+		cout << "aiTextureType_HEIGHT" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_NORMALS);
+		cout << "aiTextureType_NORMALS" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_SHININESS);
+		cout << "aiTextureType_SHININESS" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_OPACITY);
+		cout << "aiTextureType_OPACITY" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_DISPLACEMENT);
+		cout << "aiTextureType_DISPLACEMENT" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_LIGHTMAP);
+		cout << "aiTextureType_LIGHTMAP" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_REFLECTION);
+		cout << "aiTextureType_REFLECTION" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_BASE_COLOR);
+		cout << "aiTextureType_BASE_COLOR" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_NORMAL_CAMERA);
+		cout << "aiTextureType_NORMAL_CAMERA" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_EMISSION_COLOR);
+		cout << "aiTextureType_EMISSION_COLOR" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_METALNESS);
+		cout << "aiTextureType_METALNESS" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_DIFFUSE_ROUGHNESS);
+		cout << "aiTextureType_DIFFUSE_ROUGHNESS" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_AMBIENT_OCCLUSION);
+		cout << "aiTextureType_AMBIENT_OCCLUSION" << ": " << n << "\n";
+		n = scene->mMaterials[i]->GetTextureCount(aiTextureType_UNKNOWN);
+		cout << "aiTextureType_UNKNOWN" << ": " << n << "\n";
 	}
 
 	//for (int i = 0; i < scene->mNumMeshes; ++i)
@@ -38,42 +82,70 @@ void Model::LoadScene(const string& path)
 
 	// retrieve the directory path of the filepath
 
-	//directory = path.substr(0, path.find_last_of('/'));
-
 	// process ASSIMP's root node recursively
 	RootRenderModule* root_render_module = dynamic_cast<RootRenderModule*>(ResourceManager::GetSingleton().CreateRenderModule(nullptr, RenderModuleType::ROOT));
 	ProcessNode(scene->mRootNode, root_render_module);
+
+	return root_render_module;
 }
 
-BasicMaterial* Model::ProcessMaterial(aiMaterial* ai_mat)
+Material* Model::ProcessMaterial(aiMaterial* ai_mat, MaterialType mat_type)
 {
-	BasicMaterial* mat = dynamic_cast<BasicMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::BASIC));
 
-	// 1. diffuse maps
-	mat->diffuse_map_array = ProcessTexture(ai_mat, aiTextureType_DIFFUSE, TextureType::DIFFUSE);
-	// 2. specular maps
-	mat->specular_map_array = ProcessTexture(ai_mat, aiTextureType_SPECULAR, TextureType::SPECULAR);
-	// 3. normal maps
-	mat->normal_map_array = ProcessTexture(ai_mat, aiTextureType_NORMALS, TextureType::NORMAL);
+	if (mat_type == MaterialType::BASIC)
+	{
+		BasicMaterial* mat = dynamic_cast<BasicMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::BASIC));
 
-	return mat;
+		// 1. diffuse maps
+		mat->diffuse_map_array = ProcessTexture(ai_mat, aiTextureType_DIFFUSE, TextureType::DIFFUSE);
+		// 2. specular maps
+		mat->specular_map_array = ProcessTexture(ai_mat, aiTextureType_SPECULAR, TextureType::SPECULAR);
+		// 3. normal maps
+		mat->normal_map_array = ProcessTexture(ai_mat, aiTextureType_NORMALS, TextureType::NORMAL);
+
+		return mat;
+	}
+
+	if (mat_type == MaterialType::PBR)
+	{
+		PBRMaterial* mat = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
+		vector<Texture*> tex_array = ProcessTexture(ai_mat, aiTextureType_BASE_COLOR, TextureType::BASECOLOR);
+		mat->basecolor_map = tex_array.empty() ? nullptr : tex_array.front();
+
+		tex_array = ProcessTexture(ai_mat, aiTextureType_NORMALS, TextureType::NORMAL);
+		mat->normal_map = tex_array.empty() ? nullptr : tex_array.front();
+		tex_array = ProcessTexture(ai_mat, aiTextureType_METALNESS, TextureType::METALNESS);
+		mat->metalness_map = tex_array.empty() ? nullptr : tex_array.front();
+		tex_array = ProcessTexture(ai_mat, aiTextureType_DIFFUSE_ROUGHNESS, TextureType::ROUGHNESS);
+		mat->roughness_map = tex_array.empty() ? nullptr : tex_array.front();
+		tex_array = ProcessTexture(ai_mat, aiTextureType_AMBIENT_OCCLUSION, TextureType::AO);
+		mat->ao_map = tex_array.empty() ? nullptr : tex_array.front();
+		
+		return mat;
+	}
+
+	return nullptr;
 }
 
 vector<Texture*> Model::ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type)
 {
 	vector<Texture*> tex_array;
-
+	int n = mat->GetTextureCount(ai_type);
+	cout << Texture::TypeName(type) << ": " << n << "\n";
 	for (unsigned int i = 0; i < mat->GetTextureCount(ai_type); i++)
 	{
 		aiString str;
 		mat->GetTexture(ai_type, i, &str);
+
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-		TextureFile* tex_file = ResourceManager::GetSingleton().CreateTextureFile(str.C_Str(), TextureFileType::LDR);
-		Texture* tex = ResourceManager::GetSingleton().CreateTexture(type, tex_file);
-		tex->b_genarate_mipmap = true;
-		tex->wrap_param = GL_REPEAT;
-		tex->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
-		tex->Buffer();
+		TextureFile* tex_file = ResourceManager::GetSingleton().CreateTextureFile(directory + str.C_Str(), TextureFileType::LDR);
+		Texture* tex = ResourceManager::GetSingleton().CreateTexture(type, tex_file, true);
+
+		//tex->b_genarate_mipmap = true;
+		//tex->wrap_param = GL_REPEAT;
+		//tex->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+
+		//tex->Buffer();
 		tex_array.emplace_back(tex);
 	}
 
@@ -89,9 +161,11 @@ void Model::ProcessNode(aiNode* node, RenderModule* render_module)
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
-		RenderUnit* render_unit = ResourceManager::GetSingleton().CreateRenderUnit(render_module);
+		RenderUnit* render_unit = ResourceManager::GetSingleton().CreateRenderUnit(render_module);	//空白ru
 
 		ProcessMesh(mesh, render_unit);
+
+		render_module->AddRenderUnit(render_unit);
 		//meshes.push_back(ProcessMesh(mesh)); //这种存储方式并没有保留网格间的父子关系, 试着自己实现下另一种
 	}
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
@@ -156,7 +230,7 @@ void Model::ProcessMesh(aiMesh* ai_mesh, RenderUnit* render_unit)
 	Material* material = material_map[ai_mesh->mMaterialIndex];
 
 	// return a mesh object created from the extracted mesh data
-	TriangleMesh* mesh = ResourceManager::GetSingleton().CreateTriangleMesh(vertex_array, index_array);
+	TriangleMesh* mesh = ResourceManager::GetSingleton().CreateTriangleMesh(true, vertex_array, index_array);
 
 	render_unit->SetMaterial(material);
 	render_unit->SetMesh(mesh);

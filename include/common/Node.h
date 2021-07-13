@@ -5,7 +5,7 @@ class Node
 {
 public:
 
-	Transform transform;
+	Transform local_transform;
 
 	virtual void Update(float dt);
 

@@ -120,6 +120,15 @@
     <None Include="..\resource\shader\basic_f.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\basic_v.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\texture_v.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\channel_combination_f.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">

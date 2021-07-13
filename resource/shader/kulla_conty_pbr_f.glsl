@@ -13,6 +13,7 @@ uniform sampler2D normal_map;
 uniform sampler2D metalness_map;
 uniform sampler2D roughness_map;
 uniform sampler2D ao_map;
+uniform sampler2D metalness_roughness_map;
 
 uniform float roughness;
 
@@ -128,9 +129,11 @@ void main()
 {
 	vec3 albedo = pow(texture(albedo_map, Tex_Coords).rgb, vec3(2.2)); //gamma correction
 	//vec3 albedo = vec3(1.f, 1.f, 1.f);
-    float metalness  = texture(metalness_map, Tex_Coords).r;
+    //float metalness  = texture(metalness_map, Tex_Coords).r;
+	float metalness  = texture(metalness_roughness_map, Tex_Coords).b;
 	//float metalness  = 1.f;
-    float roughness = texture(roughness_map, Tex_Coords).r;
+    //float roughness = texture(roughness_map, Tex_Coords).r;
+	float roughness = texture(metalness_roughness_map, Tex_Coords).g;
 	float ao = texture(ao_map, Tex_Coords).r;
     //float ao = 1.f;
 
@@ -145,35 +148,6 @@ void main()
 
 	//? need to change the kD term
 	vec3 Lo = vec3(0.f);	
-//	for(int i = 0; i < light_position_array.length(); ++i)
-//	{
-//		// calculate per-light radiance
-//		vec3 L = normalize(light_position_array[i].xyz - World_Pos); //light/incident direction
-//		vec3 H = normalize(V + L);
-//		float dist = length(light_position_array[i].xyz - World_Pos);
-//		float attenuation = 1.0 / (dist * dist);
-//		vec3 radiance = light_color_array[i].xyz * attenuation;
-//	
-//		// Cook-Torrance BRDF
-//		float D = DistributionGGX(N, H, roughness);
-//		float G = GeometrySmith(N, V, L, roughness);
-//		vec3 F = FresnelSchlick(H, V, F0);
-//
-//		vec3 num = D * G * F;
-//		float denom = 4 * max(dot(N, V), 0.f) * max(dot(N, L), 0.f); 
-//		vec3 specular = num / max(denom, 0.001); // 0.001 to prevent divide by zero
-//
-//		// kS is equal to Fresnel
-//		vec3 kS = F;
-//
-//		vec3 kD = vec3(1.0) - kS;
-//		kD *= 1.0 - metalness;
-//
-//		float NdotL = max(dot(N, L), 0.f);
-//
-//		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-//	}
-
 	for(int i = 0; i < light_info_array.length(); ++i)
 	//for(int i = 0; i < 1; ++i)
 	{
@@ -234,6 +208,8 @@ void main()
 
 	vec3 Edss = vec3(1.f) - (FssEss + Fms * Ems);
 	vec3 kD =  Edss * albedo * (1 - metalness);	//mutiplying (1 - metalness) is due to only dielectrics have this Kd term
+	//the base color map is the combination of diffuse part of dielectrics and specular part of conductor
+
 	//vec3 kD = vec3(0);
 
 	vec3 color = FssEss * prefiltered_radiance + (Fms * Ems + kD) * irradiance; 

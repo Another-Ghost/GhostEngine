@@ -79,11 +79,11 @@ WFTestRenderer::WFTestRenderer()
 
 void WFTestRenderer::Update(float dt)
 {
-	Camera* camera = RenderManager::GetSingleton().camera;
+	//Camera* camera = RenderManager::GetSingleton().camera;
 
-	pbr_shader->SetProjectionMatrix(camera->PerspectiveMatrix());	//用观察者模式订阅机制改成只在初始化时设置一次，在camera更新projection matrix时通知订阅者
-	pbr_shader->SetViewMatrix(camera->ViewMatrix());
-	pbr_shader->SetCameraPosition(camera->GetPosition());
+	//pbr_shader->SetProjectionMatrix(camera->PerspectiveMatrix());	//用观察者模式订阅机制改成只在初始化时设置一次，在camera更新projection matrix时通知订阅者
+	//pbr_shader->SetViewMatrix(camera->ViewMatrix());
+	//pbr_shader->SetCameraPosition(camera->GetPosition());
 
 	//pbr_shader->SetPointLightArray(SceneManager::GetSingleton().light_array);
 
@@ -93,24 +93,26 @@ void WFTestRenderer::Update(float dt)
 	{
 		PBRMaterial* material = pair.first;
 
-		pbr_shader->BindAlbedoMap(material->albedo_map->texture_id);
-		pbr_shader->BindNormalMap(material->normal_map->texture_id);
-		pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
-		pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
-		pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
+		//pbr_shader->BindBaseColorMap(material->basecolor_map->texture_id);
+		//pbr_shader->BindNormalMap(material->normal_map->texture_id);
+		//pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
+		//pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
+		//pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
+		pbr_shader->BindMaterial(material);
+
 		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
 		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
 		pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->texture_id);
 		pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->texture_id);
 
-		int column_num = 9;
+		int column_num = 1;
 
 		for (const auto& render_unit : pair.second)
 		{
 			Mesh* mesh = render_unit->GetMesh();
 			for (int col = 0; col < column_num; ++col) {
 				
-				mat4 model = render_unit->GetParent()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
+				mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 				model = translate(model, vec3((col - column_num / 2) * 2.5f, 0.f, 0.f));
 				pbr_shader->SetModelMatrix(model);
 

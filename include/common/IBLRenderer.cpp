@@ -106,7 +106,7 @@ void IBLRenderer::Update(float dt)
 	{
 		PBRMaterial* material = pair.first;
 
-		pbr_shader->BindAlbedoMap(material->albedo_map->texture_id);
+		pbr_shader->BindBaseColorMap(material->basecolor_map->texture_id);
 		pbr_shader->BindNormalMap(material->normal_map->texture_id);
 		pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
 		pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
@@ -121,7 +121,7 @@ void IBLRenderer::Update(float dt)
 			Mesh* mesh = render_unit->GetMesh();
 
 			RootRenderModule* root_rm = dynamic_cast<RootRenderModule*>(render_unit);
-			mat4 model = root_rm->GetParentNode()->transform.GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
+			mat4 model = root_rm->GetParentNode()->GetWorldTransform().GetMatrix();	//? 改为通过RootRenderModule成员函数直接获取transform
 			//mat4 model = render_module->GetParent()->transform.GetMatrix();
 			pbr_shader->SetModelMatrix(model);
 

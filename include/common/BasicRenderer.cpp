@@ -1,17 +1,30 @@
 #include "BasicRenderer.h"
 #include "RenderManager.h"
-#include "MVPShader.h"
-#include "Camera.h"
+#include "BasicShader.h"
+#include "BasicMaterial.h"
+#include "RenderUnit.h"
+#include "RenderModule.h"
+
+
 
 BasicRenderer::BasicRenderer()
 {
-	//basic_shader = new MVPShader(File::GetShaderPath("basic_v"), File::GetShaderPath("basic_f"));
+	basic_shader = new BasicShader();
 }
 
 void BasicRenderer::Update(float dt)
 {
-	Camera* camera = RenderManager::GetSingleton().camera;
-	basic_shader->SetProjectionMatrix(camera->PerspectiveMatrix());
-	basic_shader->SetViewMatrix(camera->ViewMatrix());
-	//basic_shader->SetCameraPosition(camera->GetPosition());
+	for (const auto& pair : RenderManager::GetSingleton().basic_mat_unit_map)
+	{
+		basic_shader->BindMaterial(pair.first);
+
+		for (const auto& render_unit : pair.second)
+		{
+			Mesh* mesh = render_unit->GetMesh();
+			mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();
+			basic_shader->SetModelMatrix(model);
+
+			mesh->Draw();
+		}
+	}
 }

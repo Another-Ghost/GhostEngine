@@ -90,6 +90,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,6 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +122,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +138,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -177,6 +181,7 @@
     <None Include="..\resource\shader\background_vs.glsl" />
     <None Include="..\resource\shader\basic_f.glsl" />
     <None Include="..\resource\shader\basic_fs.glsl" />
+    <None Include="..\resource\shader\basic_v.glsl" />
     <None Include="..\resource\shader\basic_vs.glsl" />
     <None Include="..\resource\shader\brdf_fs.glsl" />
     <None Include="..\resource\shader\brdf_vs.glsl" />
@@ -186,6 +191,8 @@
     <None Include="..\resource\shader\pbr_fs.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />
     <None Include="..\resource\shader\single_scattering_energy_f.glsl" />
+    <None Include="..\resource\shader\texture_v.glsl" />
+    <None Include="..\resource\shader\channel_combination_f.glsl" />
     <None Include="..\resource\shader\white_furnace_test_pbr_f.glsl" />
   </ItemGroup>
   <ItemGroup>

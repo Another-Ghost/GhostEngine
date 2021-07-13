@@ -11,15 +11,14 @@ void Node::Update(float dt)
 
 Transform Node::GetWorldTransform()
 {
-	//if(parent)
-	//{
-	//	return local_transform * parent->GetWorldTransform();
-	//}
-	//else
-	//{
-	//	return local_transform;
-	//}
-	return transform;
+	if (parent)
+	{
+		return local_transform * parent->GetWorldTransform();
+	}
+	else
+	{
+		return local_transform;
+	}
 }
 
 void Node::SetWorldTransform(Transform world_transform_)

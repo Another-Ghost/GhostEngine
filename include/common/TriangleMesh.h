@@ -33,7 +33,7 @@ public:
 		vertex_array(vertex_array_), index_array(index_array_)
 	{
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
-		Buffer();
+		//Buffer();
 	}
 
 	void Buffer() override;

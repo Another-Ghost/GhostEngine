@@ -13,10 +13,13 @@ enum class TextureType
 	HEIGHT,
 
 	ALBEDO,
+
+	BASECOLOR, 
 	NORMAL,
 	ROUGHNESS,
 	METALNESS,
 	AO,
+	METALNESSROUGHNESS,
 
 	EQUIRECTANGULARMAP,
 	CUBEMAP,
@@ -24,7 +27,7 @@ enum class TextureType
 
 struct Texture
 {
-	unsigned int texture_id;
+	unsigned int texture_id;	//? 改回id
 	
 	TextureType type; //类型，比如是漫反射贴图或者是镜面光贴图
 	
@@ -63,6 +66,8 @@ struct Texture
 			return "albedo";
 		case TextureType::SPECULAR:
 			return "specular";
+		case TextureType::BASECOLOR:
+			return "basecolor";
 		case TextureType::NORMAL:
 			return "normal";
 		case TextureType::METALNESS:

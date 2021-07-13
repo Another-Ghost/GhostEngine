@@ -34,7 +34,7 @@ struct LDRTextureFile : TextureFile
 {
 	LDRTextureFile(const string& path_, TextureFileType type_ = TextureFileType::LDR):
 	TextureFile(path_, type_){}
-	unsigned char* data;
+	const unsigned char* data;
 	void LoadData() override;
 };
 
@@ -45,4 +45,5 @@ struct HDRTextureFile : TextureFile
 	float* data;
 	void LoadData() override;
 };
+
 

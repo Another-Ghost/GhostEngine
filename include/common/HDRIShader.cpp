@@ -45,6 +45,6 @@ void HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id)
 	glViewport(0, 0, WindowManager::current_window->GetWidth(), WindowManager::current_window->GetHeight());
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->texture_id);
-	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap(之前生成的话修改数据后会失效)
 
 }

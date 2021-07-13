@@ -15,7 +15,9 @@
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
 ResourceManager::ResourceManager()
 {
-    stbi_set_flip_vertically_on_load(true);
+    //stbi_set_flip_vertically_on_load(true);
+
+    gltf_loader = std::make_unique<GLTFLoader>();
 }
 Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, bool b_buffer)
 {
@@ -43,10 +45,14 @@ Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, boo
         texture = new CubeMap(type, file);
         break;
     case TextureType::ALBEDO :
+    case TextureType::BASECOLOR:
     case TextureType::AO:
     case TextureType::METALNESS:
     case TextureType::NORMAL:
     case TextureType::ROUGHNESS:
+    case TextureType::METALNESSROUGHNESS:
+	case TextureType::DIFFUSE:
+	case TextureType::SPECULAR:
         texture = new MaterialMap(type, file);
         break;
     default:
@@ -61,6 +67,12 @@ Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, boo
     texture_array.emplace_back(texture);
 
     return texture;
+}
+
+Texture* ResourceManager::CreateMetalnessRoughnessMap(Texture* metalness_map, Texture* roughness_map)
+{
+
+    return nullptr;
 }
 
 TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileType type)
@@ -129,9 +141,13 @@ Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
     return mesh;
 }
 
-TriangleMesh* ResourceManager::CreateTriangleMesh(const vector<ExpandedVertex>& vertex_array, const vector<unsigned int>& index_array)
+TriangleMesh* ResourceManager::CreateTriangleMesh(bool b_buffer, const vector<ExpandedVertex>& vertex_array, const vector<unsigned int>& index_array)
 {
     TriangleMesh* mesh = new TriangleMesh(vertex_array, index_array);
+    if (b_buffer)
+    {
+        mesh->Buffer();
+    }
     mesh_array.emplace_back(mesh);
     return mesh;
 }
@@ -152,7 +168,12 @@ RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderMo
     default:
         break;
     }
-    render_module->SetParent(parent);
+
+    if (parent)
+    {
+        parent->AddChild(render_module);
+    }
+    //render_module->SetParent(parent);
     render_module_array.emplace_back(render_module);
 
     return render_module;
@@ -161,6 +182,7 @@ RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderMo
 RenderUnit* ResourceManager::CreateRenderUnit(RenderModule* parent, Mesh* mesh, Material* material)
 {
 	RenderUnit* ru = new RenderUnit(parent, mesh, material);
+    parent->AddRenderUnit(ru);
 	render_unit_array.push_back(ru);
 	return ru;
 }

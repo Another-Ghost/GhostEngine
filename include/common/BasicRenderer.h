@@ -9,6 +9,6 @@ public:
 
 
 private:
-	MVPShader* basic_shader;
+	BasicShader* basic_shader;
 };
 

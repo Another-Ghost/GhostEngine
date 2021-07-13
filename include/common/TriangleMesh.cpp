@@ -21,13 +21,13 @@ void TriangleMesh::Buffer()
 	// set the vertex attribute pointers
 	// vertex Positions
 	glEnableVertexAttribArray(0); //参数对应于shader中的position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)0);
-	// vertex normals
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)offsetof(ExpandedVertex, tex_coords));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)0);	//? 改成连续存储
 	// vertex texture coords
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)offsetof(ExpandedVertex, tex_coords));
+	// vertex normals
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)offsetof(ExpandedVertex, normal));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)offsetof(ExpandedVertex, normal));
 	// vertex tangent
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(ExpandedVertex), (void*)offsetof(ExpandedVertex, tangent));

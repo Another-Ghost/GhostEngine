@@ -1,12 +1,13 @@
 #include "PBRShader.h"
 #include "Light.h"
 #include "Camera.h"
+#include "PBRMaterial.h"
 
 PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
 	MVPShader(vertex_path, fragment_path, geometry_path)
 {
-	texture_name_unit_map = {
-		{"albedo_map", 0},
+	texture_name_unit_map = {	//? 改成用texture类全局的映射
+		{"basecolor_map", 0},
 		{"normal_map", 1},
 		{"metalness_map", 2},
 		{"roughness_map", 3},
@@ -14,7 +15,8 @@ PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, con
 		{"irradiance_map", 5}, //environment diffuse irradiance map
 		{"prefilter_map", 6}, //environment specular Split Sum 1st stage 
 		{"brdf_lut", 7}, //environment specular Split Sum 2nd stage 
-		{"ssda_lut", 8}
+		{"ssda_lut", 8},
+		{"metalness_roughness_map", 9}
 	}; //environment specular Split Sum 2nd stage
 
 	for (const auto& name_unit : texture_name_unit_map)
@@ -61,11 +63,32 @@ void PBRShader::SetPointLightArray(const vector<Light*>& light_array)
 	}
 }
 
-
-void PBRShader::BindAlbedoMap(unsigned int tex_id)
+void PBRShader::BindMaterial(PBRMaterial* material)
 {
-	//Use();
-	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["albedo_map"]);
+	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["basecolor_map"]);
+	glBindTexture(GL_TEXTURE_2D, material->basecolor_map->texture_id);
+
+	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["normal_map"]);
+	glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
+
+	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
+	glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
+
+	if (!material->metalness_roughness_map)
+	{
+		//if (material->metalness_map && material->roughness_map)
+			material->CreateMetalnessRoughnessMap();
+	}
+	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["metalness_roughness_map"]);
+	glBindTexture(GL_TEXTURE_2D, material->metalness_roughness_map->texture_id);
+
+}
+
+
+void PBRShader::BindBaseColorMap(unsigned int tex_id)
+{
+	//Use();	//? Don't need this?
+	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["basecolor_map"]);
 	glBindTexture(GL_TEXTURE_2D, tex_id);
 }
 

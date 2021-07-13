@@ -25,7 +25,9 @@ public:
 
 	void SetPointLightArray(const vector<Light*>& light_array);	//? 改为传入PointLight class
 
-	void BindAlbedoMap(unsigned int tex_id);
+	void BindMaterial(PBRMaterial* material);
+
+	void BindBaseColorMap(unsigned int tex_id);
 
 	void BindNormalMap(unsigned int tex_id);
 

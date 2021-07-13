@@ -1,7 +1,7 @@
 #pragma once
 #include "Datatype.h"
 #include "Prerequisite.h"
-
+#include "Material.h"
 #include <vector>
 
 
@@ -9,13 +9,14 @@
 class Model
 {
 public:
-	Model(const string& path);
+	Model();
 
+	RootRenderModule* LoadScene(const string& path, MaterialType mat_type = MaterialType::BASIC);
 
 private:
 	const aiScene* scene;
 
-	//string directory;
+	string directory;
 
 	//static std::vector<Texture> textures;
 	
@@ -23,10 +24,7 @@ private:
 	//static std::vector<Mesh> meshes;
 	map<int, Material*> material_map;
 
-
-	void LoadScene(const string& path);
-
-	BasicMaterial* ProcessMaterial(aiMaterial* ai_mat);
+	Material* ProcessMaterial(aiMaterial* ai_mat, MaterialType mat_type);
 
 	vector<Texture*> ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type);
 

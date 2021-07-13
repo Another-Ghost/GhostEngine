@@ -57,8 +57,10 @@ struct Transform;
 
 class Shader;
 class MVPShader;
+class BasicShader;
 class PBRShader;
 class SkyboxShader;
+class ChannelCombinationShader;
 
 class Mesh;
 class MeshFactory;
@@ -89,4 +91,5 @@ struct HDRTexture;
 struct CubeMap;
 class Renderer;
 class IBLRenderer;
+class BasicRenderer;
 

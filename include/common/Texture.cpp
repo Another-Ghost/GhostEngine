@@ -36,6 +36,11 @@ bool Texture::Buffer()
 		if (!file->b_loaded)
 			file->LoadData();
 
+		internal_format = file->format;
+		width = file->width;
+		height = file->height;
+		data_format = file->format;
+
 		if (dynamic_cast<LDRTextureFile*>(file))
 		{
 			LDRTextureFile* ldr_file = dynamic_cast<LDRTextureFile*>(file);
