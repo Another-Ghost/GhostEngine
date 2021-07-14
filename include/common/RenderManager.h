@@ -131,6 +131,8 @@ private:
 	//GLuint light_color_ssbo;
 
 /*Post Process*/
+	unsigned int gbuffer_fbo;
+
 	Texture* position_gbuffer;
 	Texture* normal_gbuffer;
 	Texture* color_gbuffer;

@@ -24,7 +24,7 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 		// resize framebuffer according to mip-level size.
 		unsigned int mip_width = prefilter_cubemap->width * std::pow(0.5f, mip);	//大小很关键
 		unsigned int mip_height = prefilter_cubemap->height * std::pow(0.5f, mip);
-		//glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+		glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
 		glViewport(0, 0, mip_width, mip_height);
 

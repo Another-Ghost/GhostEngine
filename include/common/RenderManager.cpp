@@ -62,17 +62,28 @@ RenderManager::RenderManager():
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+
+
+/*G-Buffer*/
 	int win_width = WindowManager::s_current_window->GetWidth();
 	int win_height = WindowManager::s_current_window->GetHeight();
-
-	position_gbuffer = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D);
+	
+	glGenFramebuffers(1, &gbuffer_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+	
+	position_gbuffer = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D);	//因为需要采样数据，所以position使用纹理附件而不是渲染缓冲对象附件
 	position_gbuffer->width = win_width;
 	position_gbuffer->height = win_height;
 	position_gbuffer->data_format = GL_RGBA;
 	position_gbuffer->min_filter_param = GL_NEAREST;
 	position_gbuffer->mag_filter_param = GL_NEAREST;
 	position_gbuffer->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_gbuffer->id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_gbuffer->id, 0);	//附加纹理到FBO中
+
+
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	channel_combination_shader = new ChannelCombinationShader();
 
