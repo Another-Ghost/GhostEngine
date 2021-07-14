@@ -24,15 +24,15 @@ void CubeMapShader::RenderCubeMap(const CubeMap* cube_map)
 	{
 		SetViewMatrix(capture_view_array[i]);
 		//SetMat4("view", capture_view_array[i]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, cube_map->texture_id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, cube_map->id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::current_window->GetWidth(), WindowManager::current_window->GetHeight());
+	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
 
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->texture_id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap
 }
 

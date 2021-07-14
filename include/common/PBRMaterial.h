@@ -9,8 +9,9 @@ struct PBRMaterial : Material
 	Texture* roughness_map;
 	Texture* normal_map;
 	Texture* metalness_map;
-	Texture* ao_map;
+	Texture* ao_map{ nullptr };
 	Texture* metalness_roughness_map{ nullptr };
+	Texture* emissive_map{ nullptr };
 
 	bool b_metallic_rough{ false };
 

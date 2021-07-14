@@ -22,18 +22,18 @@ void BasicShader::BindMaterial(BasicMaterial* material)
 	if (material->diffuse_map_array.size())
 	{
 		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["diffuse_map"]);
-		glBindTexture(GL_TEXTURE_2D, material->diffuse_map_array[0]->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->diffuse_map_array[0]->id);
 	}
 
 	if (material->specular_map_array.size())
 	{
 		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["specular_map"]);
-		glBindTexture(GL_TEXTURE_2D, material->specular_map_array[0]->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->specular_map_array[0]->id);
 	}
 
 	if (material->normal_map_array.size())
 	{
 		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["noarmal_map"]);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map_array[0]->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->normal_map_array[0]->id);
 	}
 }

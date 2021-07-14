@@ -62,7 +62,20 @@ RenderManager::RenderManager():
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+	int win_width = WindowManager::s_current_window->GetWidth();
+	int win_height = WindowManager::s_current_window->GetHeight();
+
+	position_gbuffer = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D);
+	position_gbuffer->width = win_width;
+	position_gbuffer->height = win_height;
+	position_gbuffer->data_format = GL_RGBA;
+	position_gbuffer->min_filter_param = GL_NEAREST;
+	position_gbuffer->mag_filter_param = GL_NEAREST;
+	position_gbuffer->Buffer();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_gbuffer->id, 0);
+
 	channel_combination_shader = new ChannelCombinationShader();
+
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -175,15 +188,15 @@ void RenderManager::RenderPBRMaterial(float dt)
 
 		glActiveTexture(GL_TEXTURE0);
 		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		GLCall(glBindTexture(GL_TEXTURE_2D, material->basecolor_map->texture_id));
+		GLCall(glBindTexture(GL_TEXTURE_2D, material->basecolor_map->id));
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, material->metalness_map->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, material->roughness_map->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
 		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
+		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
 
 		for (const auto& render_module : pair.second)
 		{
@@ -250,13 +263,13 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 	//equirectanguler_map->Buffer();
 
 	HDRIShader hdri_cubemap_shader;
-	hdri_cubemap_shader.RenderCubeMap(skybox_cubemap, equirectanguler_map->texture_id);
+	hdri_cubemap_shader.RenderCubeMap(skybox_cubemap, equirectanguler_map->id);
 
 }
 
-void RenderManager::CombineChannels(Texture* out_tex, Texture* tex_1, Texture* tex_2)
+void RenderManager::CombineChannels(Texture* out_tex, Texture* tex1, Texture* tex2)
 {
-	channel_combination_shader->RenderTexture(out_tex, tex_1, tex_2);
+	channel_combination_shader->RenderTexture(out_tex, tex1, tex2);
 }
 
 

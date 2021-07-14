@@ -22,7 +22,7 @@
 
 WFTestRenderer::WFTestRenderer()
 {
-	Window* window = WindowManager::GetSingleton().current_window;
+	Window* window = WindowManager::GetSingleton().s_current_window;
 
 	//1.
 
@@ -37,7 +37,7 @@ WFTestRenderer::WFTestRenderer()
 	irradiance_cubemap->Buffer();
 
 	IrradianceShader* irradiance_shader = new IrradianceShader();
-	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->texture_id);
+	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->id);
 
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
@@ -49,7 +49,7 @@ WFTestRenderer::WFTestRenderer()
 	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
 
 	PrefilterShader* prefilter_shader = new PrefilterShader();
-	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->texture_id);
+	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->id);
 
 
 
@@ -93,17 +93,17 @@ void WFTestRenderer::Update(float dt)
 	{
 		PBRMaterial* material = pair.first;
 
-		//pbr_shader->BindBaseColorMap(material->basecolor_map->texture_id);
-		//pbr_shader->BindNormalMap(material->normal_map->texture_id);
-		//pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
-		//pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
-		//pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
+		//pbr_shader->BindBaseColorMap(material->basecolor_map->id);
+		//pbr_shader->BindNormalMap(material->normal_map->id);
+		//pbr_shader->BindMetalnessMap(material->metalness_map->id);
+		//pbr_shader->BindRoughnessMap(material->roughness_map->id);
+		//pbr_shader->BindAmbientOcclusionMap(material->ao_map->id);
 		pbr_shader->BindMaterial(material);
 
-		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
-		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
-		pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->texture_id);
-		pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->texture_id);
+		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
+		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
+		pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->id);
+		pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->id);
 
 		int column_num = 1;
 
@@ -123,7 +123,7 @@ void WFTestRenderer::Update(float dt)
 		}
 	}
 
-	skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->texture_id);
+	//skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
 }
 
 void WFTestRenderer::OnKeyPressed(Window* window)

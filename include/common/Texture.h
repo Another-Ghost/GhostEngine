@@ -27,7 +27,7 @@ enum class TextureType
 
 struct Texture
 {
-	unsigned int texture_id;	//? 改回id
+	unsigned int id;	//? 改回id
 	
 	TextureType type; //类型，比如是漫反射贴图或者是镜面光贴图
 	
@@ -49,6 +49,8 @@ struct Texture
 	GLint wrap_param;
 
 	GLint min_filter_param;
+
+	GLint mag_filter_param;
 
 	Texture(TextureType type_, TextureFile* file_ = nullptr);
 	

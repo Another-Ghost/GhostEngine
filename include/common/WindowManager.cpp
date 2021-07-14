@@ -6,7 +6,7 @@
 #include <assert.h>
 
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
-Window* WindowManager::current_window = nullptr;
+Window* WindowManager::s_current_window = nullptr;
 vector<Window*> WindowManager::window_array;
 
 
@@ -35,12 +35,12 @@ bool WindowManager::Initialize()
 
 void WindowManager::Update(float dt)
 {
-	current_window->Update(dt);
+	s_current_window->Update(dt);
 
 }
 void WindowManager::EndUpdate(float dt)
 {
-	current_window->EndUpdate();
+	s_current_window->EndUpdate();
 }
 void WindowManager::Terminate()
 {
@@ -65,7 +65,7 @@ Window* WindowManager::CreateWindow(int width, int height, const std::string& ti
 		//return nullptr;
 	}
 	window_array.push_back(window);
-	current_window = window;
+	s_current_window = window;
 	//- 生成一个Window的时候自动将上下文切换至新生成的window
 	glfwMakeContextCurrent(glfw_window);
 
@@ -92,11 +92,11 @@ Window* WindowManager::CreateWindow(int width, int height, const std::string& ti
 void WindowManager::FrameBufferSizeCallBack(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height); //- 考虑移进window类里
-	if (current_window)
+	if (s_current_window)
 	{
-		if (current_window->glfw_window == window)
+		if (s_current_window->glfw_window == window)
 		{
-			current_window->FrameBufferSizeCallBack();
+			s_current_window->FrameBufferSizeCallBack();
 		}
 		else
 		{
@@ -109,11 +109,11 @@ void WindowManager::FrameBufferSizeCallBack(GLFWwindow* window, int width, int h
 
 void WindowManager::MouseCallback(GLFWwindow* window, double x_pos, double y_pos)
 {
-	if (current_window)
+	if (s_current_window)
 	{
-		if (current_window->glfw_window == window)
+		if (s_current_window->glfw_window == window)
 		{
-			current_window->MouseCallback(x_pos, y_pos);
+			s_current_window->MouseCallback(x_pos, y_pos);
 		}
 		else
 		{
@@ -126,11 +126,11 @@ void WindowManager::MouseCallback(GLFWwindow* window, double x_pos, double y_pos
 
 void WindowManager::ScrollCallback(GLFWwindow* window, double x_offset, double y_offset)
 {
-	if (current_window)
+	if (s_current_window)
 	{
-		if (current_window->glfw_window == window)
+		if (s_current_window->glfw_window == window)
 		{
-			current_window->ScrollCallback(x_offset, y_offset);
+			s_current_window->ScrollCallback(x_offset, y_offset);
 		}
 		else
 		{

@@ -160,8 +160,8 @@
 ////{
 ////	string filename = directory + '/' + name;
 ////
-////	unsigned int texture_id;
-////	glGenTextures(1, &texture_id);
+////	unsigned int id;
+////	glGenTextures(1, &id);
 ////
 ////	int width, height, num_components;
 ////
@@ -179,7 +179,7 @@
 ////		else if (num_components == 4)
 ////			format = GL_RGBA;
 ////
-////		glBindTexture(GL_TEXTURE_2D, texture_id);
+////		glBindTexture(GL_TEXTURE_2D, id);
 ////		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 ////		glGenerateMipmap(GL_TEXTURE_2D);
 ////
@@ -196,5 +196,5 @@
 ////		stbi_image_free(data);
 ////	}
 ////
-////	return texture_id;
+////	return id;
 ////}

@@ -17,8 +17,8 @@ bool EquirectangularMap::Buffer()
 		if (dynamic_cast<HDRTextureFile*>(file))
 		{
 			HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(file);
-			glGenTextures(1, &texture_id);
-			glBindTexture(GL_TEXTURE_2D, texture_id);
+			glGenTextures(1, &id);
+			glBindTexture(GL_TEXTURE_2D, id);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, hdr_file->width, hdr_file->height, 0, GL_RGB, GL_FLOAT, hdr_file->data); // note how we specify the texture's data value to be float
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_param);

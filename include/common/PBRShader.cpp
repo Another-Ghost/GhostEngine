@@ -16,7 +16,8 @@ PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, con
 		{"prefilter_map", 6}, //environment specular Split Sum 1st stage 
 		{"brdf_lut", 7}, //environment specular Split Sum 2nd stage 
 		{"ssda_lut", 8},
-		{"metalness_roughness_map", 9}
+		{"metalness_roughness_map", 9},
+		{"emissive_map", 10}
 	}; //environment specular Split Sum 2nd stage
 
 	for (const auto& name_unit : texture_name_unit_map)
@@ -66,13 +67,21 @@ void PBRShader::SetPointLightArray(const vector<Light*>& light_array)
 void PBRShader::BindMaterial(PBRMaterial* material)
 {
 	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["basecolor_map"]);
-	glBindTexture(GL_TEXTURE_2D, material->basecolor_map->texture_id);
+	glBindTexture(GL_TEXTURE_2D, material->basecolor_map->id);
 
 	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["normal_map"]);
-	glBindTexture(GL_TEXTURE_2D, material->normal_map->texture_id);
+	glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
 
-	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
-	glBindTexture(GL_TEXTURE_2D, material->ao_map->texture_id);
+	if (material->ao_map)
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
+		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
+	}
+	else
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	if (!material->metalness_roughness_map)
 	{
@@ -80,7 +89,33 @@ void PBRShader::BindMaterial(PBRMaterial* material)
 			material->CreateMetalnessRoughnessMap();
 	}
 	glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["metalness_roughness_map"]);
-	glBindTexture(GL_TEXTURE_2D, material->metalness_roughness_map->texture_id);
+	glBindTexture(GL_TEXTURE_2D, material->metalness_roughness_map->id);
+
+	if (material->emissive_map)
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["emissive_map"]);
+		glBindTexture(GL_TEXTURE_2D, material->emissive_map->id);
+	}
+	else
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["emissive_map"]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+	}
+
+#ifdef DEBUG_MODE
+	if (material->metalness_map)
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["metalness_map"]);
+		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
+	}
+
+	if (material->roughness_map)
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["roughness_map"]);
+		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
+	}
+#endif
 
 }
 

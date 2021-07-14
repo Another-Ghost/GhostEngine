@@ -15,8 +15,8 @@ bool CubeMap::Buffer()
 {
 	if (!file) 
 	{
-		glGenTextures(1, &texture_id);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);
+		glGenTextures(1, &id);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, id);
 		for (unsigned int i = 0; i < 6; ++i)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internal_format, width, height, 0, data_format, data_type, nullptr);

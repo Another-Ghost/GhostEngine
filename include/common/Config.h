@@ -1,5 +1,4 @@
 #pragma once
-class Config
-{
-};
+
+#define DEBUG_MODE
 

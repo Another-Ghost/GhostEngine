@@ -35,13 +35,13 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 		for (int i = 0; i < 6; ++i)
 		{
 			SetViewMatrix(capture_view_array[i]);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->texture_id, mip); //最后一个参数mip决定渲染到绑定的纹理的哪一层mipmap上
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilter_cubemap->id, mip); //最后一个参数mip决定渲染到绑定的纹理的哪一层mipmap上
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //? 是否应该被加到每个drawcall之前
 			RenderManager::GetSingleton().DrawCaptureCubeMesh();
 		}
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::current_window->GetWidth(), WindowManager::current_window->GetHeight());
+	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
 }
 

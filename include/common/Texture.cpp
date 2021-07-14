@@ -6,8 +6,8 @@
 #include <iostream>
 
 Texture::Texture(TextureType type_, TextureFile* file_) :
-	type(type_), file(file_), b_genarate_mipmap(false), wrap_param(GL_CLAMP_TO_EDGE), min_filter_param(GL_LINEAR),
-	internal_format(GL_RGB16F), data_format(GL_RGB), data_type(GL_FLOAT), width(512), height(512), texture_id(0)
+	type(type_), file(file_), b_genarate_mipmap(false), wrap_param(GL_CLAMP_TO_EDGE), min_filter_param(GL_LINEAR), mag_filter_param(GL_LINEAR),
+	internal_format(GL_RGB16F), data_format(GL_RGB), data_type(GL_FLOAT), width(512), height(512), id(0)
 {
 	//因为constructor不应该调用virtual方法，所有不能调用Buffer
 }
@@ -19,8 +19,8 @@ void Texture::LoadData()
 
 bool Texture::Buffer()
 {
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
 
 	if (!file)
 	{
@@ -42,7 +42,9 @@ bool Texture::Buffer()
 		if (dynamic_cast<LDRTextureFile*>(file))
 		{
 			LDRTextureFile* ldr_file = dynamic_cast<LDRTextureFile*>(file);
-			glTexImage2D(GL_TEXTURE_2D, 0, ldr_file->format, ldr_file->width, ldr_file->height, 0, ldr_file->format, GL_UNSIGNED_BYTE, ldr_file->data);
+			//glTexImage2D(GL_TEXTURE_2D, 0, ldr_file->format, ldr_file->width, ldr_file->height, 0, ldr_file->format, GL_UNSIGNED_BYTE, ldr_file->data);
+			glTexImage2D(GL_TEXTURE_2D, 0, internal_format, ldr_file->width, ldr_file->height, 0, data_format, GL_UNSIGNED_BYTE, ldr_file->data);
+
 		}
 		//stbi_image_free(data);
 		//std::cout << "ERROR<Texture> from Buffer: texture failed to load at path: " << path << endl;
@@ -57,7 +59,7 @@ bool Texture::Buffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_param);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_param);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter_param);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter_param);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

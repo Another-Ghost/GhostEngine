@@ -14,6 +14,7 @@ uniform sampler2D metalness_map;
 uniform sampler2D roughness_map;
 uniform sampler2D ao_map;
 uniform sampler2D metalness_roughness_map;
+uniform sampler2D emissive_map;
 
 uniform float roughness;
 
@@ -136,6 +137,7 @@ void main()
 	float roughness = texture(metalness_roughness_map, Tex_Coords).g;
 	float ao = texture(ao_map, Tex_Coords).r;
     //float ao = 1.f;
+	vec3 emissive = texture(emissive_map, Tex_Coords).rgb;
 
 	vec3 N = GetNormalFromMap();
 	vec3 V = normalize(camera.position.xyz - World_Pos);	//view direction/solid angle, point to outside
@@ -215,8 +217,11 @@ void main()
 	vec3 color = FssEss * prefiltered_radiance + (Fms * Ems + kD) * irradiance; 
 	//vec3 color = Edss;
 
-	color = color * ao;
-	color += Lo;
+	color = (color + Lo) * ao;
+	color += emissive;
+	//color = color * ao + Lo;
+	//color += Lo ;
+
     //vec3 specular = prefiltered_color * (F * brdf.x + brdf.y);
 
 	//float ssda = texture(ssda_lut, vec2(max(dot(N, V), 0.0), roughness)).r;

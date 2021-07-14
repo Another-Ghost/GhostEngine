@@ -85,7 +85,7 @@ public:
 	GLuint GetLightSSBO() { return light_ssbo; }
 	//GLuint GetLightColorSSBO() { return light_color_ssbo; }
 
-	void CombineChannels(Texture* out_tex, Texture* tex_1, Texture* tex_2);
+	void CombineChannels(Texture* out_tex, Texture* tex1, Texture* tex2);
 
 private:
 
@@ -129,5 +129,10 @@ private:
 
 	GLuint camera_ubo;
 	//GLuint light_color_ssbo;
+
+/*Post Process*/
+	Texture* position_gbuffer;
+	Texture* normal_gbuffer;
+	Texture* color_gbuffer;
 };
 

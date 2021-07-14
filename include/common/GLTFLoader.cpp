@@ -150,24 +150,40 @@ map<string, Material*> GLTFLoader::ProcessMaterial(const Microsoft::glTF::Docume
 		//material->basecolor_map->min_filter_param = GL_LINEAR;
 		//material->basecolor_map->b_genarate_mipmap = false;
 		//material->basecolor_map->Buffer();
+		if (gltf_mat.normalTexture.textureId != "")
+		{
+			img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.normalTexture.textureId).imageId).uri;
+			tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
+			material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, tex_file, true);
+			//material->normal_map->wrap_param = GL_CLAMP;
+			//material->normal_map->Buffer();
+		}
 
-		img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.normalTexture.textureId).imageId).uri;
-		tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
-		material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, tex_file, true);
-		//material->normal_map->wrap_param = GL_CLAMP;
-		//material->normal_map->Buffer();
+		if (gltf_mat.occlusionTexture.textureId != "")
+		{
+			img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.occlusionTexture.textureId).imageId).uri;
+			tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
+			material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, tex_file, true);
+			//material->ao_map->wrap_param = GL_CLAMP;
+			//material->ao_map->Buffer();
+		}
 
-		img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.occlusionTexture.textureId).imageId).uri;
-		tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
-		material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, tex_file, true);
-		//material->ao_map->wrap_param = GL_CLAMP;
-		//material->ao_map->Buffer();
+		if (gltf_mat.metallicRoughness.metallicRoughnessTexture.textureId != "")
+		{
+			img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.metallicRoughness.metallicRoughnessTexture.textureId).imageId).uri;
+			tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
+			material->metalness_roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESSROUGHNESS, tex_file, true);
+			//material->metalness_roughness_map->wrap_param = GL_CLAMP;
+			//material->metalness_roughness_map->Buffer();
+		}
 
-		img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.metallicRoughness.metallicRoughnessTexture.textureId).imageId).uri;
-		tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
-		material->metalness_roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESSROUGHNESS, tex_file, true);
-		//material->metalness_roughness_map->wrap_param = GL_CLAMP;
-		//material->metalness_roughness_map->Buffer();
+
+		if (gltf_mat.emissiveTexture.textureId != "")
+		{
+			img_path = parent_path.string() + "/" + document.images.Get(document.textures.Get(gltf_mat.emissiveTexture.textureId).imageId).uri;
+			tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(img_path, TextureFileType::LDR));
+			material->emissive_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESSROUGHNESS, tex_file, true);
+		}
 
 		material_map.emplace(gltf_mat.id, material);
 	}

@@ -21,7 +21,7 @@
 
 IBLRenderer::IBLRenderer()
 {
-	Window* window = WindowManager::GetSingleton().current_window;
+	Window* window = WindowManager::GetSingleton().s_current_window;
 
 	//1.
 	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
@@ -35,7 +35,7 @@ IBLRenderer::IBLRenderer()
 	equirectanguler_map->Buffer();
 	
 	HDRIShader* hdri_cubemap_shader = new HDRIShader();
-	hdri_cubemap_shader->RenderCubeMap(env_cubemap, equirectanguler_map->texture_id);
+	hdri_cubemap_shader->RenderCubeMap(env_cubemap, equirectanguler_map->id);
 
 
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
@@ -48,7 +48,7 @@ IBLRenderer::IBLRenderer()
 	irradiance_cubemap->Buffer();
 
 	IrradianceShader* irradiance_shader = new IrradianceShader();
-	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->texture_id);
+	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->id);
 
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
@@ -61,7 +61,7 @@ IBLRenderer::IBLRenderer()
 	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
 
 	PrefilterShader* prefilter_shader = new PrefilterShader();
-	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->texture_id);
+	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->id);
 	
 	
 	//4. generate a 2D LUT from the BRDF equations used.
@@ -106,14 +106,14 @@ void IBLRenderer::Update(float dt)
 	{
 		PBRMaterial* material = pair.first;
 
-		pbr_shader->BindBaseColorMap(material->basecolor_map->texture_id);
-		pbr_shader->BindNormalMap(material->normal_map->texture_id);
-		pbr_shader->BindMetalnessMap(material->metalness_map->texture_id);
-		pbr_shader->BindRoughnessMap(material->roughness_map->texture_id);
-		pbr_shader->BindAmbientOcclusionMap(material->ao_map->texture_id);
-		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->texture_id);
-		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->texture_id);
-		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->texture_id);
+		pbr_shader->BindBaseColorMap(material->basecolor_map->id);
+		pbr_shader->BindNormalMap(material->normal_map->id);
+		pbr_shader->BindMetalnessMap(material->metalness_map->id);
+		pbr_shader->BindRoughnessMap(material->roughness_map->id);
+		pbr_shader->BindAmbientOcclusionMap(material->ao_map->id);
+		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
+		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
+		pbr_shader->BindEnvSpecularBRDFLUT(brdf_lut_texture->id);
 
 
 		for (const auto& render_unit : pair.second)
@@ -129,6 +129,6 @@ void IBLRenderer::Update(float dt)
 		}
 	}
 
-	skybox_shader->RenderSkybox(env_cubemap->texture_id);
+	skybox_shader->RenderSkybox(env_cubemap->id);
 }
 

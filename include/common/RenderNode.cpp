@@ -20,5 +20,8 @@ void RenderNode::AttachRenderModule(RootRenderModule* root_render_module_)
 
 void RenderNode::Update(float dt)
 {
-	root_render_module->Update(dt);
+	if (root_render_module)
+	{
+		root_render_module->Update(dt);
+	}
 }
