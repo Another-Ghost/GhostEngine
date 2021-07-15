@@ -9,7 +9,7 @@ enum class TextureFileType
 
 struct TextureFile
 {
-	TextureFile(const string& path_, TextureFileType type_) :
+	TextureFile(TextureFileType type_, const string& path_) :
 		path(path_), type(type_), b_loaded(false) {};
 
 	string path;
@@ -32,16 +32,16 @@ struct TextureFile
 
 struct LDRTextureFile : TextureFile
 {
-	LDRTextureFile(const string& path_, TextureFileType type_ = TextureFileType::LDR):
-	TextureFile(path_, type_){}
+	LDRTextureFile(const string& path_ = "", TextureFileType type_ = TextureFileType::LDR):
+	TextureFile(type_, path_){}
 	const unsigned char* data;
 	void LoadData() override;
 };
 
 struct HDRTextureFile : TextureFile
 {
-	HDRTextureFile(const string& path_, TextureFileType type_ = TextureFileType::HDR) :
-		TextureFile(path_, type_) {}
+	HDRTextureFile(const string& path_ = "", TextureFileType type_ = TextureFileType::HDR) :
+		TextureFile(type_, path_) {}
 	float* data;
 	void LoadData() override;
 };

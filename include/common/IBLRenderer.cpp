@@ -1,9 +1,6 @@
-﻿#include "IBLRenderer.h"
-#include "ResourceManager.h"
-#include "RenderManager.h"
-#include "SceneManager.h"
-#include "Camera.h"
-#include "Window.h"
+﻿#ifdef IBL_RENDERER
+
+#include "IBLRenderer.h"
 #include "WindowManager.h"
 #include "PBRMaterial.h"
 #include "RenderModule.h"
@@ -30,7 +27,7 @@ IBLRenderer::IBLRenderer()
 	env_cubemap->b_genarate_mipmap = false;
 	env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	env_cubemap->Buffer();
-	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(File::GetTexturePath("hdr/sky0025.hdr"), TextureFileType::HDR));
+	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/sky0025.hdr")));
 	equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
 	equirectanguler_map->Buffer();
 	
@@ -132,3 +129,4 @@ void IBLRenderer::Update(float dt)
 	skybox_shader->RenderSkybox(env_cubemap->id);
 }
 
+#endif

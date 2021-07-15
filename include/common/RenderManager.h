@@ -131,10 +131,22 @@ private:
 	//GLuint light_color_ssbo;
 
 /*Post Process*/
+	/*G-buffer*/
 	unsigned int gbuffer_fbo;
+	unsigned int gbuffer_depth_rbo;	//? 是否可以使用capture_fbo
 
-	Texture* position_gbuffer;
-	Texture* normal_gbuffer;
-	Texture* color_gbuffer;
+	Texture* position_g_attachment;
+	Texture* normal_g_attachment;
+	Texture* color_g_attachment;
+
+	/*SSAO*/
+	unsigned int ssao_fbo;
+	unsigned int ssao_blur_fbo;
+	Texture* ssao_color_attachment;
+	Texture* ssao_blur_color_attachment;
+
+	vector<vec3> ssao_kernel;
+	int sample_num;
+	Texture* noise_texture;
 };
 

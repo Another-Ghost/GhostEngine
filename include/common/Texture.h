@@ -23,6 +23,8 @@ enum class TextureType
 
 	EQUIRECTANGULARMAP,
 	CUBEMAP,
+
+	ATTACHMENT,
 };
 
 struct Texture

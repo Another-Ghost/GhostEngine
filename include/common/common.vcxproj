@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
@@ -171,10 +172,12 @@
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
+    <ClCompile Include="LightingPassShader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="MaterialMap.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFactory.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -206,6 +209,7 @@
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
+    <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureFile.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -217,6 +221,7 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
     <ClInclude Include="BasicRenderer.h" />
@@ -241,10 +246,12 @@
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
+    <ClInclude Include="LightingPassShader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MaterialMap.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFactory.h" />
     <ClInclude Include="Model.h" />
@@ -277,6 +284,7 @@
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
+    <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureFile.h" />
     <ClInclude Include="Transform.h" />

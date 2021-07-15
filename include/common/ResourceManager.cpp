@@ -6,6 +6,7 @@
 #include "EquirectangularMap.h"
 #include "MaterialMap.h"
 #include "CubeMap.h"
+#include "AttachmentTexture.h"
 #include "TextureFile.h"
 #include "RootRenderModule.h"
 #include "TriangleMesh.h"
@@ -19,7 +20,7 @@ ResourceManager::ResourceManager()
 
     gltf_loader = std::make_unique<GLTFLoader>();
 }
-Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, bool b_buffer)
+Texture* ResourceManager::CreateTexture(TextureType type, bool b_buffer, TextureFile* file)
 {
     if (file != nullptr)
     {
@@ -55,6 +56,9 @@ Texture* ResourceManager::CreateTexture(TextureType type, TextureFile* file, boo
 	case TextureType::SPECULAR:
         texture = new MaterialMap(type, file);
         break;
+    case TextureType::ATTACHMENT:
+        texture = new AttachmentTexture();
+        break;
     default:
         break;
     }
@@ -75,7 +79,7 @@ Texture* ResourceManager::CreateMetalnessRoughnessMap(Texture* metalness_map, Te
     return nullptr;
 }
 
-TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileType type)
+TextureFile* ResourceManager::CreateTextureFile(TextureFileType type, bool b_load, const string& path)
 {
     for (const auto& file : texture_file_array)
     {
@@ -85,19 +89,21 @@ TextureFile* ResourceManager::CreateTextureFile(const string& path, TextureFileT
         }
     }
 
-    TextureFile* texture_file;
+    TextureFile* texture_file = nullptr;
     switch (type)
     {
     case TextureFileType::LDR:
-        texture_file = new LDRTextureFile(path, type);
+        texture_file = new LDRTextureFile(path);
     	break;
     case TextureFileType::HDR:
-        texture_file = new HDRTextureFile(path, type);
-        break;
-    default:
+        texture_file = new HDRTextureFile(path);
         break;
     }
 
+    if (b_load)
+    {
+        texture_file->LoadData();
+    }
 
     texture_file_array.push_back(texture_file);
 

@@ -31,8 +31,6 @@ bool Texture::Buffer()
 	}
 	else
 	{
-		if (!file->b_loaded)
-			file->LoadData();
 
 		internal_format = file->format;
 		width = file->width;

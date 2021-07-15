@@ -45,11 +45,11 @@ public:
 
 	ResourceManager();
 
-	Texture* CreateTexture(TextureType type, TextureFile* file = nullptr, bool b_buffer = false);
+	Texture* CreateTexture(TextureType type, bool b_buffer = false, TextureFile* file = nullptr);	//b_buffer为true代表使用所选TextureType的默认参数进行缓存
 
 	Texture* CreateMetalnessRoughnessMap(Texture* metalness_map, Texture* roughness_map);
 
-	TextureFile* CreateTextureFile(const string& path, TextureFileType type);
+	TextureFile* CreateTextureFile(TextureFileType type, bool b_load = false, const string& path = "");
 
 	Material* CreateMaterial(MaterialType type);
 

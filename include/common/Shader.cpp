@@ -135,4 +135,47 @@ void Shader::CheckCompileErrors(GLuint shader, string type)
 
 }
 
+string Shader::GetName(TextureUnit unit)
+{
+	switch (unit)
+	{
+	case TextureUnit::BASE_COLOR:
+		return "basecolor_map";
+		break;
+	case TextureUnit::NORMAL:
+		return "normal_map";
+		break;
+	case TextureUnit::AMBIENT_OCCLUSION:
+		return "ao_map";
+		break;
+	case TextureUnit::METALNESS_ROUGHNESS:
+		return "metalness_roughness_map";
+		break;
+	case TextureUnit::EMISSIVE:
+		return "emissive_map";
+		break;
+	case TextureUnit::IRRADIANCE:
+		return "irradiance_map";
+		break;
+	case TextureUnit::LIGHT_PREFILTER:
+		return "light_prefilter_map";
+		break;
+	case TextureUnit::BRDF_LUT:
+		return "brdf_lut";
+		break;
+	case TextureUnit::G_POSITION:
+		return "g_position";
+		break;
+	case TextureUnit::G_NORMAL:
+		return "g_normal";
+		break;
+	case TextureUnit::G_COLOR:
+		return "g_color";
+		break;
+	case TextureUnit::SSAO:
+		return "ssao";
+		break;
+	}
+}
+
 

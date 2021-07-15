@@ -1,4 +1,6 @@
-﻿#include "common/Root.h"
+﻿#ifdef SAMPLE_IBL
+
+#include "common/Root.h"
 #include "common/WindowManager.h"
 #include "BasicWindowFactory.h"
 #include "BasicWindow.h"
@@ -20,7 +22,7 @@
 #include <memory>
 
 //#define SAMPLE_IBL
-#ifdef SAMPLE_IBL
+
 
 int main()
 {

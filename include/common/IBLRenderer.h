@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef IBL_RENDERER
 
 #include "Renderer.h"
 class IBLRenderer : public Renderer
@@ -32,3 +33,5 @@ private:
 	EquirectangularMap* equirectanguler_map;
 
 };
+
+#endif

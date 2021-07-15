@@ -11,8 +11,6 @@ bool EquirectangularMap::Buffer()
 {
 	if (file)
 	{
-		if (!file->b_loaded)
-			file->LoadData();
 
 		if (dynamic_cast<HDRTextureFile*>(file))
 		{

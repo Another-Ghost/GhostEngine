@@ -9,7 +9,7 @@
 
 std::string File::GetShaderPath(const std::string& name)
 {
-    return "../resource/shader/" + name + ".glsl";  //VS中默认的当前路径为vcxproj文件所在目录
+    return "../resource/shader/" + name + ".glsl";  //VS中默认的当前路径为vcxproj文件所在目录  //? 不加glsl
 }
 
 std::string File::GetScenePath(const std::string& path)

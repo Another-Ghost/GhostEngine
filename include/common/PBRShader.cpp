@@ -9,15 +9,19 @@ PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, con
 	texture_name_unit_map = {	//? 改成用texture类全局的映射
 		{"basecolor_map", 0},
 		{"normal_map", 1},
-		{"metalness_map", 2},
-		{"roughness_map", 3},
+		{"metalness_map", 2},	//deprecated
+		{"roughness_map", 3},	//deprecated
 		{"ao_map", 4},
 		{"irradiance_map", 5}, //environment diffuse irradiance map
 		{"prefilter_map", 6}, //environment specular Split Sum 1st stage 
 		{"brdf_lut", 7}, //environment specular Split Sum 2nd stage 
 		{"ssda_lut", 8},
 		{"metalness_roughness_map", 9},
-		{"emissive_map", 10}
+		{"emissive_map", 10},
+		{"g_position", 11},
+		{"g_normal", 12},
+		{"g_color", 13},
+		{"ssao", 14}
 	}; //environment specular Split Sum 2nd stage
 
 	for (const auto& name_unit : texture_name_unit_map)
@@ -103,7 +107,7 @@ void PBRShader::BindMaterial(PBRMaterial* material)
 
 	}
 
-#ifdef DEBUG_MODE
+#ifdef DEBUG_MODE_MATERIAL
 	if (material->metalness_map)
 	{
 		glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["metalness_map"]);

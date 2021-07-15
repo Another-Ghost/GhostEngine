@@ -5,17 +5,38 @@
 #include <sstream>
 #include <iostream>
 
-using std::cout;
-using std::string;
 using std::ifstream;
 using std::stringstream;
 
 
+enum class TextureUnit
+{
+	BASE_COLOR = 0,
+	NORMAL = 1,
+	AMBIENT_OCCLUSION = 2, 
+	METALNESS_ROUGHNESS = 3,
+	EMISSIVE = 4,
+	IRRADIANCE = 5,
+	LIGHT_PREFILTER = 6,
+	BRDF_LUT = 7,
+	G_POSITION = 8,
+	G_NORMAL = 9,
+	G_COLOR = 10, 
+	SSAO = 11,
+};
+
+//struct TextureUnit
+//{
+//	string name;
+//	int number;
+//};
+
 class Shader
 {
 
-
 public:
+
+
 	Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_ = "");
 
 	~Shader() { Destroy(); }
@@ -51,6 +72,11 @@ public:
 	void SetMat4(const string& name, const mat4& mat) const { Use(); glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]); }
 
 	unsigned int GetID() { return id; }
+
+
+	static int GetNumber(TextureUnit unit) { return static_cast<int>(unit); }
+	static string GetName(TextureUnit unit);
+	void UseTextureUnit(TextureUnit unit) { Use(); SetInt(GetName(unit), (int)unit); }
 
 protected:
 	unsigned int id;

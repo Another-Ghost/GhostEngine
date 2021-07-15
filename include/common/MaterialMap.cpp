@@ -1,7 +1,7 @@
 #include "MaterialMap.h"
 #include "TextureFile.h"
 
-MaterialMap::MaterialMap(TextureType type_, TextureFile* file_, bool b_buffer):
+MaterialMap::MaterialMap(TextureType type_, TextureFile* file_):
 	Texture(type_, file_)
 {
 	wrap_param = GL_REPEAT;
