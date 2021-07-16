@@ -28,7 +28,7 @@ void ChannelCombinationShader::RenderTexture(const Texture* out_tex, const Textu
 	glViewport(0, 0, out_tex->width, out_tex->height);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	RenderManager::GetSingleton().DrawCaptureQuadMesh();
+	RenderManager::GetSingleton().DrawCaptureQuadMesh(this);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
 

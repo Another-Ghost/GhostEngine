@@ -10,8 +10,6 @@ in vec3 Normal;
 //material
 uniform sampler2D basecolor_map;
 uniform sampler2D normal_map;
-//uniform sampler2D metalness_map;
-//uniform sampler2D roughness_map;
 uniform sampler2D ao_map;
 uniform sampler2D metalness_roughness_map;
 uniform sampler2D emissive_map;
@@ -20,7 +18,7 @@ uniform float roughness;
 
 //IBL
 uniform samplerCube irradiance_map;
-uniform samplerCube prefilter_map;
+uniform samplerCube light_prefilter_map;
 uniform sampler2D brdf_lut;
 
 //uniform sampler2D ssda_lut;
@@ -47,7 +45,6 @@ struct CameraInfo
     mat4 view;
     mat4 projection;
 };
-
 layout(std140, binding = 0) uniform Camera
 {
     CameraInfo camera;
@@ -199,7 +196,7 @@ void main()
 
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
-    vec3 prefiltered_radiance = textureLod(prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+    vec3 prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
     vec2 brdf  = texture(brdf_lut, vec2(max(dot(N, V), 0.0), roughness)).rg;
 	vec3 FssEss = kS * brdf.x + brdf.y;
 

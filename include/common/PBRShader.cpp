@@ -29,33 +29,35 @@ PBRShader::PBRShader(const string& vertex_path, const string& fragment_path, con
 	//	Use();
 	//	SetInt(name_unit.first, name_unit.second);
 	//}
-	Initialize();
+	Initialize(false);
 
 }
 
-void PBRShader::Reload()
+//void PBRShader::Reload()
+//{
+//	//Shader::Reload();
+//
+//	Initialize(true);
+//}
+
+
+
+
+void PBRShader::Initialize(bool b_reload)
 {
-	Shader::Reload();
-
-	Initialize();
-}
-
-
-
-void PBRShader::Initialize()
-{
-	UseTextureUnit(TextureUnit::base_color);
-	UseTextureUnit(TextureUnit::normal);
-	UseTextureUnit(TextureUnit::ambient_occlusion);
-	UseTextureUnit(TextureUnit::metalness_roughness);
-	UseTextureUnit(TextureUnit::emissive);
-	UseTextureUnit(TextureUnit::irradiance);
-	UseTextureUnit(TextureUnit::light_prefilter);
+	UseTextureUnit(TextureUnit::basecolor_map);
+	UseTextureUnit(TextureUnit::normal_map);
+	UseTextureUnit(TextureUnit::ao_map);
+	UseTextureUnit(TextureUnit::metalness_roughness_map);
+	UseTextureUnit(TextureUnit::emissive_map);
+	UseTextureUnit(TextureUnit::irradiance_map);
+	UseTextureUnit(TextureUnit::light_prefilter_map);
 	UseTextureUnit(TextureUnit::brdf_lut);
-	UseTextureUnit(TextureUnit::g_position);
-	UseTextureUnit(TextureUnit::g_normal);
-	UseTextureUnit(TextureUnit::g_color);
-	UseTextureUnit(TextureUnit::ssao);
+
+	if (b_reload)
+	{
+		MVPShader::Initialize(b_reload);
+	}
 }
 
 void PBRShader::SetCameraPosition(const vec3& pos)
@@ -88,24 +90,24 @@ void PBRShader::BindMaterial(PBRMaterial* material)
 	Use();
 	//glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["basecolor_map"]);
 	//glBindTexture(GL_TEXTURE_2D, material->basecolor_map->id);
-	TextureUnit::Bind2DTexture(TextureUnit::base_color, material->basecolor_map);
+	TextureUnit::Bind2DTexture(TextureUnit::basecolor_map, material->basecolor_map);
 
 	//glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["normal_map"]);
 	//glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
-	TextureUnit::Bind2DTexture(TextureUnit::normal, material->normal_map);
+	TextureUnit::Bind2DTexture(TextureUnit::normal_map, material->normal_map);
 
 	if (material->ao_map)
 	{
 		//glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
 		//glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
-		TextureUnit::Bind2DTexture(TextureUnit::ambient_occlusion, material->ao_map);
+		TextureUnit::Bind2DTexture(TextureUnit::ao_map, material->ao_map);
 
 	}
 	else
 	{
 		/*glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["ao_map"]);
 		glBindTexture(GL_TEXTURE_2D, 0);*/
-		TextureUnit::Bind2DTexture(TextureUnit::ambient_occlusion, nullptr);
+		TextureUnit::Bind2DTexture(TextureUnit::ao_map, nullptr);
 	}
 
 	if (!material->metalness_roughness_map)
@@ -115,17 +117,17 @@ void PBRShader::BindMaterial(PBRMaterial* material)
 	}
 	//glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["metalness_roughness_map"]);
 	//glBindTexture(GL_TEXTURE_2D, material->metalness_roughness_map->id);
-	TextureUnit::Bind2DTexture(TextureUnit::metalness_roughness, material->metalness_roughness_map);
+	TextureUnit::Bind2DTexture(TextureUnit::metalness_roughness_map, material->metalness_roughness_map);
 
 	if (material->emissive_map)
 	{
 		//glActiveTexture(GL_TEXTURE0 + texture_name_unit_map["emissive_map"]);
 		//glBindTexture(GL_TEXTURE_2D, material->emissive_map->id);
-		TextureUnit::Bind2DTexture(TextureUnit::emissive, material->emissive_map);
+		TextureUnit::Bind2DTexture(TextureUnit::emissive_map, material->emissive_map);
 	}
 	else
 	{
-		TextureUnit::Bind2DTexture(TextureUnit::emissive, nullptr);
+		TextureUnit::Bind2DTexture(TextureUnit::emissive_map, nullptr);
 
 	}
 

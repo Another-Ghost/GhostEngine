@@ -38,7 +38,7 @@ public:
 
 	void Buffer() override;
 
-	void Draw() override;
+	void Draw(Shader* shader) override;
 
 //	// render the mesh
 //	void Draw(Shader& shader)

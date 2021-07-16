@@ -5,7 +5,6 @@
 #include "BasicMaterial.h"
 #include "PBRMaterial.h"
 #include "Camera.h"
-#include "Shader.h"
 #include "Mesh.h"
 #include "IBLRenderer.h"
 #include "BasicRenderer.h"
@@ -18,12 +17,15 @@
 #include "File.h"
 #include "ChannelCombinationShader.h"
 #include "Math.h"
+#include "SSAOShader.h"
+#include "SSAOBlurShader.h"
 #include <random>
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
 	b_skybox_initialized(false)
 {
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -31,6 +33,10 @@ RenderManager::RenderManager():
 	glGenFramebuffers(1, &capture_fbo);	
 	glGenRenderbuffers(1, &capture_rbo);
 
+	int win_width = WindowManager::s_current_window->GetWidth();
+	int win_height = WindowManager::s_current_window->GetHeight();
+
+/*global variables*/
 	capture_view_array =
 	{
 		glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
@@ -53,10 +59,18 @@ RenderManager::RenderManager():
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
 
-	glGenBuffers(1, &camera_ubo);	// binding point is 0
+	glGenBuffers(1, &camera_ubo);	// binding point is 0	//? 写成一个类
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	WindowInfo win_info{ win_width, win_height };
+	glGenBuffers(1, &window_ubo);	// binding point is 0	//? 写成一个类
+	glBindBuffer(GL_UNIFORM_BUFFER, window_ubo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, window_ubo);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(WindowInfo), &win_info, GL_STATIC_COPY);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 
 	glGenBuffers(1, &light_ssbo);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
@@ -65,21 +79,17 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
+	glGenBuffers(1, &ssao_kernel_ssbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssao_kernel_ssbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssao_kernel_ssbo);	// binding point is 2
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 /*G-Buffer*/
-	int win_width = WindowManager::s_current_window->GetWidth();
-	int win_height = WindowManager::s_current_window->GetHeight();
 	
 	glGenFramebuffers(1, &gbuffer_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
 	
 	position_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, true);	//因为需要采样数据，所以position等使用纹理附件而不是渲染缓冲对象附件
-	//position_gbuffer->width = win_width;
-	//position_gbuffer->height = win_height;
-	//position_gbuffer->data_format = GL_RGBA;
-	//position_gbuffer->min_filter_param = GL_NEAREST;
-	//position_gbuffer->mag_filter_param = GL_NEAREST;
-	//position_gbuffer->Buffer();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_g_attachment->id, 0);	//附加纹理到FBO中
 
 	normal_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, true);
@@ -139,7 +149,7 @@ RenderManager::RenderManager():
 
 		scale = Math::Lerp<float>(0.1f, 1.0f, scale * scale);	//加速插值函数，使核的样本靠近原点分布
 		sample *= scale;
-		ssao_kernel.push_back(sample);
+		ssao_kernel.emplace_back(sample, 0.f);
 	}
 
 	// generate noise texture
@@ -164,6 +174,13 @@ RenderManager::RenderManager():
 	noise_texture->mag_filter_param = GL_NEAREST;
 	noise_texture->wrap_param = GL_REPEAT;
 	noise_texture->Buffer();
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssao_kernel_ssbo);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4) * ssao_kernel.size(), &ssao_kernel[0], GL_STATIC_COPY);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	ssao_shader = new SSAOShader();
+	ssao_blur_shader = new SSAOBlurShader();
 
 	channel_combination_shader = new ChannelCombinationShader();
 
@@ -192,21 +209,19 @@ bool RenderManager::Initialize(Renderer* renderer_)
 void RenderManager::Update(float dt)
 {
 	UpdateLightArray();
-	//GLCall(pbr_shader->Use());
 
 	UpdateCamera();
 
-	//pbr_shader->SetVec3("cam_pos", camera->GetPosition());
-
-	////view_matrix = camera->ViewMatrix();
-	////perspective_matrix = camera->PerspectiveMatrix();
-	//
-	////RenderPBRMaterial(dt);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
 	current_renderer->Update(dt);
 	
 	basic_renderer->Update(dt);
+	//glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+
 
 }
 
@@ -243,66 +258,22 @@ void RenderManager::UpdateLightArray()
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(PointLightInfo)* light_info_array.size(), &light_info_array[0], GL_STREAM_COPY);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 }
 
-
-
-void RenderManager::RenderPBRMaterial(float dt)
+void RenderManager::UpdateSSAO()
 {
-	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
+	TextureUnit::Bind2DTexture(TextureUnit::g_position, position_g_attachment);
+	TextureUnit::Bind2DTexture(TextureUnit::g_normal, noise_texture);
+	TextureUnit::Bind2DTexture(SSAOShader::noise_texture_tu, noise_texture);
+	capture_quad_mesh->Draw(ssao_shader);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	pbr_shader->Use();
-	//mat4 view = camera->ViewMatrix();
-	pbr_shader->SetMat4("view", camera->ViewMatrix());
-	//mat4 projection = camera->PerspectiveMatrix();
-	pbr_shader->SetMat4("projection", camera->PerspectiveMatrix());
-	pbr_shader->SetVec3("cam_pos", camera->GetPosition());
-
-	const int N = SceneManager::GetSingleton().light_array.size();
-	for (int i = 0; i < N; ++i)
-	{
-		vec3 pos = SceneManager::GetSingleton().light_array[i]->postion;
-		vec3 color = SceneManager::GetSingleton().light_array[i]->color;
-		float intensity = SceneManager::GetSingleton().light_array[i]->intensity;	//? 考虑也传进去
-
-		pbr_shader->SetVec3("light_position_array[" + std::to_string(i) + "]", pos);
-		pbr_shader->SetVec3("light_color_array[" + std::to_string(i) + "]", color * intensity);
-	}
-
-	for (const auto& pair : pbr_mat_unit_map)
-	{
-		PBRMaterial* material = pair.first;
-
-		glActiveTexture(GL_TEXTURE0);
-		//cout << "albedo_map ID: " << material->albedo_map->id << "\n";
-		GLCall(glBindTexture(GL_TEXTURE_2D, material->basecolor_map->id));
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, material->normal_map->id);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, material->metalness_map->id);
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, material->roughness_map->id);
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, material->ao_map->id);
-
-		for (const auto& render_module : pair.second)
-		{
-			Mesh* mesh = render_module->GetMesh();
-
-			//mat4 model = render_module->GetParent()->transform.GetMatrix();
-			//pbr_shader->SetMat4("model", model);
-			pbr_shader->SetMat4("model", mat4(1));	//?改为从物体获取的model
-
-			glBindVertexArray(mesh->vao_id);
-			glDrawElements(GL_TRIANGLE_STRIP, mesh->index_array.size(), GL_UNSIGNED_INT, 0);
-		}
-	}
 
 }
+
 
 void RenderManager::ResetRenderArray()
 {

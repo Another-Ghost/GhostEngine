@@ -3,13 +3,13 @@
 #include "CubeMap.h"
 //#include "File.h"
 
-const TextureUnit TextureUnit::base_color = { "basecolor_map", 0 };
-const TextureUnit TextureUnit::normal = { "normal_map", 1 };
-const TextureUnit TextureUnit::ambient_occlusion = { "ao_map", 2 };
-const TextureUnit TextureUnit::metalness_roughness = { "metalness_roughness_map", 3 };
-const TextureUnit TextureUnit::emissive = { "emissive_map", 4 };
-const TextureUnit TextureUnit::irradiance = { "irradiance_map", 5 };
-const TextureUnit TextureUnit::light_prefilter = { "prefilter_map", 6 };
+const TextureUnit TextureUnit::basecolor_map = { "basecolor_map", 0 };
+const TextureUnit TextureUnit::normal_map = { "normal_map", 1 };
+const TextureUnit TextureUnit::ao_map = { "ao_map", 2 };
+const TextureUnit TextureUnit::metalness_roughness_map = { "metalness_roughness_map", 3 };
+const TextureUnit TextureUnit::emissive_map = { "emissive_map", 4 };
+const TextureUnit TextureUnit::irradiance_map = { "irradiance_map", 5 };
+const TextureUnit TextureUnit::light_prefilter_map = { "light_prefilter_map", 6 };
 const TextureUnit TextureUnit::brdf_lut = { "brdf_lut", 7 };
 const TextureUnit TextureUnit::g_position = { "g_position", 8 };
 const TextureUnit TextureUnit::g_normal = { "g_normal", 9 };
@@ -47,6 +47,8 @@ Shader::Shader(const string& vertex_path_, const string& fragment_path_, const s
 	vertex_path(vertex_path_), fragment_path(fragment_path_), geometry_path(geometry_path_)
 {
 	Generate();
+
+	Initialize();
 }
 
 void Shader::Generate()
@@ -147,6 +149,13 @@ void Shader::Reload()
 {
 	Destroy();
 	Generate();
+	
+	Initialize(true);
+}
+
+void Shader::Initialize(bool b_reload)
+{
+
 }
 
 void Shader::CheckCompileErrors(GLuint shader, string type)
@@ -176,9 +185,6 @@ void Shader::CheckCompileErrors(GLuint shader, string type)
 
 }
 
-void Shader::Initialize()
-{
-}
 
 
 //string Shader::GetName(TextureUnit unit)

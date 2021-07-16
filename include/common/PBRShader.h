@@ -16,9 +16,9 @@ class PBRShader : public MVPShader
 public:
 	PBRShader(const string& vertex_path = File::GetShaderPath("pbr_vs"), const string& fragment_path = File::GetShaderPath("pbr_fs"), const string& geometry_path = "");
 
-	virtual void Reload() override;
+	//virtual void Reload() override;
 
-	virtual void Initialize() override;
+	virtual void Initialize(bool b_reload) override;
 
 	void SetCameraPosition(const vec3& pos);
 

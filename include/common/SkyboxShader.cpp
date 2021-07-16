@@ -16,5 +16,5 @@ void SkyboxShader::RenderSkybox(unsigned int skybox_tex_id)
 	SetProjectionMatrix(RenderManager::GetSingleton().camera->PerspectiveMatrix());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_tex_id);
-	RenderManager::GetSingleton().DrawCaptureCubeMesh();
+	RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 }

@@ -246,10 +246,16 @@
     <ClCompile Include="Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightingPassShader.cpp">
+    <ClCompile Include="PBRLightingPassShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SSAOShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAOBlurShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -467,10 +473,16 @@
     <ClInclude Include="Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightingPassShader.h">
+    <ClInclude Include="PBRLightingPassShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SSAOShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOBlurShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

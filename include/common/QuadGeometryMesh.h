@@ -7,6 +7,6 @@ public:
 
 	void Initialize() override;
 
-	void Draw() override;
+	void Draw(Shader* shader) override;
 };
 

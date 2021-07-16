@@ -193,6 +193,7 @@
     <None Include="..\resource\shader\pbr_lighting_pass_f.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />
     <None Include="..\resource\shader\single_scattering_energy_f.glsl" />
+    <None Include="..\resource\shader\ssao_blur_f.glsl" />
     <None Include="..\resource\shader\ssao_f.glsl" />
     <None Include="..\resource\shader\texture_v.glsl" />
     <None Include="..\resource\shader\channel_combination_f.glsl" />

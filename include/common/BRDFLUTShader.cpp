@@ -21,7 +21,7 @@ void BRDFLUTShader::RenderBRDFLUT(const Texture* brdf_lut)
 	glViewport(0, 0, brdf_lut->width, brdf_lut->height);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	RenderManager::GetSingleton().DrawCaptureQuadMesh();
+	RenderManager::GetSingleton().DrawCaptureQuadMesh(this);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
 }

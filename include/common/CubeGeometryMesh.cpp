@@ -78,7 +78,7 @@ void CubeGeometryMesh::Initialize()
 	}; //? ´íÎó
 }
 
-void CubeGeometryMesh::Draw()
+void CubeGeometryMesh::Draw(Shader* shader)
 {
 	glBindVertexArray(vao_id);
 	glDrawArrays(GL_TRIANGLES, 0, 36);

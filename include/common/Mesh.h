@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Prerequisite.h"
+#include "Shader.h"
 
 enum class MeshType
 {
@@ -24,7 +25,7 @@ public:
 
 	virtual void Buffer();
 
-	virtual void Draw() = 0;
+	virtual void Draw(Shader* shader) = 0;
 	//virtual void Draw() = 0;
 
 	vector<Mesh*> child_mesh_array;

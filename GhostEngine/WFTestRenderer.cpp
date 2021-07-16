@@ -99,8 +99,8 @@ void WFTestRenderer::Update(float dt)
 		//pbr_shader->BindAmbientOcclusionMap(material->ao_map->id);
 		pbr_shader->BindMaterial(material);
 
-		TextureUnit::BindCubemapTexture(TextureUnit::irradiance, irradiance_cubemap);
-		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter, prefilter_cubemap);
+		TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
+		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
 		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
 		//pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
 		//pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
@@ -120,7 +120,7 @@ void WFTestRenderer::Update(float dt)
 
 				pbr_shader->SetRoughness(glm::clamp((float)col / column_num, 0.0f, 1.f));
 
-				mesh->Draw();
+				mesh->Draw(pbr_shader);
 			}
 		}
 	}

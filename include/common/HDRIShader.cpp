@@ -38,7 +38,7 @@ void HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id)
 		//SetMat4("view", capture_view_array[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, cube_map->id, 0);	//颜色渲染到纹理附件，深度渲染至之前创建的深度渲染缓冲对象(RBO)中
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		RenderManager::GetSingleton().DrawCaptureCubeMesh(); //? 是否能像下文中的一样一次渲染整个cubemap
+		RenderManager::GetSingleton().DrawCaptureCubeMesh(this); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

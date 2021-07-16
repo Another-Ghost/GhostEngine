@@ -38,8 +38,9 @@ void TriangleMesh::Buffer()
 	glBindVertexArray(0);
 }
 
-void TriangleMesh::Draw()
+void TriangleMesh::Draw(Shader* shader)
 {
+	shader->Use();
 	// draw mesh
 	glBindVertexArray(vao_id);
 	glDrawElements(GL_TRIANGLES, index_array.size(), GL_UNSIGNED_INT, 0);

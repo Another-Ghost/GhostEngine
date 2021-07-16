@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -172,7 +172,7 @@
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
-    <ClCompile Include="LightingPassShader.cpp" />
+    <ClCompile Include="PBRLightingPassShader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
@@ -185,6 +185,7 @@
     <ClCompile Include="MVPShader.cpp" />
     <ClCompile Include="PBRMaterial.cpp" />
     <ClCompile Include="PBRMaterialFacotry.cpp" />
+    <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
+    <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureFile.cpp" />
@@ -246,7 +248,7 @@
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
-    <ClInclude Include="LightingPassShader.h" />
+    <ClInclude Include="PBRLightingPassShader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
@@ -259,6 +261,7 @@
     <ClInclude Include="MVPShader.h" />
     <ClInclude Include="PBRMaterial.h" />
     <ClInclude Include="PBRMaterialFactory.h" />
+    <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
@@ -284,6 +287,7 @@
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
+    <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureFile.h" />

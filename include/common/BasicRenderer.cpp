@@ -24,7 +24,7 @@ void BasicRenderer::Update(float dt)
 			mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();
 			basic_shader->SetModelMatrix(model);
 
-			mesh->Draw();
+			mesh->Draw(basic_shader);
 		}
 	}
 }

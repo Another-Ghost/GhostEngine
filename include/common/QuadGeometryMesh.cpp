@@ -26,7 +26,7 @@ void QuadGeometryMesh::Initialize()
 	};
 }
 
-void QuadGeometryMesh::Draw()
+void QuadGeometryMesh::Draw(Shader* shader)
 {
 	glBindVertexArray(vao_id);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

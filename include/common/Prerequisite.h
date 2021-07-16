@@ -61,6 +61,9 @@ class BasicShader;
 class PBRShader;
 class SkyboxShader;
 class ChannelCombinationShader;
+class PBRLightingPassShader;
+class SSAOShader;
+class SSAOBlurShader;
 
 class Mesh;
 class MeshFactory;

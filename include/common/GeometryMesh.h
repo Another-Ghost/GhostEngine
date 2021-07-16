@@ -11,7 +11,7 @@ public:
 
 	virtual void Buffer() override;
 
-	virtual void Draw() override;
+	virtual void Draw(Shader* shader) override;
 
 	bool b_initialized;
 

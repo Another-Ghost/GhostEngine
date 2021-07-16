@@ -34,8 +34,10 @@ void GeometryMesh::Buffer()
 	glBindVertexArray(0);
 }
 
-void GeometryMesh::Draw()
+void GeometryMesh::Draw(Shader* shader)
 {
+	shader->Use();
+
 	glBindVertexArray(vao_id);
 	glDrawElements(GL_TRIANGLE_STRIP, index_array.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);

@@ -37,6 +37,12 @@ struct CameraInfo
 	mat4 projection;
 };
 
+struct WindowInfo
+{
+	int width;
+	int height;
+};
+
 class RenderManager : public Singleton<RenderManager>
 {
 public:
@@ -57,7 +63,7 @@ public:
 
 	void UpdateLightArray();
 
-	void RenderPBRMaterial(float dt);
+	void UpdateSSAO();
 
 	void ResetRenderArray();
 
@@ -68,9 +74,9 @@ public:
 
 	const CubeGeometryMesh* GetCaptureCubeMesh() { return capture_cube_mesh; }	//底层const，指向常量的指针
 
-	void DrawCaptureCubeMesh() { capture_cube_mesh->Draw(); }
+	void DrawCaptureCubeMesh(Shader* shader) { capture_cube_mesh->Draw(shader); }
 
-	void DrawCaptureQuadMesh() { capture_quad_mesh->Draw(); }
+	void DrawCaptureQuadMesh(Shader* shader) { capture_quad_mesh->Draw(shader); }
 
 	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
@@ -94,6 +100,9 @@ private:
 	Shader* pbr_shader;
 
 	ChannelCombinationShader* channel_combination_shader;
+
+	SSAOShader* ssao_shader;
+	SSAOBlurShader* ssao_blur_shader;
 	//set<RenderModule*> set_map;
 	//render_module_group
 
@@ -127,7 +136,10 @@ private:
 
 	GLuint light_ssbo;
 
+	GLuint ssao_kernel_ssbo;
+
 	GLuint camera_ubo;
+	GLuint window_ubo;
 	//GLuint light_color_ssbo;
 
 /*Post Process*/
@@ -145,7 +157,7 @@ private:
 	Texture* ssao_color_attachment;
 	Texture* ssao_blur_color_attachment;
 
-	vector<vec3> ssao_kernel;
+	vector<vec4> ssao_kernel;
 	int sample_num;
 	Texture* noise_texture;
 };

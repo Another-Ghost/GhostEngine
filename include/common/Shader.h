@@ -32,13 +32,13 @@ struct TextureUnit
 
 	//TextureUnit(const string& name_, int number_) : name(name_), number(number_) { }
 
-	static const TextureUnit base_color;
-	static const TextureUnit normal;
-	static const TextureUnit ambient_occlusion;
-	static const TextureUnit metalness_roughness;
-	static const TextureUnit emissive;
-	static const TextureUnit irradiance;
-	static const TextureUnit light_prefilter;
+	static const TextureUnit basecolor_map;
+	static const TextureUnit normal_map;
+	static const TextureUnit ao_map;
+	static const TextureUnit metalness_roughness_map;
+	static const TextureUnit emissive_map;
+	static const TextureUnit irradiance_map;
+	static const TextureUnit light_prefilter_map;
 	static const TextureUnit brdf_lut;
 	static const TextureUnit g_position;
 	static const TextureUnit g_normal;
@@ -64,9 +64,10 @@ public:
 
 	void Destroy();
 
-	virtual void Reload();	//？怎么改可以让子类重写的函数在结束时会自动调用基类的相应的被重写的函数
+	void Reload();	//？怎么改可以让子类重写的函数在结束时会自动调用基类的相应的被重写的函数
 
-	virtual void Initialize();
+	//don't forget to call parent's initialize if it's reloaded
+	virtual void Initialize(bool b_reload = false);	
 
 	// utility function for checking shader compilation/linking errors
 	void CheckCompileErrors(GLuint shader, string type);

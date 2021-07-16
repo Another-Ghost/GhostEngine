@@ -29,7 +29,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 		SetViewMatrix(capture_view_array[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, irradiance_cubemap->id, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		RenderManager::GetSingleton().DrawCaptureCubeMesh();
+		RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
