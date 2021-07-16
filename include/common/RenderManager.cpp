@@ -102,7 +102,7 @@ RenderManager::RenderManager():
 #endif
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	/*SSAO*/
+/*SSAO*/
 	glGenFramebuffers(1, &ssao_fbo);  
 	glGenFramebuffers(1, &ssao_blur_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);

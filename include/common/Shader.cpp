@@ -1,6 +1,47 @@
 #include "Shader.h"
 #include "Debug.h"
+#include "CubeMap.h"
 //#include "File.h"
+
+const TextureUnit TextureUnit::base_color = { "basecolor_map", 0 };
+const TextureUnit TextureUnit::normal = { "normal_map", 1 };
+const TextureUnit TextureUnit::ambient_occlusion = { "ao_map", 2 };
+const TextureUnit TextureUnit::metalness_roughness = { "metalness_roughness_map", 3 };
+const TextureUnit TextureUnit::emissive = { "emissive_map", 4 };
+const TextureUnit TextureUnit::irradiance = { "irradiance_map", 5 };
+const TextureUnit TextureUnit::light_prefilter = { "prefilter_map", 6 };
+const TextureUnit TextureUnit::brdf_lut = { "brdf_lut", 7 };
+const TextureUnit TextureUnit::g_position = { "g_position", 8 };
+const TextureUnit TextureUnit::g_normal = { "g_normal", 9 };
+const TextureUnit TextureUnit::g_color = { "g_color", 10 };
+const TextureUnit TextureUnit::ssao = { "ssao", 11 };
+
+void TextureUnit::Bind2DTexture(const TextureUnit& unit, Texture* texture)
+{
+	glActiveTexture(GL_TEXTURE0 + unit.number);
+	if (texture)
+	{
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+}
+
+void TextureUnit::BindCubemapTexture(const TextureUnit& unit, CubeMap* texture)
+{
+	glActiveTexture(GL_TEXTURE0 + unit.number);
+	if (texture)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture->id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	}
+}
+
 
 Shader::Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_):
 	vertex_path(vertex_path_), fragment_path(fragment_path_), geometry_path(geometry_path_)
@@ -135,47 +176,65 @@ void Shader::CheckCompileErrors(GLuint shader, string type)
 
 }
 
-string Shader::GetName(TextureUnit unit)
+void Shader::Initialize()
 {
-	switch (unit)
-	{
-	case TextureUnit::BASE_COLOR:
-		return "basecolor_map";
-		break;
-	case TextureUnit::NORMAL:
-		return "normal_map";
-		break;
-	case TextureUnit::AMBIENT_OCCLUSION:
-		return "ao_map";
-		break;
-	case TextureUnit::METALNESS_ROUGHNESS:
-		return "metalness_roughness_map";
-		break;
-	case TextureUnit::EMISSIVE:
-		return "emissive_map";
-		break;
-	case TextureUnit::IRRADIANCE:
-		return "irradiance_map";
-		break;
-	case TextureUnit::LIGHT_PREFILTER:
-		return "light_prefilter_map";
-		break;
-	case TextureUnit::BRDF_LUT:
-		return "brdf_lut";
-		break;
-	case TextureUnit::G_POSITION:
-		return "g_position";
-		break;
-	case TextureUnit::G_NORMAL:
-		return "g_normal";
-		break;
-	case TextureUnit::G_COLOR:
-		return "g_color";
-		break;
-	case TextureUnit::SSAO:
-		return "ssao";
-		break;
-	}
 }
+
+
+//string Shader::GetName(TextureUnit unit)
+//{
+//	switch (unit)
+//	{
+//	case TextureUnit::BASE_COLOR:
+//		return "basecolor_map";
+//		break;
+//	case TextureUnit::NORMAL:
+//		return "normal_map";
+//		break;
+//	case TextureUnit::AMBIENT_OCCLUSION:
+//		return "ao_map";
+//		break;
+//	case TextureUnit::METALNESS_ROUGHNESS:
+//		return "metalness_roughness_map";
+//		break;
+//	case TextureUnit::EMISSIVE:
+//		return "emissive_map";
+//		break;
+//	case TextureUnit::IRRADIANCE:
+//		return "irradiance_map";
+//		break;
+//	case TextureUnit::LIGHT_PREFILTER:
+//		return "light_prefilter_map";
+//		break;
+//	case TextureUnit::BRDF_LUT:
+//		return "brdf_lut";
+//		break;
+//	case TextureUnit::G_POSITION:
+//		return "g_position";
+//		break;
+//	case TextureUnit::G_NORMAL:
+//		return "g_normal";
+//		break;
+//	case TextureUnit::G_COLOR:
+//		return "g_color";
+//		break;
+//	case TextureUnit::SSAO:
+//		return "ssao";
+//		break;
+//	}
+//}
+
+//void Shader::Bind2DTexture(const TextureUnit& unit, Texture* texture)
+//{
+//	glActiveTexture(GL_TEXTURE0 + unit.number);
+//	if (texture)
+//	{
+//		glBindTexture(GL_TEXTURE_2D, texture->id);
+//	}
+//	else
+//	{
+//		glBindTexture(GL_TEXTURE_2D, 0);
+//	}
+//}
 
 

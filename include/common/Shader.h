@@ -9,27 +9,46 @@ using std::ifstream;
 using std::stringstream;
 
 
-enum class TextureUnit
-{
-	BASE_COLOR = 0,
-	NORMAL = 1,
-	AMBIENT_OCCLUSION = 2, 
-	METALNESS_ROUGHNESS = 3,
-	EMISSIVE = 4,
-	IRRADIANCE = 5,
-	LIGHT_PREFILTER = 6,
-	BRDF_LUT = 7,
-	G_POSITION = 8,
-	G_NORMAL = 9,
-	G_COLOR = 10, 
-	SSAO = 11,
-};
-
-//struct TextureUnit
+//enum class TextureUnit
 //{
-//	string name;
-//	int number;
+//	BASE_COLOR = 0,
+//	NORMAL = 1,
+//	AMBIENT_OCCLUSION = 2, 
+//	METALNESS_ROUGHNESS = 3,
+//	EMISSIVE = 4,
+//	IRRADIANCE = 5,
+//	LIGHT_PREFILTER = 6,
+//	BRDF_LUT = 7,
+//	G_POSITION = 8,
+//	G_NORMAL = 9,
+//	G_COLOR = 10, 
+//	SSAO = 11,
 //};
+
+struct TextureUnit
+{
+	string name;
+	int number;
+
+	//TextureUnit(const string& name_, int number_) : name(name_), number(number_) { }
+
+	static const TextureUnit base_color;
+	static const TextureUnit normal;
+	static const TextureUnit ambient_occlusion;
+	static const TextureUnit metalness_roughness;
+	static const TextureUnit emissive;
+	static const TextureUnit irradiance;
+	static const TextureUnit light_prefilter;
+	static const TextureUnit brdf_lut;
+	static const TextureUnit g_position;
+	static const TextureUnit g_normal;
+	static const TextureUnit g_color;
+	static const TextureUnit ssao;
+
+	//? static void Reset();
+	static void Bind2DTexture(const TextureUnit& unit, Texture* texture);
+	static void BindCubemapTexture(const TextureUnit& unit, CubeMap* texture);
+};
 
 class Shader
 {
@@ -47,6 +66,7 @@ public:
 
 	virtual void Reload();	//？怎么改可以让子类重写的函数在结束时会自动调用基类的相应的被重写的函数
 
+	virtual void Initialize();
 
 	// utility function for checking shader compilation/linking errors
 	void CheckCompileErrors(GLuint shader, string type);
@@ -74,9 +94,11 @@ public:
 	unsigned int GetID() { return id; }
 
 
-	static int GetNumber(TextureUnit unit) { return static_cast<int>(unit); }
-	static string GetName(TextureUnit unit);
-	void UseTextureUnit(TextureUnit unit) { Use(); SetInt(GetName(unit), (int)unit); }
+	//static int GetNumber(TextureUnit unit) { return static_cast<int>(unit); }
+	//static string GetName(TextureUnit unit);
+	void UseTextureUnit(TextureUnit unit) { Use(); SetInt(unit.name, unit.number); }
+	//void Bind2DTexture(const TextureUnit& unit, Texture* texture);
+	//void BindCubemapTexture(const TextureUnit& unit, CubeMap* texture);
 
 protected:
 	unsigned int id;

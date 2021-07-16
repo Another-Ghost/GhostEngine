@@ -8,10 +8,10 @@ in vec3 Normal;
 
 
 //material
-uniform sampler2D albedo_map;
+uniform sampler2D basecolor_map;
 uniform sampler2D normal_map;
-uniform sampler2D metalness_map;
-uniform sampler2D roughness_map;
+//uniform sampler2D metalness_map;
+//uniform sampler2D roughness_map;
 uniform sampler2D ao_map;
 uniform sampler2D metalness_roughness_map;
 uniform sampler2D emissive_map;
@@ -23,7 +23,7 @@ uniform samplerCube irradiance_map;
 uniform samplerCube prefilter_map;
 uniform sampler2D brdf_lut;
 
-uniform sampler2D ssda_lut;
+//uniform sampler2D ssda_lut;
 
 //light
 struct LightInfo
@@ -58,7 +58,7 @@ const float PI = 3.14159265359;
 
 vec3 GetNormalFromMap()
 {
-	vec3 tangent_normal = vec3(0.5, 0.5, 1) * 2 - 1.0;//texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0;	//normal in tangent space
+	vec3 tangent_normal = texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0; //vec3(0.5, 0.5, 1) * 2 - 1.0;//texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0;	//normal in tangent space
 	//return tangent_normal;
 	
 	vec3 d_p_x = dFdx(World_Pos);
@@ -128,7 +128,7 @@ vec3 FresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
 
 void main()
 {
-	vec3 albedo = pow(texture(albedo_map, Tex_Coords).rgb, vec3(2.2)); //gamma correction
+	vec3 albedo = pow(texture(basecolor_map, Tex_Coords).rgb, vec3(2.2)); //gamma correction
 	//vec3 albedo = vec3(1.f, 1.f, 1.f);
     //float metalness  = texture(metalness_map, Tex_Coords).r;
 	float metalness  = texture(metalness_roughness_map, Tex_Coords).b;
@@ -240,6 +240,8 @@ void main()
 
 	//gamma conrrection
 	color = pow(color, vec3(1.0/2.2)); 
+
+	//color = texture(normal_map, Tex_Coords).xyz;
 
 	frag_color = vec4(color, 1.0);
 	//frag_color = vec4(texture(albedo_map, IN_tex_coords).xyz, 1.0);

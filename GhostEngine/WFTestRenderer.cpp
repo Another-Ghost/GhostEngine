@@ -25,7 +25,6 @@ WFTestRenderer::WFTestRenderer()
 	Window* window = WindowManager::GetSingleton().s_current_window;
 
 	//1.
-
 	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 
@@ -100,10 +99,13 @@ void WFTestRenderer::Update(float dt)
 		//pbr_shader->BindAmbientOcclusionMap(material->ao_map->id);
 		pbr_shader->BindMaterial(material);
 
-		pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
-		pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
-		pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->id);
-		pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->id);
+		TextureUnit::BindCubemapTexture(TextureUnit::irradiance, irradiance_cubemap);
+		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter, prefilter_cubemap);
+		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
+		//pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
+		//pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
+		//pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->id);
+		//pbr_shader->BindSSDirectionalAlbedoLUT(ssda_lut_texture->id);
 
 		int column_num = 1;
 

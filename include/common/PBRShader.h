@@ -16,8 +16,9 @@ class PBRShader : public MVPShader
 public:
 	PBRShader(const string& vertex_path = File::GetShaderPath("pbr_vs"), const string& fragment_path = File::GetShaderPath("pbr_fs"), const string& geometry_path = "");
 
-	void Reload() override;
+	virtual void Reload() override;
 
+	virtual void Initialize() override;
 
 	void SetCameraPosition(const vec3& pos);
 
@@ -27,21 +28,21 @@ public:
 
 	void BindMaterial(PBRMaterial* material);
 
-	void BindBaseColorMap(unsigned int tex_id);
+	//void BindBaseColorMap(unsigned int tex_id);
 
-	void BindNormalMap(unsigned int tex_id);
+	//void BindNormalMap(unsigned int tex_id);
 
-	void BindMetalnessMap(unsigned int tex_id);
+	//void BindMetalnessMap(unsigned int tex_id);
 
-	void BindRoughnessMap(unsigned int tex_id);
+	//void BindRoughnessMap(unsigned int tex_id);
 
-	void BindAmbientOcclusionMap(unsigned int tex_id);
+	//void BindAmbientOcclusionMap(unsigned int tex_id);
 
-	void BindEnvDiffuseIrradianceMap(unsigned int tex_id);
+	//void BindEnvDiffuseIrradianceMap(unsigned int tex_id);
 
-	void BindEnvSpecularPrefilterMap(unsigned int tex_id);
+	//void BindEnvSpecularPrefilterMap(unsigned int tex_id);
 
-	void BindEnvSpecularBRDFLUT(unsigned int tex_id);
+	//void BindEnvSpecularBRDFLUT(unsigned int tex_id);
 
 private:
 
