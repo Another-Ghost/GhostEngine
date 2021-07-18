@@ -7,7 +7,7 @@
 
 Texture::Texture(TextureType type_, TextureFile* file_) :
 	type(type_), file(file_), b_genarate_mipmap(false), wrap_param(GL_CLAMP_TO_EDGE), min_filter_param(GL_LINEAR), mag_filter_param(GL_LINEAR),
-	internal_format(GL_RGB16F), data_format(GL_RGB), data_type(GL_FLOAT), width(512), height(512), id(0)
+	internal_format(GL_RGB16F), data_format(GL_RGB), data_type(GL_UNSIGNED_BYTE), width(512), height(512), id(0)	//? wrap_param改成gl_repeat
 {
 	//因为constructor不应该调用virtual方法，所有不能调用Buffer
 }
@@ -32,7 +32,7 @@ bool Texture::Buffer()
 	else
 	{
 
-		internal_format = file->format;
+		//internal_format = file->format;
 		width = file->width;
 		height = file->height;
 		data_format = file->format;
@@ -44,6 +44,18 @@ bool Texture::Buffer()
 			glTexImage2D(GL_TEXTURE_2D, 0, internal_format, ldr_file->width, ldr_file->height, 0, data_format, GL_UNSIGNED_BYTE, ldr_file->data);
 
 		}
+		else if (dynamic_cast<HDRTextureFile*>(file))
+		{
+			HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(file);
+			//glTexImage2D(GL_TEXTURE_2D, 0, ldr_file->format, ldr_file->width, ldr_file->height, 0, ldr_file->format, GL_UNSIGNED_BYTE, ldr_file->data);
+			glTexImage2D(GL_TEXTURE_2D, 0, internal_format, hdr_file->width, hdr_file->height, 0, data_format, GL_FLOAT, hdr_file->data);
+		}
+		else
+		{
+			cout << "ERROR<Texture>: Texture data loading failed \n";
+			return b_buffered;
+		}
+
 		//stbi_image_free(data);
 		//std::cout << "ERROR<Texture> from Buffer: texture failed to load at path: " << path << endl;
 		

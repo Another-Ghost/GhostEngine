@@ -19,6 +19,7 @@
 #include "Math.h"
 #include "SSAOShader.h"
 #include "SSAOBlurShader.h"
+#include "OutputShader.h"
 #include <random>
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
@@ -60,19 +61,25 @@ RenderManager::RenderManager():
 	//glFrontFace(GL_CW);
 
 	glGenBuffers(1, &camera_ubo);	// binding point is 0	//? 写成一个类
+	glObjectLabel(GL_UNIFORM_BUFFER, camera_ubo, -1, "camera_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+
 	WindowInfo win_info{ win_width, win_height };
-	glGenBuffers(1, &window_ubo);	// binding point is 0	//? 写成一个类
+	glGenBuffers(1, &window_ubo);	// binding point is 1	//? 写成一个类
+	glObjectLabel(GL_BUFFER, window_ubo, -1, "window_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, window_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, window_ubo);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(WindowInfo), &win_info, GL_STATIC_COPY);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(int), NULL, GL_STATIC_DRAW);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &win_info.width);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &win_info.height);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 
 	glGenBuffers(1, &light_ssbo);
+	glObjectLabel(GL_BUFFER, light_ssbo, -1, "light_ssbo");
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
@@ -80,6 +87,7 @@ RenderManager::RenderManager():
 
 
 	glGenBuffers(1, &ssao_kernel_ssbo);
+	glObjectLabel(GL_BUFFER, ssao_kernel_ssbo, -1, "ssao_kernel_ssbo");
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssao_kernel_ssbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssao_kernel_ssbo);	// binding point is 2
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -87,22 +95,33 @@ RenderManager::RenderManager():
 /*G-Buffer*/
 	
 	glGenFramebuffers(1, &gbuffer_fbo);
+	glObjectLabel(GL_FRAMEBUFFER, gbuffer_fbo, -1, "gbuffer_fbo");
 	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
 	
 	position_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, true);	//因为需要采样数据，所以position等使用纹理附件而不是渲染缓冲对象附件
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_g_attachment->id, 0);	//附加纹理到FBO中
+	glObjectLabel(GL_TEXTURE, position_g_attachment->id, -1, "position_g_attachment");
 
-	normal_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, true);
+	normal_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
+	normal_g_attachment->wrap_param = GL_REPEAT;
+	normal_g_attachment->Buffer();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normal_g_attachment->id, 0);
+	glObjectLabel(GL_TEXTURE, normal_g_attachment->id, -1, "normal_g_attachment");
 
-	normal_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, true);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, normal_g_attachment->id, 0);
+	color_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
+	color_g_attachment->internal_format = GL_RGBA;
+	color_g_attachment->data_type = GL_UNSIGNED_BYTE;
+	normal_g_attachment->wrap_param = GL_REPEAT;
+	color_g_attachment->Buffer();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, color_g_attachment->id, 0);
+	glObjectLabel(GL_TEXTURE, color_g_attachment->id, -1, "color_g_attachment");
 
 	// tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	GLenum attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
 	glDrawBuffers(3, attachments);
 
 	glGenRenderbuffers(1, &gbuffer_depth_rbo);
+	glObjectLabel(GL_RENDERBUFFER, gbuffer_depth_rbo, -1, "gbuffer_depth_rbo");
 	glBindRenderbuffer(GL_RENDERBUFFER, gbuffer_depth_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, win_width, win_height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, gbuffer_depth_rbo);
@@ -114,9 +133,8 @@ RenderManager::RenderManager():
 
 /*SSAO*/
 	glGenFramebuffers(1, &ssao_fbo);  
-	glGenFramebuffers(1, &ssao_blur_fbo);
+	glObjectLabel(GL_FRAMEBUFFER, ssao_fbo, -1, "ssao_fbo");
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
-
 	ssao_color_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
 	ssao_color_attachment->internal_format = GL_RED;
 	ssao_color_attachment->data_format = GL_RED;
@@ -127,6 +145,9 @@ RenderManager::RenderManager():
 		std::cout << "SSAO Frame buffer not complete!" << std::endl;
 #endif
 
+	glGenFramebuffers(1, &ssao_blur_fbo);
+	glObjectLabel(GL_FRAMEBUFFER, ssao_blur_fbo, -1, "ssao_blur_fbo");
+	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
 	ssao_blur_color_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
 	ssao_blur_color_attachment->internal_format = GL_RED;
 	ssao_blur_color_attachment->data_format = GL_RED;
@@ -138,7 +159,7 @@ RenderManager::RenderManager():
 #endif
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	std::uniform_real_distribution<GLfloat> random_floats;	//均匀分布
+	std::uniform_real_distribution<GLfloat> random_floats(0.f, 1.f);	//均匀分布
 	std::default_random_engine generator;	//默认随机数生成器（由编译器定，大概率是线性同余（RandSeed = (A * RandSeed + B) % M，伪随机））
 	for (int i = 0; i < 64; ++i)
 	{
@@ -149,40 +170,55 @@ RenderManager::RenderManager():
 
 		scale = Math::Lerp<float>(0.1f, 1.0f, scale * scale);	//加速插值函数，使核的样本靠近原点分布
 		sample *= scale;
-		ssao_kernel.emplace_back(sample, 0.f);
+		ssao_kernel.emplace_back(sample, 1.f);
 	}
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssao_kernel_ssbo);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4) * ssao_kernel.size(), &ssao_kernel[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	// generate noise texture
-	std::vector<vec3> ssao_noise;
-	for (unsigned int i = 0; i < 16; ++i)
+	vector<vec3> ssao_noise;
+	//constexpr int noize_size = noise_tex_size * noise_tex_size * 3;
+	//float ssao_rotate_noise[noize_size];
+
+	//vector<float> ssao_rotate_noise;
+	//ssao_rotate_noise.resize(noise_tex_size * noise_tex_size * 3);
+	for (unsigned int i = 0; i < noise_tex_size * noise_tex_size; ++i)
 	{
-		glm::vec3 noise(random_floats(generator) * 2.0 - 1.0, random_floats(generator) * 2.0 - 1.0, 0.0f);	//在x-y平面上，绕z轴均匀分布
-		ssao_noise.push_back(noise);
+		//glm::vec3 noise(random_floats(generator) * 2.0 - 1.0, random_floats(generator) * 2.0 - 1.0, 0.0f);	//在x-y平面上，绕z轴均匀分布
+		ssao_noise.emplace_back(vec3(random_floats(generator) * 2.0 - 1.0, random_floats(generator) * 2.0 - 1.0, 0.0f));
+		//ssao_rotate_noise[i * 3] = random_floats(generator) * 2.0 - 1.0;
+		//ssao_rotate_noise[i * 3 + 1] = random_floats(generator) * 2.0 - 1.0;
+		//ssao_rotate_noise[i * 3 + 2] = 0.0f;
 	}
 	
 	HDRTextureFile* noise_tex_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, false));
-	noise_tex_file->width = 4;
-	noise_tex_file->height = 4;
-	noise_tex_file->format = GL_FLOAT;
+	noise_tex_file->width = noise_tex_size;
+	noise_tex_file->height = noise_tex_size;
+	noise_tex_file->format = GL_RGB;
 	//noise_tex_file->component_num = 3;
 	noise_tex_file->data = &ssao_noise[0].x; //? 可能存在问题
+	//noise_tex_file->data = &ssao_rotate_noise[0];
+
 	noise_tex_file->b_loaded = true;
 
 	noise_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D, false, noise_tex_file);
+	glObjectLabel(GL_TEXTURE, noise_texture->id, -1, "noise_texture");
 	noise_texture->internal_format = GL_RGBA32F;
 	noise_texture->min_filter_param = GL_NEAREST;
 	noise_texture->mag_filter_param = GL_NEAREST;
 	noise_texture->wrap_param = GL_REPEAT;
 	noise_texture->Buffer();
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssao_kernel_ssbo);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vec4) * ssao_kernel.size(), &ssao_kernel[0], GL_STATIC_COPY);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
 
 	ssao_shader = new SSAOShader();
+	ssao_shader->SetInt("noise_tex_size", noise_tex_size); //? 改成在自己的draw函数里调用
 	ssao_blur_shader = new SSAOBlurShader();
 
 	channel_combination_shader = new ChannelCombinationShader();
+
+	output_shader = new OutputShader();
 
 }
 
@@ -216,13 +252,14 @@ void RenderManager::Update(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	current_renderer->Update(dt);
 	
 	basic_renderer->Update(dt);
-	//glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
 
-
+	UpdateSSAO();
 }
 
 void RenderManager::UpdateCamera()
@@ -265,13 +302,23 @@ void RenderManager::UpdateLightArray()
 void RenderManager::UpdateSSAO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
+	glClear(GL_COLOR_BUFFER_BIT);
 	TextureUnit::Bind2DTexture(TextureUnit::g_position, position_g_attachment);
-	TextureUnit::Bind2DTexture(TextureUnit::g_normal, noise_texture);
+	TextureUnit::Bind2DTexture(TextureUnit::g_normal, normal_g_attachment);
 	TextureUnit::Bind2DTexture(SSAOShader::noise_texture_tu, noise_texture);
 	capture_quad_mesh->Draw(ssao_shader);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
+	glClear(GL_COLOR_BUFFER_BIT);
+	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_color_attachment);
+	capture_quad_mesh->Draw(ssao_blur_shader);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	TextureUnit::Bind2DTexture(TextureUnit::g_color, color_g_attachment);
+	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_blur_color_attachment);
+	capture_quad_mesh->Draw(output_shader);
 }
 
 

@@ -8,10 +8,10 @@ PBRLightingPassShader::PBRLightingPassShader(const string& vertex_path /*= File:
 
 void PBRLightingPassShader::Initialize(bool b_reload)
 {
-	UseTextureUnit(TextureUnit::g_position);
-	UseTextureUnit(TextureUnit::g_normal);
-	UseTextureUnit(TextureUnit::g_color);
-	UseTextureUnit(TextureUnit::ssao);
+	//UseTextureUnit(TextureUnit::g_position);
+	//UseTextureUnit(TextureUnit::g_normal);
+	//UseTextureUnit(TextureUnit::g_color);
+	//UseTextureUnit(TextureUnit::ssao);
 
 	if (b_reload)
 	{

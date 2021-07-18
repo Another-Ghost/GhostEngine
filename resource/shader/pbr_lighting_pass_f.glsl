@@ -1,11 +1,18 @@
 #version 450 core
 
-out vec4 frag_color;
+layout (location = 0) out vec3 g_position;
+layout (location = 1) out vec3 g_normal;
+layout (location = 2) out vec4 g_color;
 
-in vec2 Tex_Coords;
-in vec3 World_Pos;
+//out vec3 g_position;
+//out vec3 g_normal;
+//out vec3 g_color;
+
+in vec2 TexCoords;
+in vec3 WorldPos;
 in vec3 Normal;
-
+in vec3 FragPos;
+in vec3 FragNormal;
 
 //material
 uniform sampler2D basecolor_map;
@@ -55,13 +62,13 @@ const float PI = 3.14159265359;
 
 vec3 GetNormalFromMap()
 {
-	vec3 tangent_normal = texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0; //vec3(0.5, 0.5, 1) * 2 - 1.0;//texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0;	//normal in tangent space
+	vec3 tangent_normal = texture(normal_map, TexCoords).xyz * 2.0 - 1.0; //vec3(0.5, 0.5, 1) * 2 - 1.0;//texture(normal_map, Tex_Coords).xyz * 2.0 - 1.0;	//normal in tangent space
 	//return tangent_normal;
 	
-	vec3 d_p_x = dFdx(World_Pos);
-	vec3 d_p_y = dFdy(World_Pos);
-	vec2 d_tex_x = dFdx(Tex_Coords);
-	vec2 d_tex_y = dFdy(Tex_Coords);
+	vec3 d_p_x = dFdx(WorldPos);
+	vec3 d_p_y = dFdy(WorldPos);
+	vec2 d_tex_x = dFdx(TexCoords);
+	vec2 d_tex_y = dFdy(TexCoords);
 
 	vec3 N = normalize(Normal);
 	vec3 T = normalize(d_p_x* d_tex_y.t - d_p_y * d_tex_x.t); //? t
@@ -125,19 +132,19 @@ vec3 FresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
 
 void main()
 {
-	vec3 albedo = pow(texture(basecolor_map, Tex_Coords).rgb, vec3(2.2)); //gamma correction
+	vec3 albedo = pow(texture(basecolor_map, TexCoords).rgb, vec3(2.2)); //gamma correction
 	//vec3 albedo = vec3(1.f, 1.f, 1.f);
     //float metalness  = texture(metalness_map, Tex_Coords).r;
-	float metalness  = texture(metalness_roughness_map, Tex_Coords).b;
+	float metalness  = texture(metalness_roughness_map, TexCoords).b;
 	//float metalness  = 1.f;
     //float roughness = texture(roughness_map, Tex_Coords).r;
-	float roughness = texture(metalness_roughness_map, Tex_Coords).g;
-	float ao = texture(ao_map, Tex_Coords).r;
+	float roughness = texture(metalness_roughness_map, TexCoords).g;
+	float ao = texture(ao_map, TexCoords).r;
     //float ao = 1.f;
-	vec3 emissive = texture(emissive_map, Tex_Coords).rgb;
+	vec3 emissive = texture(emissive_map, TexCoords).rgb;
 
 	vec3 N = GetNormalFromMap();
-	vec3 V = normalize(camera.position.xyz - World_Pos);	//view direction/solid angle, point to outside
+	vec3 V = normalize(camera.position.xyz - WorldPos);	//view direction/solid angle, point to outside
 	vec3 R = reflect(-V, N);
 	
 	// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
@@ -151,9 +158,9 @@ void main()
 	//for(int i = 0; i < 1; ++i)
 	{
 		// calculate per-light radiance
-		vec3 L = normalize(light_info_array[i].position.xyz - World_Pos); //light/incident direction
+		vec3 L = normalize(light_info_array[i].position.xyz - WorldPos); //light/incident direction
 		vec3 H = normalize(V + L);
-		float dist = length(light_info_array[i].position.xyz - World_Pos);
+		float dist = length(light_info_array[i].position.xyz - WorldPos);
 		float attenuation = 1.0 / (dist * dist);
 		vec3 radiance = light_info_array[i].color.xyz * attenuation;
 	
@@ -239,8 +246,9 @@ void main()
 	color = pow(color, vec3(1.0/2.2)); 
 
 	//color = texture(normal_map, Tex_Coords).xyz;
-
-	frag_color = vec4(color, 1.0);
+	g_position = FragPos;
+	g_normal = normalize(FragNormal);
+	g_color = vec4(color, 1.0);
 	//frag_color = vec4(texture(albedo_map, IN_tex_coords).xyz, 1.0);
 
 }

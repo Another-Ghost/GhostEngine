@@ -20,6 +20,7 @@
 #include "common/TextureFile.h"
 #include "common/RenderUnit.h"
 #include "common/Model.h"
+#include "common/PBRRenderer.h"
 
 #include "WFTestRenderer.h"
 
@@ -39,7 +40,8 @@ int main()
 	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/corridor.hdr")));
 	RenderManager::GetSingleton().BindSkyboxTexture(hdr_file);	//? 改成绑定到SceneManager中的skybox class 对象
 	
-	WFTestRenderer* renderer = new WFTestRenderer();
+	//WFTestRenderer* renderer = new WFTestRenderer();
+	PBRRenderer* renderer = new PBRRenderer();
 	Root::GetSingleton().Initialize(renderer);
 
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());

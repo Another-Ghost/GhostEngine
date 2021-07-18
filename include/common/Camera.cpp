@@ -78,7 +78,7 @@ void Camera::OnMouseMove(double x_offset, double y_offset)
 	if (yaw > 360.0f) {
 		yaw -= 360.0f;
 	}
-    transform.SetEulerAngle({ pitch, yaw, 0 });
+    transform.SetEulerAngle({ pitch, yaw, 0 }); 
 
 	//cout << "View Matrix pitch: " << transform.GetPitch() << " Yaw: " << transform.GetYaw() << endl;
     //transform.SetEulerAngle({ transform.GetPitch() + y_offset * rotation_speed,

@@ -103,8 +103,8 @@ private:
 
 	SSAOShader* ssao_shader;
 	SSAOBlurShader* ssao_blur_shader;
-	//set<RenderModule*> set_map;
-	//render_module_group
+
+	OutputShader* output_shader;
 
 	friend class SceneManager;
 
@@ -158,7 +158,9 @@ private:
 	Texture* ssao_blur_color_attachment;
 
 	vector<vec4> ssao_kernel;
+
 	int sample_num;
 	Texture* noise_texture;
+	int noise_tex_size{ 4 };
 };
 

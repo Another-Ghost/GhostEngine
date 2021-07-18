@@ -2,6 +2,7 @@
 #include "Renderer.h"
 class PBRRenderer : public Renderer
 {
+public:
 	PBRRenderer();
 
 	void Update(float dt) override;

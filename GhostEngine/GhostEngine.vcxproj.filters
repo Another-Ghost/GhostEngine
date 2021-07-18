@@ -141,6 +141,9 @@
     <None Include="..\resource\shader\ssao_blur_f.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\output_f.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">

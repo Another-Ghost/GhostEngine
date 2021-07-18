@@ -172,6 +172,7 @@
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
+    <ClCompile Include="OutputShader.cpp" />
     <ClCompile Include="PBRLightingPassShader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
+    <ClInclude Include="OutputShader.h" />
     <ClInclude Include="PBRLightingPassShader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />

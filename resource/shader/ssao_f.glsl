@@ -18,14 +18,16 @@ layout(std140, binding = 0) uniform Camera
     CameraInfo camera;
 };
 
-struct WindowInfo
-{
-	int width;
-	int height;
-};
+//struct WindowInfo
+//{
+//	int width;
+//	int height;
+//};
 layout(std140, binding = 1) uniform Window
 {
-    WindowInfo window;
+//    WindowInfo window;
+	int width;
+	int height;
 };
 
 
@@ -38,17 +40,16 @@ layout (std430, binding = 2) buffer SSAO
 float radius = 0.5;
 float bias = 0.025;
 
-uniform int noise_size;
-
-
+uniform int noise_tex_size;
 
 void main()
 {
     //?
-    const vec2 noise_scale = vec2(window.width/noise_size, window.height/noise_size); 
+    //const vec2 noise_scale = vec2(window.width/noise_tex_size, window.height/noise_tex_size); 
+    const vec2 noise_scale = vec2(1280.0/float(noise_tex_size), 720.0/float(noise_tex_size)); 
 
-    vec3 frag_pos = texture(g_position, TexCoords).xyz;
-    vec3 normal = normalize(texture(g_normal, TexCoords).xyz);
+    vec3 frag_pos = texture(g_position, TexCoords).xyz; //view space
+    vec3 normal = normalize(texture(g_normal, TexCoords).xyz);  //view space
     vec3 random_vec = normalize(texture(noise_texture, TexCoords * noise_scale).xyz);   //采样值会大于1，但noise_texture被设为REPEAT，所以效果上相当于按noise texture的大小平铺这个材质
 
     //?
@@ -64,7 +65,7 @@ void main()
         sample_pos = frag_pos + sample_pos * radius;    //sample_pos大小在0到单位向量之间，通过radius参数控制采样半径
         
         vec4 offset = vec4(sample_pos, 1.0);
-        offset = camera.projection * offset; // from view to clip-space
+        offset = camera.projection * offset; // from view to clip-space frag_pos是view空间的，所以不需要乘以view matrix
         offset.xyz /= offset.w; // perspective divide 单位化
         offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
         float sample_depth = texture(g_position, offset.xy).z;
@@ -73,7 +74,11 @@ void main()
         occlusion += (sample_depth >= sample_pos.z + bias ? 1.0 : 0.0) * range_check; //ignore sample points that too near the origin point
     }
 
-    occlusion = 1.f - (occlusion / sample_array.length());  //out result 1 means totally no occlusion
+    
+
+    occlusion = 1.f - (occlusion / sample_array.length());  //output result 1 means totally no occlusion
 
     OUT_FragColor = occlusion;
+
+    //OUT_FragColor = sample_array.length() / 128.0;
 }

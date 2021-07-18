@@ -44,7 +44,7 @@ PBRRenderer::PBRRenderer()
 
 
 	//5.
-	pbr_shader = new PBRLightingPassShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("kulla_conty_pbr_f"));
+	pbr_shader = new PBRLightingPassShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_lighting_pass_f"));
 
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));

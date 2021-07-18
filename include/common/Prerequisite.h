@@ -64,6 +64,7 @@ class ChannelCombinationShader;
 class PBRLightingPassShader;
 class SSAOShader;
 class SSAOBlurShader;
+class OutputShader;
 
 class Mesh;
 class MeshFactory;
