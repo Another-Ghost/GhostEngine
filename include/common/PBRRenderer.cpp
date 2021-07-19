@@ -9,7 +9,7 @@
 #include "PrefilterShader.h"
 #include "IrradianceShader.h"
 #include "BRDFLUTShader.h"
-#include "SkyboxShader.h" 
+
 
 
 PBRRenderer::PBRRenderer()
@@ -51,8 +51,7 @@ PBRRenderer::PBRRenderer()
 	//pbr_shader->SetFloat("ao", 1.f);
 
 
-	//6.
-	skybox_shader = new SkyboxShader();
+
 
 
 }
@@ -81,7 +80,7 @@ void PBRRenderer::Update(float dt)
 		}
 	}
 
-	//skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
+	
 }
 
 void PBRRenderer::OnKeyPressed(Window* window)

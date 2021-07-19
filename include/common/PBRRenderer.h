@@ -13,7 +13,7 @@ public:
 
 	SSAOBlurShader* ssao_blur_shader;
 
-	SkyboxShader* skybox_shader;
+
 
 	CubeMap* irradiance_cubemap;
 

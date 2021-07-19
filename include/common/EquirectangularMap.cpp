@@ -4,10 +4,10 @@ EquirectangularMap::EquirectangularMap(TextureType type_ /*= TextureType::EQUIRE
 	Texture(type_, file_)
 {
 	wrap_param = GL_CLAMP_TO_EDGE;
-
+	data_type = GL_FLOAT;
 }
 
-bool EquirectangularMap::Buffer()
+bool EquirectangularMap::Buffer()	//? 删除，改成调用基类的
 {
 	if (file)
 	{

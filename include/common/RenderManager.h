@@ -99,6 +99,8 @@ private:
 
 	Shader* pbr_shader;
 
+	SkyboxShader* skybox_shader;
+
 	ChannelCombinationShader* channel_combination_shader;
 
 	SSAOShader* ssao_shader;

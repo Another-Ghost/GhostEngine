@@ -80,6 +80,8 @@ void CubeGeometryMesh::Initialize()
 
 void CubeGeometryMesh::Draw(Shader* shader)
 {
+	shader->Use();
+
 	glBindVertexArray(vao_id);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);

@@ -20,6 +20,7 @@
 #include "SSAOShader.h"
 #include "SSAOBlurShader.h"
 #include "OutputShader.h"
+#include "SkyboxShader.h" 
 #include <random>
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
@@ -103,7 +104,7 @@ RenderManager::RenderManager():
 	glObjectLabel(GL_TEXTURE, position_g_attachment->id, -1, "position_g_attachment");
 
 	normal_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
-	normal_g_attachment->wrap_param = GL_REPEAT;
+	//normal_g_attachment->wrap_param = GL_REPEAT;
 	normal_g_attachment->Buffer();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normal_g_attachment->id, 0);
 	glObjectLabel(GL_TEXTURE, normal_g_attachment->id, -1, "normal_g_attachment");
@@ -111,7 +112,7 @@ RenderManager::RenderManager():
 	color_g_attachment = ResourceManager::GetSingleton().CreateTexture(TextureType::ATTACHMENT, false);
 	color_g_attachment->internal_format = GL_RGBA;
 	color_g_attachment->data_type = GL_UNSIGNED_BYTE;
-	normal_g_attachment->wrap_param = GL_REPEAT;
+	//normal_g_attachment->wrap_param = GL_REPEAT;
 	color_g_attachment->Buffer();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, color_g_attachment->id, 0);
 	glObjectLabel(GL_TEXTURE, color_g_attachment->id, -1, "color_g_attachment");
@@ -220,6 +221,7 @@ RenderManager::RenderManager():
 
 	output_shader = new OutputShader();
 
+	skybox_shader = new SkyboxShader();
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -257,9 +259,14 @@ void RenderManager::Update(float dt)
 	current_renderer->Update(dt);
 	
 	basic_renderer->Update(dt);
-	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+
+	skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	UpdateSSAO();
+
+
 }
 
 void RenderManager::UpdateCamera()
