@@ -83,10 +83,5 @@ void main()
     else
         OUT_FragColor = 1.f;
 
-
-
-
-
-
     //OUT_FragColor = sample_array.length() / 128.0;
 }

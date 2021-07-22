@@ -11,9 +11,9 @@ void PBRMaterial::Buffer()
 	ao_map->Buffer();
 }
 
-Texture* PBRMaterial::CreateMetalnessRoughnessMap()
+PlaneTexture* PBRMaterial::CreateMetalnessRoughnessMap()
 {
-	metalness_roughness_map= ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESSROUGHNESS);
+	metalness_roughness_map= ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::METALNESSROUGHNESS);
 	//roughness_map->data_format = GL_RG;
 	metalness_roughness_map->width = roughness_map->width;
 	metalness_roughness_map->height = roughness_map->height;

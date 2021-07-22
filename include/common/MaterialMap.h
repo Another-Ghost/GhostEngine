@@ -1,7 +1,7 @@
 #pragma once
-#include "Texture.h"
+#include "PlaneTexture.h"
 
-struct MaterialMap : Texture
+struct MaterialMap : PlaneTexture
 {
 	MaterialMap(TextureType type_, TextureFile* file_ = nullptr);
 	

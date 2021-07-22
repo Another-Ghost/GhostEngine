@@ -5,7 +5,7 @@
 
 struct CubeMap : Texture
 {
-	CubeMap(TextureType type_ = TextureType::CUBEMAP, TextureFile* path_ = nullptr);
+	CubeMap(int width_, int height_, TextureType type_ = TextureType::CUBEMAP, TextureFile* file_ = nullptr);
 	
 	virtual bool Buffer() override;
 };

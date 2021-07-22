@@ -7,7 +7,6 @@
 #include "common/RenderModule.h"
 #include "common/ResourceManager.h"
 #include "common/PBRMaterial.h"
-#include "common/Texture.h"
 #include "common/File.h"
 #include "common/PointLight.h"
 #include "common/RootRenderModule.h"
@@ -37,7 +36,7 @@ int main()
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
 	
-	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/corridor.hdr")));
+	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/night.hdr")));
 	RenderManager::GetSingleton().BindSkyboxTexture(hdr_file);	//? 改成绑定到SceneManager中的skybox class 对象
 	
 	//WFTestRenderer* renderer = new WFTestRenderer();
@@ -59,33 +58,33 @@ int main()
 /*Material*/
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
 	LDRTextureFile* basecolor_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/gold/albedo.png")));	//rusted_iron, painted_metal, gold
-	material->basecolor_map = ResourceManager::GetSingleton().CreateTexture(TextureType::BASECOLOR, true, basecolor_file);
+	material->basecolor_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::BASECOLOR, true, basecolor_file);
 	//material->albedo_map->Buffer();
 	LDRTextureFile* normal_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/gold/normal.png")));
-	material->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, true, normal_file);
+	material->normal_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::NORMAL, true, normal_file);
 	//material->normal_map->Buffer();
 	LDRTextureFile* metalness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/gold/metallic.png")));
-	material->metalness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESS, true, metalness_file);
+	material->metalness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::METALNESS, true, metalness_file);
 	//material->metalness_map->Buffer();
 	LDRTextureFile* roughness_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/gold/roughness.png")));
-	material->roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ROUGHNESS, true, roughness_file);
+	material->roughness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ROUGHNESS, true, roughness_file);
 	//material->roughness_map->Buffer();
 	LDRTextureFile* ao_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/gold/ao.png")));
-	material->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, true, ao_file);
+	material->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, ao_file);
 	//material->ao_map->Buffer();
 
 
 	PBRMaterial* cube_mat = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
 	LDRTextureFile* tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/basecolor.png")));	//rusted_iron, painted_metal, gold
-	cube_mat->basecolor_map = ResourceManager::GetSingleton().CreateTexture(TextureType::BASECOLOR, true, tex_file);
+	cube_mat->basecolor_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::BASECOLOR, true, tex_file);
 	tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/normal.png")));
-	cube_mat->normal_map = ResourceManager::GetSingleton().CreateTexture(TextureType::NORMAL, true, tex_file);
+	cube_mat->normal_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::NORMAL, true, tex_file);
 	tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/metalness.png")));
-	cube_mat->metalness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::METALNESS, true, tex_file);
+	cube_mat->metalness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::METALNESS, true, tex_file);
 	tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/roughness.png")));
-	cube_mat->roughness_map = ResourceManager::GetSingleton().CreateTexture(TextureType::ROUGHNESS, true, tex_file);
+	cube_mat->roughness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ROUGHNESS, true, tex_file);
 	tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/ao.png")));
-	cube_mat->ao_map = ResourceManager::GetSingleton().CreateTexture(TextureType::AO, true, tex_file);
+	cube_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, tex_file);
 
 
 /*Mesh*/

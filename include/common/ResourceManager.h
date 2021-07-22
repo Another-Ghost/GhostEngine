@@ -23,31 +23,31 @@ struct TexturePredicate
 
 class ResourceManager : public Singleton<ResourceManager>
 {
-	vector<Mesh*> mesh_array;
+	set<Mesh*> mesh_array;
 
 	//map<string, TriangleMesh*> tri_mesh_array;
 
-	vector<Shader*> shader_array;
+	set<Shader*> shader_array;
 
-	vector<Texture*> texture_array;
+	set<PlaneTexture*> plane_texture_array;
 
-	vector<Material*> material_array;
+	set<Material*> material_array;
 
-	vector<CubeMap*> cube_map_array;
+	set<CubeMap*> cube_map_array;
 
-	vector<TextureFile*> texture_file_array;
+	set<TextureFile*> texture_file_array;
 	
-	vector<RenderModule*> render_module_array;
+	set<RenderModule*> render_module_array;
 
-	vector<RenderUnit*> render_unit_array;
+	set<RenderUnit*> render_unit_array;
 
 public:
 
 	ResourceManager();
 
-	Texture* CreateTexture(TextureType type, bool b_buffer = false, TextureFile* file = nullptr);	//b_buffer为true代表使用所选TextureType的默认参数进行缓存
+	PlaneTexture* CreatePlaneTexture(TextureType type, bool b_buffer = false, TextureFile* file = nullptr);	//b_buffer为true代表使用所选TextureType的默认参数进行缓存
 
-	Texture* CreateMetalnessRoughnessMap(Texture* metalness_map, Texture* roughness_map);
+	//PlaneTexture* CreateMetalnessRoughnessMap(PlaneTexture* metalness_map, PlaneTexture* roughness_map);
 
 	TextureFile* CreateTextureFile(TextureFileType type, bool b_load = false, const string& path = "");
 
@@ -63,7 +63,7 @@ public:
 
 	RenderUnit* CreateRenderUnit(RenderModule* parent, Mesh* mesh = nullptr, Material* material = nullptr);
 
-	//CubeMap* CreateCubeMap(int width, int height);
+	CubeMap* CreateCubeMap(int width, int height, TextureType type, bool b_buffer = false, TextureFile* file = nullptr);
 
 	unique_ptr<GLTFLoader> gltf_loader;
 

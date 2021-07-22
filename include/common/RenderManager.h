@@ -63,8 +63,6 @@ public:
 
 	void UpdateLightArray();
 
-	void UpdateSSAO();
-
 	void ResetRenderArray();
 
 	void InsertRenderUnit(RenderUnit* ru);
@@ -86,12 +84,17 @@ public:
 
 	CubeMap* GetSkybox() { return skybox_cubemap; }
 
-	Texture* GetBRDFLUT() { return brdf_lut; }
+	PlaneTexture* GetBRDFLUT() { return brdf_lut; }
 
 	GLuint GetLightSSBO() { return light_ssbo; }
 	//GLuint GetLightColorSSBO() { return light_color_ssbo; }
 
-	void CombineChannels(Texture* out_tex, Texture* tex1, Texture* tex2);
+	void CombineChannels(PlaneTexture* out_tex, PlaneTexture* tex1, PlaneTexture* tex2);
+
+
+	AttachmentTexture* GetGPosition() { return position_g_attachment; }
+	AttachmentTexture* GetGNormal() { return normal_g_attachment; }
+	AttachmentTexture* GetGColor(){ return color_g_attachment; }
 
 private:
 
@@ -103,12 +106,6 @@ private:
 
 	ChannelCombinationShader* channel_combination_shader;
 
-	SSAOShader* ssao_shader;
-	SSAOBlurShader* ssao_blur_shader;
-
-	OutputShader* output_shader;
-
-	friend class SceneManager;
 
 	mat4 model_matrix;
 	mat4 view_matrix;
@@ -134,11 +131,11 @@ private:
 
 	bool b_skybox_initialized;
 
-	Texture* brdf_lut;
+	PlaneTexture* brdf_lut;
 
 	GLuint light_ssbo;
 
-	GLuint ssao_kernel_ssbo;
+
 
 	GLuint camera_ubo;
 	GLuint window_ubo;
@@ -149,20 +146,13 @@ private:
 	unsigned int gbuffer_fbo;
 	unsigned int gbuffer_depth_rbo;	//? 是否可以使用capture_fbo
 
-	Texture* position_g_attachment;
-	Texture* normal_g_attachment;
-	Texture* color_g_attachment;
+	AttachmentTexture* position_g_attachment;
+	AttachmentTexture* normal_g_attachment;
+	AttachmentTexture* color_g_attachment;
 
-	/*SSAO*/
-	unsigned int ssao_fbo;
-	unsigned int ssao_blur_fbo;
-	Texture* ssao_color_attachment;
-	Texture* ssao_blur_color_attachment;
+	PostProcessRenderer* post_process_renderer;
 
-	vector<vec4> ssao_kernel;
+	friend class SceneManager;
 
-	int sample_num;
-	Texture* noise_texture;
-	int noise_tex_size{ 4 };
 };
 

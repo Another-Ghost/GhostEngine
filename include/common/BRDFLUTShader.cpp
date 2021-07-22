@@ -1,5 +1,5 @@
 #include "BRDFLUTShader.h"
-#include "Texture.h"
+#include "PlaneTexture.h"
 
 
 BRDFLUTShader::BRDFLUTShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
@@ -7,7 +7,7 @@ BRDFLUTShader::BRDFLUTShader(const string& vertex_path, const string& fragment_p
 {
 }
 
-void BRDFLUTShader::RenderBRDFLUT(const Texture* brdf_lut)
+void BRDFLUTShader::RenderBRDFLUT(const PlaneTexture* brdf_lut)
 {
 	Use();
 
@@ -15,8 +15,6 @@ void BRDFLUTShader::RenderBRDFLUT(const Texture* brdf_lut)
 	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdf_lut->id, 0);
-
-
 
 	glViewport(0, 0, brdf_lut->width, brdf_lut->height);
 

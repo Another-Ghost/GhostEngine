@@ -75,6 +75,7 @@ class QuadGeometryMesh;
 struct ExpandedVertex;
 
 struct Texture;
+struct PlaneTexture;
 struct Material;
 struct BasicMaterial;
 struct PBRMaterial;
@@ -86,6 +87,8 @@ struct TextureFile;
 struct HDRTextureFile;
 enum class TextureFileType;
 struct EquirectangularMap;
+struct AttachmentTexture;
+
 
 struct Light;
 class LightFactory;
@@ -96,4 +99,6 @@ struct CubeMap;
 class Renderer;
 class IBLRenderer;
 class BasicRenderer;
+class PostProcessRenderer;
+
 

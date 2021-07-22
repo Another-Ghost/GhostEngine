@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include "Debug.h"
 #include "CubeMap.h"
+#include "PlaneTexture.h"
 //#include "File.h"
 
 const TextureUnit TextureUnit::basecolor_map = { "basecolor_map", 0 };
@@ -16,7 +17,7 @@ const TextureUnit TextureUnit::g_normal = { "g_normal", 9 };
 const TextureUnit TextureUnit::g_color = { "g_color", 10 };
 const TextureUnit TextureUnit::ssao = { "ssao", 11 };
 
-void TextureUnit::Bind2DTexture(const TextureUnit& unit, Texture* texture)
+void TextureUnit::Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture)
 {
 	glActiveTexture(GL_TEXTURE0 + unit.number);
 	if (texture)

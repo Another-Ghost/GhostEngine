@@ -1,7 +1,7 @@
 #include "EquirectangularMap.h"
 
 EquirectangularMap::EquirectangularMap(TextureType type_ /*= TextureType::EQUIRECTANGULARMAP*/, TextureFile* file_ /*= nullptr*/):
-	Texture(type_, file_)
+	PlaneTexture(type_, file_)
 {
 	wrap_param = GL_CLAMP_TO_EDGE;
 	data_type = GL_FLOAT;

@@ -188,8 +188,10 @@
     <ClCompile Include="PBRMaterialFacotry.cpp" />
     <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
+    <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
+    <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
     <ClCompile Include="QuadGeometryMesh.cpp" />
@@ -265,8 +267,10 @@
     <ClInclude Include="PBRMaterialFactory.h" />
     <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
+    <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
+    <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
     <ClInclude Include="QuadGeometryMesh.h" />

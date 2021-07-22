@@ -56,9 +56,7 @@ struct Texture
 
 	Texture(TextureType type_, TextureFile* file_ = nullptr);
 	
-	virtual void LoadData();
-
-	virtual bool Buffer();	//? 看一下如何卸载缓存的材质
+	virtual bool Buffer() = 0;	//? 看一下如何卸载缓存的材质
 
 	static std::string TypeName(TextureType type)
 	{

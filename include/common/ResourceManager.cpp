@@ -12,6 +12,7 @@
 #include "TriangleMesh.h"
 #include "RenderUnit.h"
 #include "BasicMaterialFactory.h"
+#include "PlaneTexture.h"
 
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
 ResourceManager::ResourceManager()
@@ -20,11 +21,11 @@ ResourceManager::ResourceManager()
 
     gltf_loader = std::make_unique<GLTFLoader>();
 }
-Texture* ResourceManager::CreateTexture(TextureType type, bool b_buffer, TextureFile* file)
+PlaneTexture* ResourceManager::CreatePlaneTexture(TextureType type, bool b_buffer, TextureFile* file)
 {
     if (file != nullptr)
     {
-        for (const auto& tex : texture_array)
+        for (const auto& tex : plane_texture_array)
         {
             if (file == tex->file)
             {
@@ -33,17 +34,14 @@ Texture* ResourceManager::CreateTexture(TextureType type, bool b_buffer, Texture
         }
     }
 
-    Texture* texture = nullptr;
+    PlaneTexture* texture = nullptr;
     switch (type)
     {
     case TextureType::EMPTY2D:
-        texture = new Texture(type, file);
+        texture = new PlaneTexture(type, file);
         break;
     case TextureType::EQUIRECTANGULARMAP:
         texture = new EquirectangularMap(type, file);
-        break;
-    case TextureType::CUBEMAP:
-        texture = new CubeMap(type, file);
         break;
     case TextureType::ALBEDO :
     case TextureType::BASECOLOR:
@@ -68,16 +66,12 @@ Texture* ResourceManager::CreateTexture(TextureType type, bool b_buffer, Texture
         texture->Buffer();
     }
 
-    texture_array.emplace_back(texture);
+    plane_texture_array.emplace(texture);
 
     return texture;
 }
 
-Texture* ResourceManager::CreateMetalnessRoughnessMap(Texture* metalness_map, Texture* roughness_map)
-{
 
-    return nullptr;
-}
 
 TextureFile* ResourceManager::CreateTextureFile(TextureFileType type, bool b_load, const string& path)
 {
@@ -105,7 +99,7 @@ TextureFile* ResourceManager::CreateTextureFile(TextureFileType type, bool b_loa
         texture_file->LoadData();
     }
 
-    texture_file_array.push_back(texture_file);
+    texture_file_array.emplace(texture_file);
 
     return texture_file;
 }
@@ -127,7 +121,7 @@ Material* ResourceManager::CreateMaterial(MaterialType type)
     }
 
 	Material* material = factory->CreateMaterial();
-	material_array.emplace_back(material);
+	material_array.emplace(material);
 	return material;
 
 }
@@ -135,7 +129,7 @@ Material* ResourceManager::CreateMaterial(MaterialType type)
 Material* ResourceManager::CreateMaterial(const MaterialFactory& mat_factory)
 {
     Material* material = mat_factory.CreateMaterial();
-    material_array.emplace_back(material);
+    material_array.emplace(material);
     return material;
 }
 
@@ -143,7 +137,7 @@ Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 {
 
     Mesh* mesh = mesh_factory.CreateMesh();
-    mesh_array.emplace_back(mesh);
+    mesh_array.emplace(mesh);
     return mesh;
 }
 
@@ -154,7 +148,7 @@ TriangleMesh* ResourceManager::CreateTriangleMesh(bool b_buffer, const vector<Ex
     {
         mesh->Buffer();
     }
-    mesh_array.emplace_back(mesh);
+    mesh_array.emplace(mesh);
     return mesh;
 }
 
@@ -180,7 +174,7 @@ RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderMo
         parent->AddChild(render_module);
     }
     //render_module->SetParent(parent);
-    render_module_array.emplace_back(render_module);
+    render_module_array.emplace(render_module);
 
     return render_module;
 }
@@ -189,16 +183,18 @@ RenderUnit* ResourceManager::CreateRenderUnit(RenderModule* parent, Mesh* mesh, 
 {
 	RenderUnit* ru = new RenderUnit(parent, mesh, material);
     parent->AddRenderUnit(ru);
-	render_unit_array.push_back(ru);
+	render_unit_array.emplace(ru);
 	return ru;
 }
 
+CubeMap* ResourceManager::CreateCubeMap(int width, int height, TextureType type, bool b_buffer, TextureFile* file)
+{
+    CubeMap* cube_map = new CubeMap(width, height, type, file);
+    if (b_buffer)
+    {
+        cube_map->Buffer();
+    }
+    return cube_map;
+}
 
 
-//CubeMap* ResourceManager::CreateCubeMap(int width, int height)
-//{
-//    CubeMap* cube_map = new CubeMap();
-//    //cube_map->Buffer();
-//    cube_map_array.emplace_back(cube_map);
-//    return cube_map;
-//}

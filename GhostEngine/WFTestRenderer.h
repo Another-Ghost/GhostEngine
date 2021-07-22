@@ -26,7 +26,7 @@ private:
 
 	//Texture* brdf_Lut_texture;
 
-	Texture* ssda_lut_texture;
+	PlaneTexture* ssda_lut_texture;
 
 	//EquirectangularMap* equirectanguler_map;
 };

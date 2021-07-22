@@ -2,7 +2,7 @@
 #include "WindowManager.h"
 
 AttachmentTexture::AttachmentTexture():
-	Texture(TextureType::ATTACHMENT)
+	PlaneTexture(TextureType::ATTACHMENT)
 {
 	width = WindowManager::s_current_window->GetWidth();
 	height = WindowManager::s_current_window->GetHeight();

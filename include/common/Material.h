@@ -1,6 +1,6 @@
 #pragma once
 #include "Prerequisite.h"
-#include "Texture.h"
+#include "PlaneTexture.h"
 #include <vector>
 
 enum class MaterialType

@@ -109,7 +109,7 @@ Material* Model::ProcessMaterial(aiMaterial* ai_mat, MaterialType mat_type)
 	if (mat_type == MaterialType::PBR)
 	{
 		PBRMaterial* mat = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-		vector<Texture*> tex_array = ProcessTexture(ai_mat, aiTextureType_BASE_COLOR, TextureType::BASECOLOR);
+		vector<PlaneTexture*> tex_array = ProcessTexture(ai_mat, aiTextureType_BASE_COLOR, TextureType::BASECOLOR);
 		mat->basecolor_map = tex_array.empty() ? nullptr : tex_array.front();
 
 		tex_array = ProcessTexture(ai_mat, aiTextureType_NORMALS, TextureType::NORMAL);
@@ -127,9 +127,9 @@ Material* Model::ProcessMaterial(aiMaterial* ai_mat, MaterialType mat_type)
 	return nullptr;
 }
 
-vector<Texture*> Model::ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type)
+vector<PlaneTexture*> Model::ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type)
 {
-	vector<Texture*> tex_array;
+	vector<PlaneTexture*> tex_array;
 	int n = mat->GetTextureCount(ai_type);
 	cout << Texture::TypeName(type) << ": " << n << "\n";
 	for (unsigned int i = 0; i < mat->GetTextureCount(ai_type); i++)
@@ -139,7 +139,7 @@ vector<Texture*> Model::ProcessTexture(aiMaterial* mat, aiTextureType ai_type, T
 
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 		TextureFile* tex_file = ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, directory + str.C_Str());
-		Texture* tex = ResourceManager::GetSingleton().CreateTexture(type, true, tex_file);
+		PlaneTexture* tex = ResourceManager::GetSingleton().CreatePlaneTexture(type, true, tex_file);
 
 		//tex->b_genarate_mipmap = true;
 		//tex->wrap_param = GL_REPEAT;

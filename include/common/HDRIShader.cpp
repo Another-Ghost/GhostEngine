@@ -3,6 +3,7 @@
 #include "RenderManager.h"
 #include "WindowManager.h"
 #include "CubeMap.h"
+#include "PlaneTexture.h"
 
 HDRIShader::HDRIShader():
 MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangular_to_cubemap_fs"))
@@ -17,12 +18,12 @@ MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("equirectangula
 
 
 
-void HDRIShader::RenderCubeMap(const CubeMap* cube_map, unsigned int hdr_tex_id)
+void HDRIShader::RenderCubeMap(const CubeMap* cube_map, PlaneTexture* hdr_tex)
 {
 	Use();
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, hdr_tex_id);
+	glBindTexture(GL_TEXTURE_2D, hdr_tex->id);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
 	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());

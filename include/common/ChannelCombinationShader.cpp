@@ -1,7 +1,7 @@
 #include "ChannelCombinationShader.h"
 #include "RenderManager.h"
 #include "WindowManager.h"
-#include "Texture.h"
+#include "PlaneTexture.h"
 
 ChannelCombinationShader::ChannelCombinationShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
 	Shader(vertex_path, fragment_path, geometry_path)
@@ -11,7 +11,7 @@ ChannelCombinationShader::ChannelCombinationShader(const string& vertex_path, co
 	SetInt("tex2", 1);
 }
 
-void ChannelCombinationShader::RenderTexture(const Texture* out_tex, const Texture* tex1, const Texture* tex2)
+void ChannelCombinationShader::RenderTexture(const PlaneTexture* out_tex, const PlaneTexture* tex1, const PlaneTexture* tex2)
 {
 	Use();
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());

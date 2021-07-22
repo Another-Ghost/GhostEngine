@@ -1,6 +1,6 @@
 #pragma once
-#include "Texture.h"
-class AttachmentTexture : public Texture
+#include "PlaneTexture.h"
+struct AttachmentTexture : public PlaneTexture
 {
 public:
 	AttachmentTexture();

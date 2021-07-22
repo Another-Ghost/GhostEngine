@@ -26,7 +26,7 @@ private:
 
 	Material* ProcessMaterial(aiMaterial* ai_mat, MaterialType mat_type);
 
-	vector<Texture*> ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type);
+	vector<PlaneTexture*> ProcessTexture(aiMaterial* mat, aiTextureType ai_type, TextureType type);
 
 	void ProcessNode(aiNode* node, RenderModule* render_module);
 

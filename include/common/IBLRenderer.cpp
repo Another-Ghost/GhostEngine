@@ -21,14 +21,14 @@ IBLRenderer::IBLRenderer()
 	Window* window = WindowManager::GetSingleton().s_current_window;
 
 	//1.
-	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
+	env_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::CUBEMAP));	//? 改为从SceneManager中获取
 	env_cubemap->width = 512;
 	env_cubemap->height = 512;
 	env_cubemap->b_genarate_mipmap = false;
 	env_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	env_cubemap->Buffer();
 	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/sky0025.hdr")));
-	equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
+	equirectanguler_map = dynamic_cast<EquirectangularMap*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EQUIRECTANGULARMAP, hdr_file));
 	equirectanguler_map->Buffer();
 	
 	HDRIShader* hdri_cubemap_shader = new HDRIShader();
@@ -37,7 +37,7 @@ IBLRenderer::IBLRenderer()
 
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 
-	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP));
+	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::CUBEMAP));
 	irradiance_cubemap->width = 32;	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
 	irradiance_cubemap->height = 32;
 	//irradiance_cubemap->min_filter_param = GL_LINEAR;
@@ -50,7 +50,7 @@ IBLRenderer::IBLRenderer()
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
 
-	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateTexture(TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
+	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
 	prefilter_cubemap->width = 128; 
 	prefilter_cubemap->height = 128;
 	prefilter_cubemap->b_genarate_mipmap = true;
@@ -62,7 +62,7 @@ IBLRenderer::IBLRenderer()
 	
 	
 	//4. generate a 2D LUT from the BRDF equations used.
-	brdf_lut_texture = ResourceManager::GetSingleton().CreateTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
+	brdf_lut_texture = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
 	brdf_lut_texture->data_format = GL_RG;
 	brdf_lut_texture->width = 512;
 	brdf_lut_texture->height = 512;

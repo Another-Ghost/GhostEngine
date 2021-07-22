@@ -145,7 +145,7 @@ void main()
 
 	vec3 N = GetNormalFromMap();
 	vec3 V = normalize(camera.position.xyz - WorldPos);	//view direction/solid angle, point to outside
-	vec3 R = reflect(-V, N);
+	vec3 R = reflect(-V, N);	//light direction
 	
 	// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
     // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)  
@@ -225,19 +225,6 @@ void main()
 	color += emissive;
 	//color = color * ao + Lo;
 	//color += Lo ;
-
-    //vec3 specular = prefiltered_color * (F * brdf.x + brdf.y);
-
-	//float ssda = texture(ssda_lut, vec2(max(dot(N, V), 0.0), roughness)).r;
-	//vec3 multi_scattering = (1 -ssda) * irradiance;
-	//vec3 color = multi_scattering + specular;
-	//vec3 color = specular;
-	//vec3 color = multi_scattering;
-
-	//vec3 ambient = (kD * diffuse + specular) * ao;	//? 指定光线较难逃逸出来的暗色边缘 为什么只作用于环境光，而没有作用于直接光照？
-	//vec3 ambient = (kD * diffuse + specular);
-	//vec3 color = ambient + Lo;	
-
 
 	//HDR tone mapping
 	color = color / (color + vec3(1.0));	//? replace to way of adjusting exposure 

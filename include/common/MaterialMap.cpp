@@ -2,7 +2,7 @@
 #include "TextureFile.h"
 
 MaterialMap::MaterialMap(TextureType type_, TextureFile* file_):
-	Texture(type_, file_)
+	PlaneTexture(type_, file_)
 {
 	wrap_param = GL_REPEAT;
 	b_genarate_mipmap = true;

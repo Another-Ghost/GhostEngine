@@ -46,7 +46,7 @@ struct TextureUnit
 	static const TextureUnit ssao;
 
 	//? static void Reset();
-	static void Bind2DTexture(const TextureUnit& unit, Texture* texture);
+	static void Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture);
 	static void BindCubemapTexture(const TextureUnit& unit, CubeMap* texture);
 };
 

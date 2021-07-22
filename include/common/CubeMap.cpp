@@ -1,14 +1,12 @@
 #include "CubeMap.h"
 
-CubeMap::CubeMap(TextureType type_, TextureFile* file_):
+
+
+CubeMap::CubeMap(int width_, int height_, TextureType type_, TextureFile* file_):
 	Texture(type_, file_)
 {
-	width = 512;
-	height = 512;
-	internal_format = GL_RGB16F;
-	data_format = GL_RGB;
-	data_type = GL_FLOAT;
-	wrap_param = GL_CLAMP_TO_EDGE;
+	width = width_;
+	height = height_;
 }
 
 bool CubeMap::Buffer()

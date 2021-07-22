@@ -261,6 +261,12 @@
     <ClCompile Include="OutputShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PostProcessRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -470,9 +476,6 @@
     <ClInclude Include="ChannelCombinationShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttachmentTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -490,6 +493,15 @@
     </ClInclude>
     <ClInclude Include="OutputShader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttachmentTexture.h">
+      <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneTexture.h">
+      <Filter>Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
