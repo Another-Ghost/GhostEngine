@@ -9,6 +9,7 @@
 #include <memory>
 #include <map>
 #include <set>
+#include <algorithm>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -23,7 +24,10 @@ using std::vector;
 using std::string;
 using std::map;
 using std::set;
+using std::multimap;
+using std::multiset;
 using std::unique_ptr;
+using std::shared_ptr;
 //using std::make_unique
 
 using glm::vec2;
@@ -101,4 +105,6 @@ class IBLRenderer;
 class BasicRenderer;
 class PostProcessRenderer;
 
-
+struct Frustum;
+struct Plane;
+struct AABBVolume;

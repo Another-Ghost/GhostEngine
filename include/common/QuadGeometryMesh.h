@@ -8,5 +8,8 @@ public:
 	void Initialize() override;
 
 	void Draw(Shader* shader) override;
+
+private:
+	void InitializeAABB() override;
 };
 

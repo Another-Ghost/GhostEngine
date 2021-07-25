@@ -34,6 +34,9 @@
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{8ddaec7d-7a92-4fa1-b336-3e3012702a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Space">
+      <UniqueIdentifier>{5f6126d1-5783-468c-8118-ca7aafd83f2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -267,6 +270,24 @@
     <ClCompile Include="PlaneTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -365,9 +386,6 @@
     <ClInclude Include="LightFactory.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IBLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CubeGeometryMesh.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
@@ -419,30 +437,6 @@
     <ClInclude Include="TextureFile.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="PBRShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MVPShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HDRIShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PrefilterShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IrradianceShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BRDFLUTShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyboxShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMapShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -461,40 +455,13 @@
     <ClInclude Include="TriangleMeshFactory.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="BasicRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLTFLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChannelCombinationShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PBRLightingPassShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SSAOShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PBRRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SSAOBlurShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PostProcessRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AttachmentTexture.h">
@@ -502,6 +469,78 @@
     </ClInclude>
     <ClInclude Include="PlaneTexture.h">
       <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BRDFLUTShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelCombinationShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="IBLRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="IrradianceShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MVPShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRLightingPassShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefilterShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOBlurShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRIShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Space</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingVolume.h">
+      <Filter>Space</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBVolume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereVolume.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

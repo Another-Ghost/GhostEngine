@@ -3,16 +3,15 @@
 SphereGeometryMesh::SphereGeometryMesh(int x_segment_num_, int y_segment_num_):
 	x_segment_num(x_segment_num_), y_segment_num(y_segment_num_)
 {
-	Initialize();
+	//Initialize();
 
-	if (!b_buffered)
-	{
-		Buffer();
-	}
-
+	//if (!b_buffered)
+	//{
+	//	Buffer();
+	//}
 }
 
-void SphereGeometryMesh::Initialize()
+void SphereGeometryMesh::InitializeData()
 {
 	constexpr float PI = glm::pi<float>();
 	for (int y = 0; y <= y_segment_num; ++y)
@@ -51,6 +50,13 @@ void SphereGeometryMesh::Initialize()
 		}
 		odd_row = !odd_row;
 	}
+
+}
+
+void SphereGeometryMesh::InitializeAABB()
+{
+	//aabb_volume = std::make_shared<AABBVolume>(vec3{1.f});
+	aabb_volume = vec3{ 1.f };
 }
 
 

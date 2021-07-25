@@ -7,6 +7,12 @@
 //
 //}
 
+void Mesh::Initialize()
+{
+
+}
+
+
 void Mesh::Buffer()
 {
 }

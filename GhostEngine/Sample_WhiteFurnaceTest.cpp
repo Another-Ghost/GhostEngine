@@ -111,6 +111,7 @@ int main()
 	//	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
 	//}
 
+	//back
 	RenderNode* wall1 = new RenderNode();
 	RootRenderModule* wall1_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
@@ -119,14 +120,16 @@ int main()
 	wall1->local_transform.SetPosition({ 0.f, 3.f, -12.f });
 	wall1->local_transform.SetYaw(0.f);
 
+	//right
 	RenderNode* wall2 = new RenderNode();
 	RootRenderModule* wall2_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall2_root_rm, cube_mesh, cube_mat);
 	wall2->AttachRenderModule(wall2_root_rm);
 	wall2->local_transform.SetDimension({ 10.f, 5.f, 1.f });
-	wall2->local_transform.SetPosition({ 12.f, 3.f, 0.f });
+	wall2->local_transform.SetPosition({ 12.f, 3.f, -4.f });
 	wall2->local_transform.SetYaw(90.f);
 
+	//left
 	RenderNode* wall3 = new RenderNode();
 	RootRenderModule* wall3_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);

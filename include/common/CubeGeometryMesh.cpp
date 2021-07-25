@@ -2,15 +2,10 @@
 
 CubeGeometryMesh::CubeGeometryMesh()
 {
-	Initialize();
 
-	if (!b_buffered)
-	{
-		Buffer();
-	}
 }
 
-void CubeGeometryMesh::Initialize()
+void CubeGeometryMesh::InitializeData()
 {
 	//vector<vec3> postion_array = {
 	//	{-1.f, -1.f, -1.f},
@@ -85,5 +80,12 @@ void CubeGeometryMesh::Draw(Shader* shader)
 	glBindVertexArray(vao_id);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
+}
+
+void CubeGeometryMesh::InitializeAABB()
+{
+	//aabb_volume = std::make_shared<AABBVolume>(vec3{1.f}.length());
+	//vec3 v = vec3{ 1.f };
+	aabb_volume = vec3(glm::length(vec3{ 1.f }));
 }
 

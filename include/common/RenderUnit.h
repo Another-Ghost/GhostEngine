@@ -1,6 +1,7 @@
 #pragma once
 #include "Prerequisite.h"
-
+#include "AABBVolume.h"
+#include "RenderModule.h"
 
 class RenderUnit
 {
@@ -16,9 +17,13 @@ protected:
 
 	bool b_rendered;
 
+	float camera_z_distance;
+
+	AABBVolume aabb_volume;
+
 public:
 
-	RenderUnit(RenderModule* parent_ = nullptr, Mesh* mesh_ = nullptr, Material* material_ = nullptr): mesh(mesh_), material(material_), b_rendered(true), parent(parent_) {}
+	RenderUnit(RenderModule* parent_ = nullptr, Mesh* mesh_ = nullptr, Material* material_ = nullptr);
 
 	Mesh* GetMesh() { return mesh; }
 	void SetMesh(Mesh* mesh_) { mesh = mesh_; }
@@ -27,8 +32,24 @@ public:
 	void SetMaterial(Material* material_) { material = material_; }
 
 	virtual RenderModule* GetParent() { return parent; }
-	virtual void SetParent(RenderModule* parent_) { parent = parent_; }
+	virtual void SetParent(RenderModule* parent_) { parent = parent_; } 
+
+	float GetCameraZDistance() const { return camera_z_distance; }
+	void SetCameraZDistance(float dist) { camera_z_distance = dist; }
 
 	void Update(float dt);
+
+	AABBVolume GetAABBVolume();
+	                                    
+	vec3 GetPosition() { /*Transform tf = parent->GetWorldTransform(); vec3 pos = parent->GetWorldTransform().GetPosition(); vec3 pos2 = tf.GetPosition();*/ return parent->GetWorldTransform().GetPosition(); }
+
+	struct CameraZDistanceComp
+	{
+		bool operator()(const RenderUnit* a, const RenderUnit* b) const
+		{
+			return a->GetCameraZDistance() > b->GetCameraZDistance();
+		}
+	};
+
 };
 

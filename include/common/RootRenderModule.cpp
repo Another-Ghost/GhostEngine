@@ -4,7 +4,12 @@ Transform RootRenderModule::GetWorldTransform()
 {
 	if (parent)
 	{
-		return local_transform * parent->GetWorldTransform();
+//#ifdef DEBUG_MODE
+//		Transform matrix = parent->GetWorldTransform() * local_transform;
+//		matrix.PrintMatrix();
+//#endif // DEBUG_MODE
+
+		return parent->GetWorldTransform() * local_transform;
 	}
 	else
 	{

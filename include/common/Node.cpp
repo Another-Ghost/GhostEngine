@@ -13,7 +13,7 @@ Transform Node::GetWorldTransform()
 {
 	if (parent)
 	{
-		return local_transform * parent->GetWorldTransform();
+		return parent->GetWorldTransform() * local_transform;
 	}
 	else
 	{

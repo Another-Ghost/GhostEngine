@@ -26,9 +26,9 @@ Transform::Transform(const vec3& pos, const quat& ori, const vec3& dim)
 Transform::Transform(const mat4& matrix_)
 {
 	matrix = matrix_; //? （正交化）解决矩阵蠕变
-	dimension = vec3(vec3(matrix[0]).length(), vec3(matrix[1]).length(), vec3(matrix[2]).length());
+	dimension = vec3(glm::length(vec3(matrix[0][0], matrix[1][0], matrix[2][0])), glm::length(vec3(matrix[0][1], matrix[1][1], matrix[2][1])), glm::length(vec3(matrix[0][2], matrix[1][2], matrix[2][2])));
 	orientation = quat(matrix);
-	position = vec3(matrix[0][3], matrix[1][3], matrix[2][3]) / dimension;
+	position = vec3(matrix[3][0], matrix[3][1], matrix[3][2]);
 }
 
 void Transform::SetPosition(const vec3& pos)
@@ -121,6 +121,7 @@ void Transform::PrintMatrix()
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 

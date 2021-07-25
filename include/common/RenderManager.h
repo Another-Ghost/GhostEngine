@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include "CubeGeometryMesh.h"
 #include "QuadGeometryMesh.h"
-
+#include "RenderUnit.h"
 
 //struct RenderMaterialComp
 //{
@@ -49,8 +49,10 @@ public:
 
 	Camera* camera;
 
-	//map<Material*, set<RenderModule*>> mat_module_map;
-	map<PBRMaterial*, set<RenderUnit*>> pbr_mat_unit_map;
+	map<PBRMaterial*, multiset<RenderUnit*, RenderUnit::CameraZDistanceComp>> pbr_mat_unit_map;
+	//map<PBRMaterial*, vector<RenderUnit*>> pbr_mat_unit_map;
+	//multimap<PBRMaterial*, RenderUnit*> pbr_mat_unit_map;
+
 	map<BasicMaterial*, set<RenderUnit*>> basic_mat_unit_map;
 
 	RenderManager();
@@ -65,7 +67,7 @@ public:
 
 	void ResetRenderArray();
 
-	void InsertRenderUnit(RenderUnit* ru);
+	bool InsertRenderUnit(RenderUnit* ru);
 
 	unsigned int GetCaptureFBO() { return capture_fbo; }
 	unsigned int GetCaptureRBO() { return capture_rbo; }

@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Window.h"
 
+
 enum class CameraCommand
 {
 	FORWARD,
@@ -25,9 +26,13 @@ public:
 	//const float kMoveSpeed = 2.5f;
 	//const float kRotationSpeed = 0.1f;
 
+	unique_ptr<Frustum> frustum;
+
 	Camera(vec3 postion_ = {0, 0, 0}, float pitch_ = 0.f, float yaw_ = 0.f, float aspect_ = 16 / 9.0f, float fov_y_ = 45.f, float near_ = 0.1f, float far_ = 500.f, float move_speed_ = 5.f, float roation_speed_ = 0.1f);
 
 	virtual ~Camera();
+
+	void Update(float dt);
 
 	glm::mat4 ViewMatrix();
 
@@ -55,6 +60,8 @@ public:
 
 	vec3 GetRight() { return transform.GetRight(); }
 
+
+
 protected:	//? effective c++
 
 	float pitch;
@@ -81,6 +88,7 @@ protected:	//? effective c++
 	virtual void OnMouseMove(double x_offset, double y_offset) override;
 
 	virtual void OnKeyPressed(Window* window) override;
+
 
 };
 

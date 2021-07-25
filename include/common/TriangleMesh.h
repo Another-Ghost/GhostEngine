@@ -35,10 +35,15 @@ public:
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		//Buffer();
 	}
+	
+	virtual void Initialize() override;
+
 
 	void Buffer() override;
 
 	void Draw(Shader* shader) override;
+
+	void InitializeAABB() override;
 
 //	// render the mesh
 //	void Draw(Shader& shader)

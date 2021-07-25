@@ -4,10 +4,12 @@
 
 void RenderModule::Update(float dt)
 {
-	for (const auto& render_unit : render_unit_array)
-	{
-		render_unit->Update(dt);
-	}
+	//for (const auto& render_unit : render_unit_array)
+	//{
+	//	render_unit->Update(dt);
+	//}
+
+	render_unit->Update(dt);
 
 	for (const auto& child : child_array)
 	{
@@ -21,14 +23,17 @@ void RenderModule::AddChild(RenderModule* child)
 	child->SetParent(this);
 }
 
-void RenderModule::AddRenderUnit(RenderUnit* ru)
-{
-	render_unit_array.emplace_back(ru);
-	ru->SetParent(this);
-}
+//void RenderModule::AddRenderUnit(RenderUnit* ru)
+//{
+//	render_unit_array.emplace_back(ru);
+//	ru->SetParent(this);
+//}
 
 Transform RenderModule::GetWorldTransform()
 {
+	Transform matrix = parent->GetWorldTransform() * local_transform;
+	matrix.PrintMatrix();
+
 	return parent->GetWorldTransform() * local_transform;
 }
 

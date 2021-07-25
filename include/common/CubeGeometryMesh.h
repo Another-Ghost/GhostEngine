@@ -7,8 +7,10 @@ public:
 
 	CubeGeometryMesh();
 
-	void Initialize() override;
+	void InitializeData() override;
 
 	void Draw(Shader* shader) override;
+
+	void InitializeAABB() override;
 };
 

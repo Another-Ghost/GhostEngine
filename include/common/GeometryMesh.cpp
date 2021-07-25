@@ -7,7 +7,15 @@ GeometryMesh::GeometryMesh()
 
 void GeometryMesh::Initialize()
 {
+	InitializeData();
+	if (!b_buffered)
+	{
+		Buffer();
+	}
+
+	InitializeAABB();
 }
+
 
 void GeometryMesh::Buffer()
 {

@@ -18,7 +18,8 @@ public:
 
 	Transform local_transform;
 
-	vector<RenderUnit*> render_unit_array;
+	//vector<RenderUnit*> render_unit_array;
+	RenderUnit* render_unit;
 
 	vector<RenderModule*> child_array;
 
@@ -31,8 +32,10 @@ public:
 
 	void AddChild(RenderModule* child); 
 
-	void AddRenderUnit(RenderUnit* ru);
+	//void AddRenderUnit(RenderUnit* ru);
+	void AttachRenderUnit(RenderUnit* ru) { render_unit = ru; }
 
 	virtual Transform GetWorldTransform();
+
 };
 

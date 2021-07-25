@@ -137,6 +137,9 @@ Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 {
 
     Mesh* mesh = mesh_factory.CreateMesh();
+    
+    mesh->Initialize();
+
     mesh_array.emplace(mesh);
     return mesh;
 }
@@ -146,8 +149,9 @@ TriangleMesh* ResourceManager::CreateTriangleMesh(bool b_buffer, const vector<Ex
     TriangleMesh* mesh = new TriangleMesh(vertex_array, index_array);
     if (b_buffer)
     {
-        mesh->Buffer();
+        mesh->Initialize();
     }
+
     mesh_array.emplace(mesh);
     return mesh;
 }
@@ -182,7 +186,8 @@ RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderMo
 RenderUnit* ResourceManager::CreateRenderUnit(RenderModule* parent, Mesh* mesh, Material* material)
 {
 	RenderUnit* ru = new RenderUnit(parent, mesh, material);
-    parent->AddRenderUnit(ru);
+    parent->AttachRenderUnit(ru);
+    //parent->AddRenderUnit(ru);
 	render_unit_array.emplace(ru);
 	return ru;
 }

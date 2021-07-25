@@ -19,6 +19,7 @@
 #include "SkyboxShader.h" 
 #include "AttachmentTexture.h"
 #include "PostProcessRenderer.h"
+#include "Frustum.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -177,6 +178,7 @@ void RenderManager::Update(float dt)
 	
 	post_process_renderer->Update(dt);
 
+	ResetRenderArray();
 }
 
 void RenderManager::UpdateCamera()
@@ -214,6 +216,7 @@ void RenderManager::UpdateLightArray()
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(PointLightInfo)* light_info_array.size(), &light_info_array[0], GL_STREAM_COPY);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+
 }
 
 
@@ -224,9 +227,28 @@ void RenderManager::ResetRenderArray()
 	pbr_mat_unit_map.clear();
 }
 
-void RenderManager::InsertRenderUnit(RenderUnit* ru)
+bool RenderManager::InsertRenderUnit(RenderUnit* ru)
 {
 	Material* material = ru->GetMaterial();
+
+	Camera* camera = SceneManager::GetSingleton().main_camera;
+	//vec3 camera_to_ru = camera->GetPosition() - ru->GetParent()->GetWorldTransform().GetPosition();
+	//ru->SetCameraZDistance(dot(camera_to_ru, camera->GetForward()));
+
+	ru->SetCameraZDistance((camera->ViewMatrix() * vec4(ru->GetPosition(), 1)).z);
+
+	vec3 pos = ru->GetPosition();
+	vec3 dimen = ru->GetParent()->GetWorldTransform().GetDimention();
+	AABBVolume aabb = ru->GetAABBVolume();
+	if (camera->frustum->AABBIntersection(ru->GetPosition(), ru->GetAABBVolume()))
+	{
+		//ru->SetCameraZDistance(dot(camera_to_ru, camera->GetForward()));
+	}
+	else
+	{
+		return false;
+	}
+
 	if (material->type == MaterialType::BASIC)
 	{
 		BasicMaterial* basic_mat = dynamic_cast<BasicMaterial*>(material);
@@ -245,11 +267,12 @@ void RenderManager::InsertRenderUnit(RenderUnit* ru)
 		auto ru_set_ite = pbr_mat_unit_map.find(pbr_mat);
 		if (ru_set_ite == pbr_mat_unit_map.end())
 		{
-			pbr_mat_unit_map.emplace(pbr_mat, set<RenderUnit*>());
+			pbr_mat_unit_map.emplace(pbr_mat, multiset<RenderUnit*, RenderUnit::CameraZDistanceComp>());
 		}
 		pbr_mat_unit_map[pbr_mat].emplace(ru);
 	}
 
+	return true;
 }
 
 void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)

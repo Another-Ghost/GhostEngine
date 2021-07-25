@@ -40,9 +40,10 @@ void SceneManager::BindCamera(Camera* camera_)
 
 void SceneManager::Update(float dt)
 {
+	main_camera->Update(dt);
+
 	root_unit->Update(dt);
 
-	
 	//for (const auto& render_unit : render_unit_array)	//可以改成保存unit数组，dynamic_cast判断是否是render_unit
 	//{
 	//	RenderModule* render_module = render_unit->render_module;

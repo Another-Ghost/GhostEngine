@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Prerequisite.h"
 #include "Shader.h"
+#include "AABBVolume.h"
 
 enum class MeshType
 {
@@ -18,16 +19,6 @@ struct Vertex
 class Mesh
 {
 public:
-
-	//Transform offset_transform;
-
-	//Mesh(const Transform& offset_transform_ = Transform());
-
-	virtual void Buffer();
-
-	virtual void Draw(Shader* shader) = 0;
-	//virtual void Draw() = 0;
-
 	vector<Mesh*> child_mesh_array;
 
 	bool b_buffered;	//是否绑定缓存
@@ -38,10 +29,25 @@ public:
 	vector<Vertex> vertex_array;
 	vector<unsigned int> index_array;
 
-//protected:
+	//protected:
 
 	unsigned int vbo_id;
 	unsigned int ebo_id;
+
+	AABBVolume aabb_volume;
+
+	//Transform offset_transform;
+
+	//Mesh(const Transform& offset_transform_ = Transform());
+	virtual void Initialize();	//Template Method
+
+
+	virtual void Buffer();
+
+	virtual void Draw(Shader* shader) = 0;
+	//virtual void Draw() = 0;
+
+	virtual void InitializeAABB() = 0;
 };
 
 

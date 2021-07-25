@@ -165,7 +165,8 @@ void Model::ProcessNode(aiNode* node, RenderModule* render_module)
 
 		ProcessMesh(mesh, render_unit);
 
-		render_module->AddRenderUnit(render_unit);
+		//render_module->AddRenderUnit(render_unit);
+		render_module->AttachRenderUnit(render_unit);
 		//meshes.push_back(ProcessMesh(mesh)); //这种存储方式并没有保留网格间的父子关系, 试着自己实现下另一种
 	}
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes

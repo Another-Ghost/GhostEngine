@@ -147,11 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBVolume.cpp" />
     <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BasicShader.cpp" />
+    <ClCompile Include="BoundingVolume.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFactory.cpp" />
@@ -164,6 +166,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="GLTFLoader.cpp" />
@@ -188,6 +191,7 @@
     <ClCompile Include="PBRMaterialFacotry.cpp" />
     <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
@@ -196,6 +200,7 @@
     <ClCompile Include="Prerequisite.cpp" />
     <ClCompile Include="QuadGeometryMesh.cpp" />
     <ClCompile Include="Quat.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="RenderModule.cpp" />
@@ -213,6 +218,7 @@
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
+    <ClCompile Include="SphereVolume.cpp" />
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -226,11 +232,13 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBVolume.h" />
     <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BasicShader.h" />
+    <ClInclude Include="BoundingVolume.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFactory.h" />
@@ -243,6 +251,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GLTFLoader.h" />
@@ -267,6 +276,7 @@
     <ClInclude Include="PBRMaterialFactory.h" />
     <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
@@ -275,6 +285,7 @@
     <ClInclude Include="Prerequisite.h" />
     <ClInclude Include="QuadGeometryMesh.h" />
     <ClInclude Include="Quat.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="RenderModule.h" />
@@ -293,6 +304,7 @@
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
+    <ClInclude Include="SphereVolume.h" />
     <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />

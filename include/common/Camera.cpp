@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "Root.h"
-
+#include "Frustum.h"
 
 
 Camera::Camera(vec3 postion_, float pitch_, float yaw_, float aspect_, float fov_y_, float near_, float far_, float move_speed_, float roation_speed_)
@@ -9,11 +9,18 @@ Camera::Camera(vec3 postion_, float pitch_, float yaw_, float aspect_, float fov
     transform.SetPosition(postion_);
     transform.SetPitch(pitch);
     transform.SetYaw(yaw);
+    frustum = std::make_unique<Frustum>();
+
 }
 
 Camera::~Camera()
 {
 
+}
+
+void Camera::Update(float dt)
+{
+    frustum->Initialize(this);
 }
 
 glm::mat4 Camera::ViewMatrix()
@@ -91,7 +98,7 @@ void Camera::OnKeyPressed(Window* window)
 {
     GLFWwindow* glfw_window = window->GetGLFWWindow();
     float delta_time = Root::GetSingleton().GetDeltaTime();
-	if (glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS)  
 		SetPosition(GetPosition() + GetForward() * delta_time * move_speed);
 	if (glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS)
         SetPosition(GetPosition() - GetForward() * delta_time * move_speed);

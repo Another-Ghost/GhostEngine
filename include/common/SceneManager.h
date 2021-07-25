@@ -29,8 +29,6 @@ public:
 	Light* CreateLight(const LightFactory& light_factory);
 	//Node* CreateNode();
 
-
-
 private:
 	void AddLight(Light* light);
 };

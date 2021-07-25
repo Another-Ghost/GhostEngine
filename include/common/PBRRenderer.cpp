@@ -65,6 +65,7 @@ void PBRRenderer::Update(float dt)
 		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
 		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
 
+		//std::sort()
 		for (const auto& render_unit : pair.second)
 		{
 			Mesh* mesh = render_unit->GetMesh();
@@ -86,4 +87,10 @@ void PBRRenderer::OnKeyPressed(Window* window)
 	{
 		pbr_shader->Reload();
 	}
+}
+
+bool PBRRenderer::RenderUnitCompare(RenderUnit* ru_a, RenderUnit* ru_b)
+{
+
+	return false;
 }
