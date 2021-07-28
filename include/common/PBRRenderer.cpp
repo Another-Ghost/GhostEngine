@@ -4,11 +4,12 @@
 #include "WindowManager.h"
 #include "RenderUnit.h"
 #include "EquirectangularMap.h"
-#include "PBRLightingPassShader.h"
+#include "PBRShader.h"
 #include "HDRIShader.h"
 #include "PrefilterShader.h"
 #include "IrradianceShader.h"
 #include "BRDFLUTShader.h"
+#include "PBRDeferRenderer.h"
 
 
 
@@ -38,35 +39,44 @@ PBRRenderer::PBRRenderer()
 	PrefilterShader* prefilter_shader = new PrefilterShader();
 	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->id);
 
-
+	//4.
+	LDRTextureFile* brdf_lut_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("system/brdf_lut.png")));
+	brdf_lut = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EMPTY2D, true, brdf_lut_file);
+	
 	//5.
-	pbr_shader = new PBRLightingPassShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_lighting_pass_f"));
+	pbr_shader = new PBRShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_forward_f"));
 
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));
 	//pbr_shader->SetFloat("ao", 1.f);
 
 
-
-
-
 }
 
 void PBRRenderer::Update(float dt)
 {
+	auto comp = [](const std::pair<float, PBRMaterial*>& a, const std::pair<float, PBRMaterial*>& b) {return a.first < b.first; };	//大顶堆，因为先渲染cameraZ值大的（靠前的）
+
+	priority_queue<std::pair<float, PBRMaterial*>, vector<std::pair<float, PBRMaterial*>>, decltype(comp)> heap(comp);
 
 	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_unit_map)
 	{
-		PBRMaterial* material = pair.first;
+		heap.emplace((*pair.second.begin())->GetCameraZDistance(), pair.first);
+	}
 
+	while (!heap.empty())
+	{
+		//std::pair<float, PBRMaterial*> fp = heap.top();
+		const auto& material = heap.top().second;
 		pbr_shader->BindMaterial(material);
 
 		TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
 		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
-		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
+		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, brdf_lut);
 
-		//std::sort()
-		for (const auto& render_unit : pair.second)
+
+		const auto& ru_set = RenderManager::GetSingleton().pbr_mat_unit_map[material];
+		for (const auto& render_unit : ru_set)
 		{
 			Mesh* mesh = render_unit->GetMesh();
 			mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();
@@ -75,7 +85,35 @@ void PBRRenderer::Update(float dt)
 			mesh->Draw(pbr_shader);
 
 		}
+		heap.pop();
 	}
+
+
+	//for (const auto& pair : RenderManager::GetSingleton().pbr_mat_unit_map)
+	//{
+
+
+	//	PBRMaterial* material = pair.first;
+
+	//	pbr_shader->BindMaterial(material);
+
+	//	TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
+	//	TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
+	//	TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
+
+	//	//std::sort()
+	//	
+
+	//	for (const auto& render_unit : pair.second)
+	//	{
+	//		Mesh* mesh = render_unit->GetMesh();
+	//		mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();
+	//		pbr_shader->SetModelMatrix(model);
+
+	//		mesh->Draw(pbr_shader);
+
+	//	}
+	//}
 
 	
 }

@@ -49,7 +49,8 @@ WFTestRenderer::WFTestRenderer()
 	PrefilterShader* prefilter_shader = new PrefilterShader();
 	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->id);
 
-
+	LDRTextureFile* brdf_lut_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("system/brdf_lut.png")));
+	brdf_lut = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EMPTY2D, true, brdf_lut_file);
 
 	//single scattering directional albedo
 	ssda_lut_texture = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EMPTY2D); 	// be sure to set wrapping mode to GL_CLAMP_TO_EDGE
@@ -100,7 +101,8 @@ void WFTestRenderer::Update(float dt)
 
 		TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
 		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
-		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, RenderManager::GetSingleton().GetBRDFLUT());
+		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, brdf_lut);
+
 		//pbr_shader->BindEnvDiffuseIrradianceMap(irradiance_cubemap->id);
 		//pbr_shader->BindEnvSpecularPrefilterMap(prefilter_cubemap->id);
 		//pbr_shader->BindEnvSpecularBRDFLUT(RenderManager::GetSingleton().GetBRDFLUT()->id);

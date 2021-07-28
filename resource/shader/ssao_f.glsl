@@ -3,8 +3,8 @@ out float OUT_FragColor;
 
 in vec2 TexCoords;
 
-uniform sampler2D g_position;
-uniform sampler2D g_normal;
+uniform sampler2D g_view_position;
+uniform sampler2D g_view_normal;
 uniform sampler2D noise_texture;
 
 struct CameraInfo
@@ -48,10 +48,10 @@ void main()
     //const vec2 noise_scale = vec2(window.width/noise_tex_size, window.height/noise_tex_size); 
     const vec2 noise_scale = vec2(1280.0/float(noise_tex_size), 720.0/float(noise_tex_size)); 
 
-    vec3 frag_pos = texture(g_position, TexCoords).xyz; //view space
+    vec3 frag_pos = texture(g_view_position, TexCoords).xyz; //view space
     if(frag_pos.z < 0.f)
     {
-        vec3 normal = normalize(texture(g_normal, TexCoords).xyz);  //view space
+        vec3 normal = normalize(texture(g_view_normal, TexCoords).xyz);  //view space
         vec3 random_vec = normalize(texture(noise_texture, TexCoords * noise_scale).xyz);   //采样值会大于1，但noise_texture被设为REPEAT，所以效果上相当于按noise texture的大小平铺这个材质
 
         //?
@@ -70,7 +70,7 @@ void main()
             offset = camera.projection * offset; // from view to clip-space frag_pos是view空间的，所以不需要乘以view matrix
             offset.xyz /= offset.w; // perspective divide 单位化
             offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
-            float sample_depth = texture(g_position, offset.xy).z;
+            float sample_depth = texture(g_view_position, offset.xy).z;
 
             float range_check = smoothstep(0.f, 1.f, radius / abs(frag_pos.z - sample_depth));  //clamp sample_depth between (0, 1), but why smooth /?
             occlusion += (sample_depth >= sample_pos.z + bias ? 1.0 : 0.0) * range_check; //ignore sample points that too near the origin point

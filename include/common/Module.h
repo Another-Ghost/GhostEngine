@@ -1,8 +1,11 @@
 #pragma once
+#include "Object.h"
 #include "Prerequisite.h"
 
-class Module 
+class Module : public Object
 {
-	virtual void Update(float dt) = 0;
+protected:
+	virtual void Update(float dt);
+
 };
 

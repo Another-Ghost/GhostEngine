@@ -9,7 +9,9 @@
 #include <memory>
 #include <map>
 #include <set>
+#include <queue>
 #include <algorithm>
+
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,7 +30,9 @@ using std::multimap;
 using std::multiset;
 using std::unique_ptr;
 using std::shared_ptr;
-//using std::make_unique
+using std::priority_queue;
+using std::make_unique;
+using std::make_shared;
 
 using glm::vec2;
 using glm::vec3;
@@ -104,7 +108,10 @@ class Renderer;
 class IBLRenderer;
 class BasicRenderer;
 class PostProcessRenderer;
+class PBRDeferRenderer;
 
 struct Frustum;
 struct Plane;
 struct AABBVolume;
+
+struct GBuffer;

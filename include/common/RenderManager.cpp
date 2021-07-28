@@ -1,5 +1,6 @@
 ﻿#include "RenderManager.h"
 #include "RenderUnit.h"
+#include "WindowManager.h"
 #include "SceneManager.h"
 #include "PointLight.h"
 #include "BasicMaterial.h"
@@ -20,6 +21,9 @@
 #include "AttachmentTexture.h"
 #include "PostProcessRenderer.h"
 #include "Frustum.h"
+#include "GBuffer.h"
+#include "PBRDeferRenderer.h"
+
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -51,8 +55,7 @@ RenderManager::RenderManager():
 
 	capture_quad_mesh = new QuadGeometryMesh();
 
-	LDRTextureFile* brdf_lut_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("system/brdf_lut.png")));
-	brdf_lut = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::EMPTY2D, true, brdf_lut_file);
+
 	//brdf_lut->data_format = GL_RG;
 
 	//glEnable(GL_CULL_FACE);
@@ -85,46 +88,64 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
+	glGenFramebuffers(1, &lighting_pass_fbo);
+	glObjectLabel(GL_FRAMEBUFFER, lighting_pass_fbo, -1, "lighting_pass_fbo");
+	glBindFramebuffer(GL_FRAMEBUFFER, lighting_pass_fbo);
 
-
-/*G-Buffer*/
-	
-	glGenFramebuffers(1, &gbuffer_fbo);
-	glObjectLabel(GL_FRAMEBUFFER, gbuffer_fbo, -1, "gbuffer_fbo");
-	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
-	
-	position_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, true));	//因为需要采样数据，所以position等使用纹理附件而不是渲染缓冲对象附件
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_g_attachment->id, 0);	//附加纹理到FBO中
-	glObjectLabel(GL_TEXTURE, position_g_attachment->id, -1, "position_g_attachment");
-
-	normal_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
-	//normal_g_attachment->wrap_param = GL_REPEAT;
-	normal_g_attachment->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normal_g_attachment->id, 0);
-	glObjectLabel(GL_TEXTURE, normal_g_attachment->id, -1, "normal_g_attachment");
-
-	color_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
-	color_g_attachment->internal_format = GL_RGBA;
-	color_g_attachment->data_type = GL_UNSIGNED_BYTE;
-	//normal_g_attachment->wrap_param = GL_REPEAT;
-	color_g_attachment->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, color_g_attachment->id, 0);
-	glObjectLabel(GL_TEXTURE, color_g_attachment->id, -1, "color_g_attachment");
-
-	// tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-	GLenum attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, attachments);
-
-	glGenRenderbuffers(1, &gbuffer_depth_rbo);
-	glObjectLabel(GL_RENDERBUFFER, gbuffer_depth_rbo, -1, "gbuffer_depth_rbo");
-	glBindRenderbuffer(GL_RENDERBUFFER, gbuffer_depth_rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, win_width, win_height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, gbuffer_depth_rbo);
+	color_tex = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
+	color_tex->internal_format = GL_RGBA;
+	color_tex->data_type = GL_UNSIGNED_BYTE;
+	color_tex->Buffer();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_tex->id, 0);
+	glObjectLabel(GL_TEXTURE, color_tex->id, -1, "color_tex");
 #ifdef DEBUG_MODE
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "ERROR<RenderManager>: Frame buffer not complete!" << std::endl;
+		std::cout << "ERROR<RenderManager> Lighting Pass Frame buffer not complete!" << std::endl;
 #endif
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+/*G-Buffer*/
+	g_buffer = make_shared<GBuffer>();
+//	
+//	glGenFramebuffers(1, &gbuffer_fbo);
+//	glObjectLabel(GL_FRAMEBUFFER, gbuffer_fbo, -1, "gbuffer_fbo");
+//	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+//	
+//	position_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, true));	//因为需要采样数据，所以position等使用纹理附件而不是渲染缓冲对象附件
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position_g_attachment->id, 0);	//附加纹理到FBO中
+//	glObjectLabel(GL_TEXTURE, position_g_attachment->id, -1, "position_g_attachment");
+//
+//	normal_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
+//	//normal_g_attachment->wrap_param = GL_REPEAT;
+//	normal_g_attachment->Buffer();
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normal_g_attachment->id, 0);
+//	glObjectLabel(GL_TEXTURE, normal_g_attachment->id, -1, "normal_g_attachment");
+//
+//	color_g_attachment = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
+//	color_g_attachment->internal_format = GL_RGBA;
+//	color_g_attachment->data_type = GL_UNSIGNED_BYTE;
+//	//normal_g_attachment->wrap_param = GL_REPEAT;
+//	color_g_attachment->Buffer();
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, color_g_attachment->id, 0);
+//	glObjectLabel(GL_TEXTURE, color_g_attachment->id, -1, "color_g_attachment");
+//
+//
+//
+//	// tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
+//	GLenum attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+//	glDrawBuffers(3, attachments);
+//
+//	glGenRenderbuffers(1, &gbuffer_depth_rbo);
+//	glObjectLabel(GL_RENDERBUFFER, gbuffer_depth_rbo, -1, "gbuffer_depth_rbo");
+//	glBindRenderbuffer(GL_RENDERBUFFER, gbuffer_depth_rbo);
+//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, win_width, win_height);
+//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, gbuffer_depth_rbo);
+//#ifdef DEBUG_MODE
+//	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+//		std::cout << "ERROR<RenderManager>: Frame buffer not complete!" << std::endl;
+//#endif
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
 
 
@@ -143,8 +164,16 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		{
 			renderer_ = new BasicRenderer();
 		}
-		current_renderer = renderer_;
 
+		if (b_defer_rendering)
+		{
+			/*Defer Rendering*/
+			pbr_defer_renderer = make_unique<PBRDeferRenderer>();
+		}
+		else
+		{
+			current_renderer = renderer_;
+		}
 		b_initialized = true;
 
 		basic_renderer = new BasicRenderer();
@@ -164,17 +193,23 @@ void RenderManager::Update(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (b_defer_rendering)
+	{
+		pbr_defer_renderer->Update(dt);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	current_renderer->Update(dt);
-	
-	basic_renderer->Update(dt);
+	}
+	else
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		current_renderer->Update(dt);
 
-	skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
+		basic_renderer->Update(dt);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
 	
 	post_process_renderer->Update(dt);
 
@@ -279,7 +314,7 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 {
 	if (!b_skybox_initialized)
 	{
-		skybox_cubemap = ResourceManager::GetSingleton().CreateCubeMap(1024, 1024, TextureType::CUBEMAP);
+		skybox_cubemap = ResourceManager::GetSingleton().CreateCubeMap(512, 512, TextureType::CUBEMAP);
 		skybox_cubemap->b_genarate_mipmap = false;
 		skybox_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 		skybox_cubemap->Buffer();

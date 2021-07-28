@@ -4,14 +4,15 @@ class PBRRenderer : public Renderer
 {
 public:
 
-	PBRLightingPassShader* pbr_shader;
+	PBRShader* pbr_shader;
 
 	SSAOBlurShader* ssao_blur_shader;
-
 
 	CubeMap* irradiance_cubemap;
 
 	CubeMap* prefilter_cubemap;
+
+	PlaneTexture* brdf_lut;
 
 	PBRRenderer();
 

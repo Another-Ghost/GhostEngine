@@ -1,6 +1,7 @@
 #include "BRDFLUTShader.h"
 #include "PlaneTexture.h"
-
+#include "RenderManager.h"
+#include "WindowManager.h"
 
 BRDFLUTShader::BRDFLUTShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
 	MVPShader(vertex_path, fragment_path, geometry_path)

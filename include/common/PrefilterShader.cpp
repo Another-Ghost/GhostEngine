@@ -1,5 +1,6 @@
 #include "PrefilterShader.h"
 #include "RenderManager.h"
+#include "WindowManager.h"
 #include "CubeMap.h"
 
 PrefilterShader::PrefilterShader()

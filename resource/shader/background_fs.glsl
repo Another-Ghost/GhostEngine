@@ -1,6 +1,8 @@
 #version 330 core
-//out vec4 Frag_Color;
-layout (location = 2) out vec4 g_color;
+
+layout (location = 7) out vec4 FragColor; 
+//out vec4 FragColor;
+//out vec4 g_color;
 
 in vec3 WorldPos;
 //in vec3 FragPos;
@@ -18,5 +20,5 @@ void main()
 
     //Frag_Color = vec4(WorldPos, 1);
     //g_color = vec4(env_color, 1.0);
-    g_color = vec4(env_color, 1.0); //trick 没有写进g_position,使其值为默认值>0, 做ssao时会被跳过
+    FragColor = vec4(env_color, 1.0); //trick 没有写进g_position,使其值为默认值>0, 做ssao时会被跳过
 }

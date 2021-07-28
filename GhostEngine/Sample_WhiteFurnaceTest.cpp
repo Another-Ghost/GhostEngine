@@ -20,7 +20,7 @@
 #include "common/RenderUnit.h"
 #include "common/Model.h"
 #include "common/PBRRenderer.h"
-
+#include "common/RenderManager.h"
 #include "WFTestRenderer.h"
 
 #include <memory>
@@ -138,13 +138,15 @@ int main()
 	wall3->local_transform.SetPosition({ -12.f, 3.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
 
-	RenderNode* tri_node = new RenderNode();
-	tri_node->AttachRenderModule(ResourceManager::GetSingleton().gltf_loader->LoadFile(File::GetModelPath("DamagedHelmet/DamagedHelmet.gltf")));	//DamagedHelmet/DamagedHelmet.gltf, glTF-pbrSpecularGlossiness/BoomBox.gltf, WaterBottle/WaterBottle.gltf
-	tri_node->local_transform.SetPosition({ 0, 8, 0 });
-	tri_node->local_transform.SetOrientation(glm::angleAxis(glm::radians(90.f), vec3(1.f, 0.f, 0.f)));
-	//tri_node->local_transform.SetOrientation(glm::angleAxis(glm::radians(90.f), vec3(0.f, 1.f, 0.f)));
-	//tri_node->local_transform.SetDimension({ 1, 1, 1 });
-	tri_node->local_transform.SetDimension({ 2, 2, 2 });
+	//Triangle helmet
+	//RenderNode* tri_node = new RenderNode();
+	//tri_node->AttachRenderModule(ResourceManager::GetSingleton().gltf_loader->LoadFile(File::GetModelPath("DamagedHelmet/DamagedHelmet.gltf")));	//DamagedHelmet/DamagedHelmet.gltf, glTF-pbrSpecularGlossiness/BoomBox.gltf, WaterBottle/WaterBottle.gltf
+	//tri_node->local_transform.SetPosition({ 0, 8, 0 });
+	//tri_node->local_transform.SetOrientation(glm::angleAxis(glm::radians(90.f), vec3(1.f, 0.f, 0.f)));
+	////tri_node->local_transform.SetOrientation(glm::angleAxis(glm::radians(90.f), vec3(0.f, 1.f, 0.f)));
+	////tri_node->local_transform.SetDimension({ 1, 1, 1 });
+	//tri_node->local_transform.SetDimension({ 2, 2, 2 });
+
 
 	//RenderNode* tri_node2 = new RenderNode();
 	//tri_node2->AttachRenderModule(ResourceManager::GetSingleton().gltf_loader->LoadFile(File::GetModelPath("WaterBottle/WaterBottle.gltf")));	//DamagedHelmet/DamagedHelmet.gltf, glTF-pbrSpecularGlossiness/BoomBox.gltf, WaterBottle/WaterBottle.gltf

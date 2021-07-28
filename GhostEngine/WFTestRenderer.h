@@ -24,7 +24,7 @@ private:
 
 	CubeMap* prefilter_cubemap;
 
-	//Texture* brdf_Lut_texture;
+	PlaneTexture* brdf_lut;
 
 	PlaneTexture* ssda_lut_texture;
 

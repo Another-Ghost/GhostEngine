@@ -1,12 +1,13 @@
 #pragma once
-#include "PBRShader.h"
+#include "MVPShader.h"
 
-class PBRLightingPassShader : public PBRShader
+class PBRLightingPassShader : public MVPShader
 {
 public:
-	PBRLightingPassShader(const string& vertex_path = File::GetShaderPath("pbr_vs"), const string& fragment_path = File::GetShaderPath("pbr_lighting_pass_f"), const string& geometry_path = "");
+	PBRLightingPassShader(const string& vertex_path = File::GetShaderPath("basic_v"), const string& fragment_path = File::GetShaderPath("pbr_lighting_pass_f"), const string& geometry_path = "");
 
 	void Initialize(bool b_reload) override;
 
+	void Draw();
 };
 

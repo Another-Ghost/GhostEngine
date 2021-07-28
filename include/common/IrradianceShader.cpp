@@ -1,5 +1,7 @@
 #include "IrradianceShader.h"
 #include "CubeMap.h"
+#include "RenderManager.h"
+#include "WindowManager.h"
 
 IrradianceShader::IrradianceShader():
 	MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"))

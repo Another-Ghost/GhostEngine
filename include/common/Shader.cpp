@@ -12,10 +12,18 @@ const TextureUnit TextureUnit::emissive_map = { "emissive_map", 4 };
 const TextureUnit TextureUnit::irradiance_map = { "irradiance_map", 5 };
 const TextureUnit TextureUnit::light_prefilter_map = { "light_prefilter_map", 6 };
 const TextureUnit TextureUnit::brdf_lut = { "brdf_lut", 7 };
-const TextureUnit TextureUnit::g_position = { "g_position", 8 };
-const TextureUnit TextureUnit::g_normal = { "g_normal", 9 };
-const TextureUnit TextureUnit::g_color = { "g_color", 10 };
-const TextureUnit TextureUnit::ssao = { "ssao", 11 };
+const TextureUnit TextureUnit::ssao = { "ssao", 8 };
+const TextureUnit TextureUnit::g_world_position = { "g_world_position", 9 };
+const TextureUnit TextureUnit::g_world_normal = { "g_world_normal", 10 };
+const TextureUnit TextureUnit::g_basecolor = { "g_basecolor", 11 };
+const TextureUnit TextureUnit::g_view_position = { "g_view_position", 12 };
+const TextureUnit TextureUnit::g_view_normal = { "g_view_normal", 13 };
+const TextureUnit TextureUnit::g_ao_roughness_metalness = { "g_ao_roughness_metalness", 14 };
+const TextureUnit TextureUnit::g_emissive = { "g_emissive", 15 };
+const TextureUnit TextureUnit::g_color = { "g_color", 16 };
+
+
+
 
 void TextureUnit::Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture)
 {

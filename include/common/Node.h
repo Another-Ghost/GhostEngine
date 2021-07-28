@@ -1,19 +1,20 @@
 #pragma once
+#include "TransformableModule.h"
 #include "Prerequisite.h"
 
-class Node
+class Node : public TransformableModule
 {
 public:
 
-	Transform local_transform;
+	//Transform local_transform;
 
 	virtual void Update(float dt);
 
 	void SetParent(Node* parent_) { parent = parent_; }
 	Node* GetParent() { return parent; }
 
-	void AddChild(Node* child) { child_unit_set.emplace(child); }
-	void RemoveChild(Node* child) { child_unit_set.erase(child); }
+	void AddChild(Node* child) { child_node_set.emplace(child); }
+	void RemoveChild(Node* child) { child_node_set.erase(child); }
 
 	Transform GetWorldTransform();
 	void SetWorldTransform(Transform world_transform_);
@@ -22,7 +23,7 @@ public:
 protected:
 	Node* parent;
 
-	set<Node*> child_unit_set;
+	set<Node*> child_node_set;
 
 };
 

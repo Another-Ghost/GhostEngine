@@ -2,16 +2,16 @@
 #include "MVPShader.h"
 #include "File.h"
 
-union Uniform
-{
-	int i;
-	float f;
-	mat4 mat_4;
-};
+//union Uniform
+//{
+//	int i;
+//	float f;
+//	mat4 mat_4;
+//};
 
 class PBRShader : public MVPShader
 {
-	Uniform u;
+
 
 public:
 	PBRShader(const string& vertex_path = File::GetShaderPath("pbr_vs"), const string& fragment_path = File::GetShaderPath("pbr_fs"), const string& geometry_path = "");

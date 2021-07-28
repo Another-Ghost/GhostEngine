@@ -32,8 +32,6 @@ void main()
     WorldPos = vec3(model * vec4(pos, 1.0));
     Normal = mat3(model) * normal;   
 
-
-
     //WorldPos = FragPos;
     FragPos = (camera.view * vec4(WorldPos, 1.0)).xyz;
     //https://zhuanlan.zhihu.com/p/72734738

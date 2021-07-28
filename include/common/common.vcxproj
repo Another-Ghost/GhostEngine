@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBModule.cpp" />
     <ClCompile Include="AABBVolume.cpp" />
     <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="EquirectangularMap.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="GLTFLoader.cpp" />
@@ -175,7 +177,11 @@
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
+    <ClCompile Include="LightProbe.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="OutputShader.cpp" />
+    <ClCompile Include="PBRDeferRenderer.cpp" />
+    <ClCompile Include="PBRGeometryPassShader.cpp" />
     <ClCompile Include="PBRLightingPassShader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -201,6 +207,8 @@
     <ClCompile Include="QuadGeometryMesh.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="ReflectionProbe.cpp" />
+    <ClCompile Include="ReflectionProbeShader.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="RenderModule.cpp" />
@@ -224,14 +232,17 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureFile.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformableModule.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="TriangleMeshFactory.cpp" />
+    <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBModule.h" />
     <ClInclude Include="AABBVolume.h" />
     <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
@@ -252,6 +263,7 @@
     <ClInclude Include="EquirectangularMap.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GLTFLoader.h" />
@@ -260,7 +272,11 @@
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
+    <ClInclude Include="LightProbe.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="OutputShader.h" />
+    <ClInclude Include="PBRDeferRenderer.h" />
+    <ClInclude Include="PBRGeometryPassShader.h" />
     <ClInclude Include="PBRLightingPassShader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />
@@ -286,6 +302,8 @@
     <ClInclude Include="QuadGeometryMesh.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="ReflectionProbe.h" />
+    <ClInclude Include="ReflectionProbeShader.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="RenderModule.h" />
@@ -310,9 +328,11 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureFile.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformableModule.h" />
     <ClInclude Include="TriangleMesh.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="TriangleMeshFactory.h" />
+    <ClInclude Include="Unit.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowFactory.h" />
     <ClInclude Include="WindowManager.h" />

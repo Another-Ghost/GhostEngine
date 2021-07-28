@@ -40,10 +40,16 @@ struct TextureUnit
 	static const TextureUnit irradiance_map;
 	static const TextureUnit light_prefilter_map;
 	static const TextureUnit brdf_lut;
-	static const TextureUnit g_position;
-	static const TextureUnit g_normal;
-	static const TextureUnit g_color;
 	static const TextureUnit ssao;
+	static const TextureUnit g_world_position;
+	static const TextureUnit g_world_normal;
+	static const TextureUnit g_basecolor;
+	static const TextureUnit g_view_position;
+	static const TextureUnit g_view_normal;
+	static const TextureUnit g_ao_roughness_metalness;
+	static const TextureUnit g_emissive;
+	static const TextureUnit g_color;
+
 
 	//? static void Reset();
 	static void Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture);

@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+#include "TransformableModule.h"
 
 enum class RenderModuleType
 {
@@ -7,7 +7,7 @@ enum class RenderModuleType
 	ROOT,
 };
 
-class RenderModule : public Module
+class RenderModule : public TransformableModule
 {
 protected:
 	RenderModule* parent;
@@ -16,7 +16,7 @@ protected:
 
 public:
 
-	Transform local_transform;
+	//Transform local_transform;
 
 	//vector<RenderUnit*> render_unit_array;
 	RenderUnit* render_unit;
@@ -35,7 +35,7 @@ public:
 	//void AddRenderUnit(RenderUnit* ru);
 	void AttachRenderUnit(RenderUnit* ru) { render_unit = ru; }
 
-	virtual Transform GetWorldTransform();
+	virtual Transform GetWorldTransform() override;
 
 };
 

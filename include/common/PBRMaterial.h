@@ -5,10 +5,10 @@ struct PBRMaterial : Material
 {
 	PBRMaterial(): Material(MaterialType::PBR){}
 
-	PlaneTexture* basecolor_map;
-	PlaneTexture* roughness_map;
-	PlaneTexture* normal_map;
-	PlaneTexture* metalness_map;
+	PlaneTexture* basecolor_map{ nullptr };
+	PlaneTexture* roughness_map{ nullptr };
+	PlaneTexture* normal_map{ nullptr };
+	PlaneTexture* metalness_map{ nullptr };
 	PlaneTexture* ao_map{ nullptr };
 	PlaneTexture* metalness_roughness_map{ nullptr };
 	PlaneTexture* emissive_map{ nullptr };

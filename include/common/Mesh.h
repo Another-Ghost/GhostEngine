@@ -44,7 +44,7 @@ public:
 
 	virtual void Buffer();
 
-	virtual void Draw(Shader* shader) = 0;
+	virtual void Draw(Shader* shader) = 0;	//输入shader是为了确保shader.use()的调用
 	//virtual void Draw() = 0;
 
 	virtual void InitializeAABB() = 0;

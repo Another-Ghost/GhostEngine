@@ -4,6 +4,7 @@
 #include "CubeGeometryMesh.h"
 #include "QuadGeometryMesh.h"
 #include "RenderUnit.h"
+#include "PBRDeferRenderer.h"
 
 //struct RenderMaterialComp
 //{
@@ -42,6 +43,14 @@ struct WindowInfo
 	int width;
 	int height;
 };
+
+//enum class FrameBuffer
+//{
+//	DEFAULT, //默认帧缓存
+//	GBUFFER,
+//	SSAO,
+//	SSAOBLUR,
+//};
 
 class RenderManager : public Singleton<RenderManager>
 {
@@ -86,7 +95,7 @@ public:
 
 	CubeMap* GetSkybox() { return skybox_cubemap; }
 
-	PlaneTexture* GetBRDFLUT() { return brdf_lut; }
+	//PlaneTexture* GetBRDFLUT() { return brdf_lut; }
 
 	GLuint GetLightSSBO() { return light_ssbo; }
 	//GLuint GetLightColorSSBO() { return light_color_ssbo; }
@@ -98,13 +107,21 @@ public:
 	AttachmentTexture* GetGNormal() { return normal_g_attachment; }
 	AttachmentTexture* GetGColor(){ return color_g_attachment; }
 
+	shared_ptr<GBuffer> g_buffer;
+
+	unsigned int lighting_pass_fbo;
+	AttachmentTexture* color_tex;
+	//void BindFrameBuffer(unsigned int fbo){ glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
+	//void UnbindFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
+	SkyboxShader* skybox_shader;
+
 private:
 
 	Shader* current_shader;
 
 	Shader* pbr_shader;
 
-	SkyboxShader* skybox_shader;
+
 
 	ChannelCombinationShader* channel_combination_shader;
 
@@ -133,7 +150,6 @@ private:
 
 	bool b_skybox_initialized;
 
-	PlaneTexture* brdf_lut;
 
 	GLuint light_ssbo;
 
@@ -143,7 +159,11 @@ private:
 	GLuint window_ubo;
 	//GLuint light_color_ssbo;
 
-/*Post Process*/
+	/*Defer Rendering*/
+	unique_ptr<PBRDeferRenderer> pbr_defer_renderer;
+
+	bool b_defer_rendering{true};
+
 	/*G-buffer*/
 	unsigned int gbuffer_fbo;
 	unsigned int gbuffer_depth_rbo;	//? 是否可以使用capture_fbo
@@ -151,10 +171,19 @@ private:
 	AttachmentTexture* position_g_attachment;
 	AttachmentTexture* normal_g_attachment;
 	AttachmentTexture* color_g_attachment;
+	
 
+
+	/*Post Process*/
 	PostProcessRenderer* post_process_renderer;
 
+
+
+
+
 	friend class SceneManager;
+
+
 
 };
 

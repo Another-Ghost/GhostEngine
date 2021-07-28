@@ -10,5 +10,7 @@ public:
 	void Initialize(bool b_reload) override;
 
 	//void BindNoiseTexture(Texture* texture);
+
+
 };
 

@@ -12,6 +12,7 @@ vec3 AABBVolume::GetCorner(const vec3& pos, const vec3& dir) const
 
 float AABBVolume::GetSphereVolumeRadius() const 
 {
-	return glm::length(half_size);
+	//return glm::length(half_size);
+	return half_size.x;	//? 由于当前aabb的三维half_size为相同的半对角线长度，所以物体不可能超过以半对角线为半径的球
 }
 

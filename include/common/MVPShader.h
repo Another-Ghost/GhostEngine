@@ -1,8 +1,7 @@
 #pragma once
 #include "Shader.h"
 #include "File.h"
-#include "RenderManager.h"
-#include "WindowManager.h"
+
 
 
 class MVPShader : public Shader

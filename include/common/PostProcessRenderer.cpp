@@ -6,6 +6,7 @@
 #include "SSAOBlurShader.h"
 #include "OutputShader.h"
 #include "AttachmentTexture.h"
+#include "GBuffer.h"
 #include <random>
 
 PostProcessRenderer::PostProcessRenderer()
@@ -111,8 +112,8 @@ void PostProcessRenderer::UpdateSSAO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
 	glClear(GL_COLOR_BUFFER_BIT);
-	TextureUnit::Bind2DTexture(TextureUnit::g_position, RenderManager::GetSingleton().GetGPosition());
-	TextureUnit::Bind2DTexture(TextureUnit::g_normal, RenderManager::GetSingleton().GetGNormal());
+	TextureUnit::Bind2DTexture(TextureUnit::g_view_position, RenderManager::GetSingleton().g_buffer->view_position_tex);
+	TextureUnit::Bind2DTexture(TextureUnit::g_view_normal, RenderManager::GetSingleton().g_buffer->view_normal_tex);
 	TextureUnit::Bind2DTexture(SSAOShader::noise_texture_tu, noise_texture);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(ssao_shader);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -124,7 +125,9 @@ void PostProcessRenderer::UpdateSSAO()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().GetGColor());
+	//TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().color_tex);
+	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().g_buffer->color_tex);
+
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_blur_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(output_shader);
 }
