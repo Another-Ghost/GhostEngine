@@ -10,7 +10,9 @@ public:
 
 	LightProbe(const vec3& postion = vec3{ 0 }, const AABBModule& aabb_ = AABBModule());
 
-	virtual void Initialize() = 0;
+	virtual void Initialize();
+
+	virtual void Capture() = 0;
 
 private:
 	shared_ptr<AABBModule> aabb;

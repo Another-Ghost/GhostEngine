@@ -37,7 +37,7 @@ void PBRLightingPassShader::Draw()
 	//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTextureBarrier.xhtml
 	glTextureBarrier();// To safely read the result of a written texel via a texel fetch in a subsequent drawing command
 
-	shared_ptr<GBuffer> g_buffer = RenderManager::GetSingleton().g_buffer;
+	shared_ptr<GBuffer> g_buffer = RenderManager::GetSingleton().cur_g_buffer;
 	//glBindFramebuffer()
 
 	//g_buffer->Bind();
@@ -55,7 +55,7 @@ void PBRLightingPassShader::Draw()
 
 
 	//g_buffer->Unbind();
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 }
 
 

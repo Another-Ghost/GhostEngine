@@ -1,7 +1,6 @@
 #include "BRDFLUTShader.h"
 #include "PlaneTexture.h"
 #include "RenderManager.h"
-#include "WindowManager.h"
 
 BRDFLUTShader::BRDFLUTShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
 	MVPShader(vertex_path, fragment_path, geometry_path)
@@ -21,6 +20,6 @@ void BRDFLUTShader::RenderBRDFLUT(const PlaneTexture* brdf_lut)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(this);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 }

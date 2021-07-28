@@ -25,7 +25,7 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 		// resize framebuffer according to mip-level size.
 		unsigned int mip_width = prefilter_cubemap->width * std::pow(0.5f, mip);	//大小很关键
 		unsigned int mip_height = prefilter_cubemap->height * std::pow(0.5f, mip);
-		glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+		glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
 		glViewport(0, 0, mip_width, mip_height);
 
@@ -42,7 +42,7 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 			RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 		}
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 }
 

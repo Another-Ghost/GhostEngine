@@ -17,6 +17,8 @@ struct GBuffer
 
 	GBuffer();
 
+	GBuffer(int width, int height);
+
 	void Bind();
 
 

@@ -44,7 +44,7 @@ PBRDeferRenderer::PBRDeferRenderer()
 void PBRDeferRenderer::Update(float dt)
 {
 
-	shared_ptr<GBuffer> g_buffer = RenderManager::GetSingleton().g_buffer;
+	shared_ptr<GBuffer> g_buffer = RenderManager::GetSingleton().cur_g_buffer;
 	g_buffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -112,7 +112,7 @@ void PBRDeferRenderer::Update(float dt)
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, lighting_pass_fbo);
 	RenderManager::GetSingleton().skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	g_buffer->Unbind();
 

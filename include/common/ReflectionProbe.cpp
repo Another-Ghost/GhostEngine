@@ -13,3 +13,8 @@ void ReflectionProbe::Initialize()
 
 
 }
+
+void ReflectionProbe::Capture()
+{
+	
+}

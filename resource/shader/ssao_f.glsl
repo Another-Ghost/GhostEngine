@@ -45,8 +45,8 @@ uniform int noise_tex_size;
 void main()
 {
     //?
-    //const vec2 noise_scale = vec2(window.width/noise_tex_size, window.height/noise_tex_size); 
-    const vec2 noise_scale = vec2(1280.0/float(noise_tex_size), 720.0/float(noise_tex_size)); 
+    const vec2 noise_scale = vec2(width/noise_tex_size, height/noise_tex_size); 
+    //const vec2 noise_scale = vec2(1280.0/float(noise_tex_size), 720.0/float(noise_tex_size)); 
 
     vec3 frag_pos = texture(g_view_position, TexCoords).xyz; //view space
     if(frag_pos.z < 0.f)

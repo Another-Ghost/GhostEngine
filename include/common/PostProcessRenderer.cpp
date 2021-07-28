@@ -43,7 +43,7 @@ PostProcessRenderer::PostProcessRenderer()
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "SSAO Blur Frame buffer not complete!" << std::endl;
 #endif
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	std::uniform_real_distribution<GLfloat> random_floats(0.f, 1.f);	//均匀分布
 	std::default_random_engine generator;	//默认随机数生成器（由编译器定，大概率是线性同余（RandSeed = (A * RandSeed + B) % M，伪随机））
@@ -112,22 +112,24 @@ void PostProcessRenderer::UpdateSSAO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
 	glClear(GL_COLOR_BUFFER_BIT);
-	TextureUnit::Bind2DTexture(TextureUnit::g_view_position, RenderManager::GetSingleton().g_buffer->view_position_tex);
-	TextureUnit::Bind2DTexture(TextureUnit::g_view_normal, RenderManager::GetSingleton().g_buffer->view_normal_tex);
+	TextureUnit::Bind2DTexture(TextureUnit::g_view_position, RenderManager::GetSingleton().cur_g_buffer->view_position_tex);
+	TextureUnit::Bind2DTexture(TextureUnit::g_view_normal, RenderManager::GetSingleton().cur_g_buffer->view_normal_tex);
 	TextureUnit::Bind2DTexture(SSAOShader::noise_texture_tu, noise_texture);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(ssao_shader);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
 	glClear(GL_COLOR_BUFFER_BIT);
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(ssao_blur_shader);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().color_tex);
-	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().g_buffer->color_tex);
+	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().cur_g_buffer->color_tex);
 
+
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_blur_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(output_shader);
 }

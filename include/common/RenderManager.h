@@ -38,7 +38,7 @@ struct CameraInfo
 	mat4 projection;
 };
 
-struct WindowInfo
+struct ViewportInfo
 {
 	int width;
 	int height;
@@ -58,6 +58,16 @@ public:
 
 	Camera* camera;
 
+	int viewport_width;
+	int viewport_height;
+
+	shared_ptr<GBuffer> g_buffer;
+	shared_ptr<GBuffer> cur_g_buffer;
+
+	unsigned int cur_output_fbo{ 0 };
+
+	SkyboxShader* skybox_shader;
+
 	map<PBRMaterial*, multiset<RenderUnit*, RenderUnit::CameraZDistanceComp>> pbr_mat_unit_map;
 	//map<PBRMaterial*, vector<RenderUnit*>> pbr_mat_unit_map;
 	//multimap<PBRMaterial*, RenderUnit*> pbr_mat_unit_map;
@@ -68,9 +78,13 @@ public:
 
 	bool Initialize(Renderer* renderer_ = nullptr);
 	
+	void Render(float dt);
+
 	void Update(float dt);
 
 	void UpdateCamera();
+
+	void ModifyCameraInfo(const CameraInfo& camera_info);
 
 	void UpdateLightArray();
 
@@ -107,15 +121,25 @@ public:
 	AttachmentTexture* GetGNormal() { return normal_g_attachment; }
 	AttachmentTexture* GetGColor(){ return color_g_attachment; }
 
-	shared_ptr<GBuffer> g_buffer;
 
-	unsigned int lighting_pass_fbo;
-	AttachmentTexture* color_tex;
+
+	//unsigned int lighting_pass_fbo;
+	//AttachmentTexture* color_tex;
+
 	//void BindFrameBuffer(unsigned int fbo){ glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
-	//void UnbindFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
-	SkyboxShader* skybox_shader;
+	//void UnbindFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer()); }
+	void ModifyViewportInfo(const ViewportInfo& info);
+
+	ViewportInfo GetViewportInfo() { return cur_viewport_info; }
+	CameraInfo GetCameraInfo() { return cur_camera_info; }
+
+	unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
+	void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; }
 
 private:
+
+	ViewportInfo cur_viewport_info;
+	CameraInfo cur_camera_info;
 
 	Shader* current_shader;
 
@@ -156,7 +180,7 @@ private:
 
 
 	GLuint camera_ubo;
-	GLuint window_ubo;
+	GLuint viewport_ubo;
 	//GLuint light_color_ssbo;
 
 	/*Defer Rendering*/

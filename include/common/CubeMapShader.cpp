@@ -1,7 +1,7 @@
 #include "CubeMapShader.h"
 #include "CubeMap.h"
 #include "RenderManager.h"
-#include "WindowManager.h"
+
 
 CubeMapShader::CubeMapShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
 	MVPShader(vertex_path, fragment_path, geometry_path)
@@ -31,8 +31,8 @@ void CubeMapShader::RenderCubeMap(const CubeMap* cube_map)
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap

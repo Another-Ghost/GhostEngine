@@ -1,6 +1,5 @@
 #include "ChannelCombinationShader.h"
 #include "RenderManager.h"
-#include "WindowManager.h"
 #include "PlaneTexture.h"
 
 ChannelCombinationShader::ChannelCombinationShader(const string& vertex_path, const string& fragment_path, const string& geometry_path):
@@ -29,8 +28,8 @@ void ChannelCombinationShader::RenderTexture(const PlaneTexture* out_tex, const 
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(this);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 
 	glBindTexture(GL_TEXTURE_2D, out_tex->id);
 	glGenerateMipmap(GL_TEXTURE_2D);

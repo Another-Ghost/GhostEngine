@@ -45,6 +45,7 @@ public:
 
 	ResourceManager();
 
+	//? 接口中增加width和height
 	PlaneTexture* CreatePlaneTexture(TextureType type, bool b_buffer = false, TextureFile* file = nullptr);	//b_buffer为true代表使用所选TextureType的默认参数进行缓存
 
 	//PlaneTexture* CreateMetalnessRoughnessMap(PlaneTexture* metalness_map, PlaneTexture* roughness_map);

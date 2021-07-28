@@ -1,7 +1,6 @@
 #include "HDRIShader.h"
 #include "EquirectangularMap.h"
 #include "RenderManager.h"
-#include "WindowManager.h"
 #include "CubeMap.h"
 #include "PlaneTexture.h"
 
@@ -42,8 +41,8 @@ void HDRIShader::RenderCubeMap(const CubeMap* cube_map, PlaneTexture* hdr_tex)
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap(之前生成的话修改数据后会失效)

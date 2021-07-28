@@ -46,7 +46,7 @@ PBRRenderer::PBRRenderer()
 	//5.
 	pbr_shader = new PBRShader(File::GetShaderPath("pbr_vs"), File::GetShaderPath("pbr_forward_f"));
 
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 	//pbr_shader->SetVec3("albedo", vec3(1.f, 0.f, 0.f));
 	//pbr_shader->SetFloat("ao", 1.f);
 

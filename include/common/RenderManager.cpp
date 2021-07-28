@@ -37,8 +37,8 @@ RenderManager::RenderManager():
 	glGenFramebuffers(1, &capture_fbo);	
 	glGenRenderbuffers(1, &capture_rbo);
 
-	int win_width = WindowManager::s_current_window->GetWidth();
-	int win_height = WindowManager::s_current_window->GetHeight();
+	viewport_width = WindowManager::s_current_window->GetWidth();
+	viewport_height = WindowManager::s_current_window->GetHeight();
 
 /*global variables*/
 	capture_view_array =
@@ -69,15 +69,12 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 
-	WindowInfo win_info{ win_width, win_height };
-	glGenBuffers(1, &window_ubo);	// binding point is 1	//? 写成一个类
-	glObjectLabel(GL_BUFFER, window_ubo, -1, "window_ubo");
-	glBindBuffer(GL_UNIFORM_BUFFER, window_ubo);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, window_ubo);
-	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(int), NULL, GL_STATIC_DRAW);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &win_info.width);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &win_info.height);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	ViewportInfo viewport_info{ viewport_width, viewport_height };
+	glGenBuffers(1, &viewport_ubo);	// binding point is 1	//? 写成一个类
+	glObjectLabel(GL_BUFFER, viewport_ubo, -1, "window_ubo");
+	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
+	ModifyViewportInfo(viewport_info);
+
 
 
 	glGenBuffers(1, &light_ssbo);
@@ -86,27 +83,28 @@ RenderManager::RenderManager():
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-
-	glGenFramebuffers(1, &lighting_pass_fbo);
-	glObjectLabel(GL_FRAMEBUFFER, lighting_pass_fbo, -1, "lighting_pass_fbo");
-	glBindFramebuffer(GL_FRAMEBUFFER, lighting_pass_fbo);
-
-	color_tex = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
-	color_tex->internal_format = GL_RGBA;
-	color_tex->data_type = GL_UNSIGNED_BYTE;
-	color_tex->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_tex->id, 0);
-	glObjectLabel(GL_TEXTURE, color_tex->id, -1, "color_tex");
-#ifdef DEBUG_MODE
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "ERROR<RenderManager> Lighting Pass Frame buffer not complete!" << std::endl;
-#endif
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//
+//
+//	glGenFramebuffers(1, &lighting_pass_fbo);
+//	glObjectLabel(GL_FRAMEBUFFER, lighting_pass_fbo, -1, "lighting_pass_fbo");
+//	glBindFramebuffer(GL_FRAMEBUFFER, lighting_pass_fbo);
+//
+//	color_tex = dynamic_cast<AttachmentTexture*>(ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false));
+//	color_tex->internal_format = GL_RGBA;
+//	color_tex->data_type = GL_UNSIGNED_BYTE;
+//	color_tex->Buffer();
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_tex->id, 0);
+//	glObjectLabel(GL_TEXTURE, color_tex->id, -1, "color_tex");
+//#ifdef DEBUG_MODE
+//	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+//		std::cout << "ERROR<RenderManager> Lighting Pass Frame buffer not complete!" << std::endl;
+//#endif
+//	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 /*G-Buffer*/
-	g_buffer = make_shared<GBuffer>();
-//	
+	g_buffer = make_shared<GBuffer>(viewport_info.width, viewport_info.height);
+	cur_g_buffer = g_buffer;
+	
 //	glGenFramebuffers(1, &gbuffer_fbo);
 //	glObjectLabel(GL_FRAMEBUFFER, gbuffer_fbo, -1, "gbuffer_fbo");
 //	glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
@@ -144,7 +142,7 @@ RenderManager::RenderManager():
 //	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 //		std::cout << "ERROR<RenderManager>: Frame buffer not complete!" << std::endl;
 //#endif
-//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 
 
@@ -182,13 +180,37 @@ bool RenderManager::Initialize(Renderer* renderer_)
 	return b_initialized;
 }
 
+void RenderManager::Render(float dt)
+{
+	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	pbr_defer_renderer->Update(dt);
 
+	//post_process_renderer->Update(dt);
+
+}
+
+//void RenderManager::Render(const CameraInfo& camera_info)
+//{
+//	UpdateLightArray();
+//	UpdateCameraInfo(camera_info);
+//
+//	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//	pbr_defer_renderer->Update(dt);
+//}
 
 void RenderManager::Update(float dt)
 {
 	UpdateLightArray();
 
-	UpdateCamera();
+	camera = SceneManager::GetSingleton().main_camera;
+	CameraInfo camera_info;
+	camera_info.position = { camera->GetPosition(), 0 };
+	camera_info.view = camera->ViewMatrix();
+	camera_info.projection = camera->PerspectiveMatrix();
+	ModifyCameraInfo(camera_info);
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -208,13 +230,16 @@ void RenderManager::Update(float dt)
 
 		skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	}
 	
 	post_process_renderer->Update(dt);
 
 	ResetRenderArray();
 }
+
+
+
 
 void RenderManager::UpdateCamera()
 {
@@ -226,10 +251,17 @@ void RenderManager::UpdateCamera()
 	camera_info.view = camera->ViewMatrix();
 	camera_info.projection = camera->PerspectiveMatrix();
 
+	ModifyCameraInfo(camera_info);
+}
+
+void RenderManager::ModifyCameraInfo(const CameraInfo& camera_info)
+{
+	cur_camera_info = camera_info;
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(CameraInfo), &camera_info, GL_STREAM_COPY);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
+
 
 
 void RenderManager::UpdateLightArray()
@@ -253,6 +285,10 @@ void RenderManager::UpdateLightArray()
 
 
 }
+
+
+
+
 
 
 
@@ -332,6 +368,19 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 void RenderManager::CombineChannels(PlaneTexture* out_tex, PlaneTexture* tex1, PlaneTexture* tex2)
 {
 	channel_combination_shader->RenderTexture(out_tex, tex1, tex2);
+}
+
+void RenderManager::ModifyViewportInfo(const ViewportInfo& info)
+{
+	cur_viewport_info = info;
+	glViewport(0, 0, info.width, info.height);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
+	//glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(int), NULL, GL_STATIC_DRAW);
+	//glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &viewport_info.width);
+	//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &viewport_info.height);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(ViewportInfo), &info, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 

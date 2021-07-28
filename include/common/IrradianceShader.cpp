@@ -1,7 +1,6 @@
 #include "IrradianceShader.h"
 #include "CubeMap.h"
 #include "RenderManager.h"
-#include "WindowManager.h"
 
 IrradianceShader::IrradianceShader():
 	MVPShader(File::GetShaderPath("cubemap_vs"), File::GetShaderPath("irradiance_convolution_fs"))
@@ -15,7 +14,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
 	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, irradiance_cubemap->width, irradiance_cubemap->height);
 
 	SetInt("environment_map", 0);
 	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
@@ -33,8 +32,8 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
 }
 
 
