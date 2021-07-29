@@ -97,13 +97,13 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(sphere_root_render_module, sphere_mesh, material);
 	sphere_node->AttachRenderModule(sphere_root_render_module);
 	sphere_node->local_transform.SetDimension({ 2.f, 2.f, 2.f });
-	sphere_node->local_transform.SetPosition({ 0.f, 2.f, 2.f });
+	sphere_node->local_transform.SetPosition({ 2.f, 4.f, 2.f });
 
 	//int column_num = 7;
 	//for (int col = 0; col < column_num; ++col) {
 		BasicNode* cube_node = new BasicNode();
 		RootRenderModule* root_render_module = new RootRenderModule();
-		root_render_module->local_transform.SetPosition({ 0.f, -2.f, 0.f });
+		root_render_module->local_transform.SetPosition({ 0.f, -3.f, 0.f });
 		root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
 		ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
 		cube_node->AttachRenderModule(root_render_module);
@@ -137,6 +137,16 @@ int main()
 	wall3->local_transform.SetDimension({ 10.f, 5.f, 1.f });
 	wall3->local_transform.SetPosition({ -12.f, 3.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
+
+
+	//origin
+	//RenderNode* box = new RenderNode();
+	//RootRenderModule* box_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(box_root_rm, cube_mesh, cube_mat);
+	//box->AttachRenderModule(box_root_rm);
+	//box->local_transform.SetDimension({ 1.f, 1.f, 1.f });
+	//box->local_transform.SetPosition({ 0.f, 0.f, 0.f });
+	//box->local_transform.SetYaw(-90.f);
 
 	//Triangle helmet
 	//RenderNode* tri_node = new RenderNode();

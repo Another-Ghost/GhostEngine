@@ -64,7 +64,7 @@ public:
 
 	RenderUnit* CreateRenderUnit(RenderModule* parent, Mesh* mesh = nullptr, Material* material = nullptr);
 
-	CubeMap* CreateCubeMap(int width, int height, TextureType type = TextureType::CUBEMAP, bool b_buffer = false, TextureFile* file = nullptr);
+	CubeMap* CreateCubemap(int width, int height, TextureType type = TextureType::CUBEMAP, bool b_buffer = false, TextureFile* file = nullptr);
 
 	unique_ptr<GLTFLoader> gltf_loader;
 

@@ -17,8 +17,9 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, ori_cubemap_id);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	
 	unsigned int max_mip_levels = 5;
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
 	{
@@ -43,6 +44,6 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 		}
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
+	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 }
 

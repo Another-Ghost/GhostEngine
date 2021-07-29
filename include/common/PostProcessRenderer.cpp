@@ -9,7 +9,7 @@
 #include "GBuffer.h"
 #include <random>
 
-PostProcessRenderer::PostProcessRenderer()
+PostProcessRenderer::PostProcessRenderer(int width, int height)
 {
 	glGenBuffers(1, &ssao_kernel_ssbo);
 	glObjectLabel(GL_BUFFER, ssao_kernel_ssbo, -1, "ssao_kernel_ssbo");
@@ -22,6 +22,8 @@ PostProcessRenderer::PostProcessRenderer()
 	glObjectLabel(GL_FRAMEBUFFER, ssao_fbo, -1, "ssao_fbo");
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
 	ssao_color_attachment = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false);
+	ssao_color_attachment->width = width;
+	ssao_color_attachment->height = height;
 	ssao_color_attachment->internal_format = GL_RED;
 	ssao_color_attachment->data_format = GL_RED;
 	ssao_color_attachment->Buffer();
@@ -35,6 +37,8 @@ PostProcessRenderer::PostProcessRenderer()
 	glObjectLabel(GL_FRAMEBUFFER, ssao_blur_fbo, -1, "ssao_blur_fbo");
 	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
 	ssao_blur_color_attachment = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false);
+	ssao_blur_color_attachment->width = width;
+	ssao_blur_color_attachment->height = height;
 	ssao_blur_color_attachment->internal_format = GL_RED;
 	ssao_blur_color_attachment->data_format = GL_RED;
 	ssao_blur_color_attachment->Buffer();
@@ -129,7 +133,7 @@ void PostProcessRenderer::UpdateSSAO()
 	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().cur_g_buffer->color_tex);
 
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_blur_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(output_shader);
 }

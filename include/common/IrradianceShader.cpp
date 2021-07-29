@@ -15,6 +15,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
 	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, irradiance_cubemap->width, irradiance_cubemap->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 
 	SetInt("environment_map", 0);
 	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
@@ -33,7 +34,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
+	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 }
 
 

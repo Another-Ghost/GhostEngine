@@ -4,8 +4,8 @@
 AttachmentTexture::AttachmentTexture():
 	PlaneTexture(TextureType::ATTACHMENT)
 {
-	width = RenderManager::GetSingleton().GetViewportInfo().width;
-	height = RenderManager::GetSingleton().GetViewportInfo().height;
+	width = RenderManager::GetSingleton().GetCurrentViewportInfo().width;
+	height = RenderManager::GetSingleton().GetCurrentViewportInfo().height;
 	data_format = GL_RGBA;
 	min_filter_param = GL_NEAREST;
 	mag_filter_param = GL_NEAREST;

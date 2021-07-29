@@ -3,7 +3,7 @@
 class PostProcessRenderer : public Renderer
 {
 public:
-	PostProcessRenderer();
+	PostProcessRenderer(int width, int height);	//? 把framebuffer分离出去
 
 	void Update(float dt) override;
 	

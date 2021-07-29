@@ -4,7 +4,7 @@
 #include "RenderManager.h"
 
 GBuffer::GBuffer():
-	GBuffer(RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height)
+	GBuffer(RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height)
 {
 	//GBuffer(RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height); //will create faults
 }
@@ -89,7 +89,7 @@ GBuffer::GBuffer(int width, int height)
 	glGenRenderbuffers(1, &depth_rbo);
 	glObjectLabel(GL_RENDERBUFFER, depth_rbo, -1, "depth_rbo");
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, RenderManager::GetSingleton().GetViewportInfo().width, RenderManager::GetSingleton().GetViewportInfo().height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_rbo);
 #ifdef DEBUG_MODE
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

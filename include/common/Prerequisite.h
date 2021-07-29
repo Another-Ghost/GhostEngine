@@ -73,6 +73,8 @@ class PBRLightingPassShader;
 class SSAOShader;
 class SSAOBlurShader;
 class OutputShader;
+class PrefilterShader;
+class IrradianceShader;
 
 class Mesh;
 class MeshFactory;
@@ -115,3 +117,7 @@ struct Plane;
 struct AABBVolume;
 
 struct GBuffer;
+
+class LightProbe;
+class ReflectionProbe;
+class LightProbeRenderer;

@@ -23,6 +23,9 @@
 #include "Frustum.h"
 #include "GBuffer.h"
 #include "PBRDeferRenderer.h"
+#include "ReflectionProbe.h"
+#include "LightProbeRenderer.h"
+#include "AABBModule.h"
 
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
@@ -37,8 +40,8 @@ RenderManager::RenderManager():
 	glGenFramebuffers(1, &capture_fbo);	
 	glGenRenderbuffers(1, &capture_rbo);
 
-	viewport_width = WindowManager::s_current_window->GetWidth();
-	viewport_height = WindowManager::s_current_window->GetHeight();
+	win_viewport_info.width = WindowManager::s_current_window->GetWidth();
+	win_viewport_info.height = WindowManager::s_current_window->GetHeight();
 
 /*global variables*/
 	capture_view_array =
@@ -69,13 +72,11 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 
-	ViewportInfo viewport_info{ viewport_width, viewport_height };
+	ViewportInfo viewport_info{ win_viewport_info.width, win_viewport_info.height };
 	glGenBuffers(1, &viewport_ubo);	// binding point is 1	//? 写成一个类
 	glObjectLabel(GL_BUFFER, viewport_ubo, -1, "window_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
-	ModifyViewportInfo(viewport_info);
-
-
+	ModifyCurrentViewportInfo(viewport_info);
 
 	glGenBuffers(1, &light_ssbo);
 	glObjectLabel(GL_BUFFER, light_ssbo, -1, "light_ssbo");
@@ -145,17 +146,16 @@ RenderManager::RenderManager():
 //	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 
-
-
 	channel_combination_shader = new ChannelCombinationShader();
 
-	post_process_renderer = new PostProcessRenderer();
+	post_process_renderer = new PostProcessRenderer(viewport_info.width, viewport_info.height);
 
 	skybox_shader = new SkyboxShader();
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
 {
+
 	if (!b_initialized)
 	{
 		if (renderer_ == nullptr)
@@ -180,14 +180,27 @@ bool RenderManager::Initialize(Renderer* renderer_)
 	return b_initialized;
 }
 
+void RenderManager::PreRender()
+{
+	reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
+	light_probe_renderer = new LightProbeRenderer(reflection_probe->cubemap->width, reflection_probe->cubemap->height);
+	light_probe_renderer->Render(reflection_probe);	//? 可能是framebuffer绑定错误
+	//light_probe_renderer->Render(reflection_probe);
+	b_prerendered = true;
+
+}
+
 void RenderManager::Render(float dt)
 {
+	UpdateLightArray();
+
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	pbr_defer_renderer->Update(dt);
 
 	//post_process_renderer->Update(dt);
-
+	
+	//ResetRenderArray();
 }
 
 //void RenderManager::Render(const CameraInfo& camera_info)
@@ -203,6 +216,7 @@ void RenderManager::Render(float dt)
 
 void RenderManager::Update(float dt)
 {
+
 	UpdateLightArray();
 
 	camera = SceneManager::GetSingleton().main_camera;
@@ -210,7 +224,7 @@ void RenderManager::Update(float dt)
 	camera_info.position = { camera->GetPosition(), 0 };
 	camera_info.view = camera->ViewMatrix();
 	camera_info.projection = camera->PerspectiveMatrix();
-	ModifyCameraInfo(camera_info);
+	ModifyCurrentCameraInfo(camera_info);
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -235,6 +249,15 @@ void RenderManager::Update(float dt)
 	
 	post_process_renderer->Update(dt);
 
+
+	if (!b_prerendered)
+	{
+		PreRender();
+		//skybox_cubemap = reflection_probe->cubemap;
+		//PreRender();
+	}
+	//light_probe_renderer->Render(reflection_probe);
+
 	ResetRenderArray();
 }
 
@@ -251,10 +274,10 @@ void RenderManager::UpdateCamera()
 	camera_info.view = camera->ViewMatrix();
 	camera_info.projection = camera->PerspectiveMatrix();
 
-	ModifyCameraInfo(camera_info);
+	ModifyCurrentCameraInfo(camera_info);
 }
 
-void RenderManager::ModifyCameraInfo(const CameraInfo& camera_info)
+void RenderManager::ModifyCurrentCameraInfo(const CameraInfo& camera_info)
 {
 	cur_camera_info = camera_info;
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
@@ -350,7 +373,7 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 {
 	if (!b_skybox_initialized)
 	{
-		skybox_cubemap = ResourceManager::GetSingleton().CreateCubeMap(512, 512, TextureType::CUBEMAP);
+		skybox_cubemap = ResourceManager::GetSingleton().CreateCubemap(512, 512, TextureType::CUBEMAP);
 		skybox_cubemap->b_genarate_mipmap = false;
 		skybox_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 		skybox_cubemap->Buffer();
@@ -370,7 +393,7 @@ void RenderManager::CombineChannels(PlaneTexture* out_tex, PlaneTexture* tex1, P
 	channel_combination_shader->RenderTexture(out_tex, tex1, tex2);
 }
 
-void RenderManager::ModifyViewportInfo(const ViewportInfo& info)
+void RenderManager::ModifyCurrentViewportInfo(const ViewportInfo& info)
 {
 	cur_viewport_info = info;
 	glViewport(0, 0, info.width, info.height);
@@ -381,6 +404,18 @@ void RenderManager::ModifyViewportInfo(const ViewportInfo& info)
 	//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &viewport_info.height);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(ViewportInfo), &info, GL_DYNAMIC_COPY);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+vector<mat4> RenderManager::GetCaptureViewArray(const vec3& pos)
+{
+	return {
+		glm::lookAt(pos, pos + vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		glm::lookAt(pos, pos + vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		glm::lookAt(pos, pos + vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+		glm::lookAt(pos, pos + vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+		glm::lookAt(pos, pos + vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		glm::lookAt(pos, pos + vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+	};
 }
 
 

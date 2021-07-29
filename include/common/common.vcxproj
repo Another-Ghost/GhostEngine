@@ -178,6 +178,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightFactory.cpp" />
     <ClCompile Include="LightProbe.cpp" />
+    <ClCompile Include="LightProbeRenderer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OutputShader.cpp" />
     <ClCompile Include="PBRDeferRenderer.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightFactory.h" />
     <ClInclude Include="LightProbe.h" />
+    <ClInclude Include="LightProbeRenderer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OutputShader.h" />
     <ClInclude Include="PBRDeferRenderer.h" />

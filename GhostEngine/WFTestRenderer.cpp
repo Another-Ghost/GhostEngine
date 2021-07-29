@@ -29,7 +29,7 @@ WFTestRenderer::WFTestRenderer()
 	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 
-	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateCubeMap(32, 32, TextureType::CUBEMAP));	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
+	irradiance_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateCubemap(32, 32, TextureType::CUBEMAP));	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
 	//irradiance_cubemap->min_filter_param = GL_LINEAR;
 	irradiance_cubemap->b_genarate_mipmap = false;
 	irradiance_cubemap->Buffer();
@@ -39,7 +39,7 @@ WFTestRenderer::WFTestRenderer()
 
 
 	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
-	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateCubeMap(128, 128, TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
+	prefilter_cubemap = dynamic_cast<CubeMap*>(ResourceManager::GetSingleton().CreateCubemap(128, 128, TextureType::CUBEMAP)); // be sure to set minification filter to mip_linear 
 	prefilter_cubemap->width = 128;
 	prefilter_cubemap->height = 128;
 	prefilter_cubemap->b_genarate_mipmap = true;

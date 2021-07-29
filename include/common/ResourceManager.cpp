@@ -192,7 +192,7 @@ RenderUnit* ResourceManager::CreateRenderUnit(RenderModule* parent, Mesh* mesh, 
 	return ru;
 }
 
-CubeMap* ResourceManager::CreateCubeMap(int width, int height, TextureType type, bool b_buffer, TextureFile* file)  //？ 调换type和b_buffer的顺序
+CubeMap* ResourceManager::CreateCubemap(int width, int height, TextureType type, bool b_buffer, TextureFile* file)  //？ 调换type和b_buffer的顺序
 {
     CubeMap* cube_map = new CubeMap(width, height, type, file);
     if (b_buffer)

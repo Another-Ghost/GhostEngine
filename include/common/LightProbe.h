@@ -3,7 +3,7 @@
 #include "AABBModule.h"
 #include "CubeMap.h"
 
-class LightProbe : TransformableModule
+class LightProbe : public TransformableModule
 {
 public:
 	CubeMap* cubemap;

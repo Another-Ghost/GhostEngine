@@ -58,9 +58,6 @@ public:
 
 	Camera* camera;
 
-	int viewport_width;
-	int viewport_height;
-
 	shared_ptr<GBuffer> g_buffer;
 	shared_ptr<GBuffer> cur_g_buffer;
 
@@ -74,9 +71,17 @@ public:
 
 	map<BasicMaterial*, set<RenderUnit*>> basic_mat_unit_map;
 
+	const mat4 probe_capture_projection{ glm::perspective(glm::radians(90.f), 1.f, 0.1f, 100.f) };
+
+	shared_ptr<PrefilterShader> prefilter_shader;
+	shared_ptr<IrradianceShader> irradiance_shader;
+	//shared_ptr<>
+
 	RenderManager();
 
 	bool Initialize(Renderer* renderer_ = nullptr);
+
+	void PreRender();
 	
 	void Render(float dt);
 
@@ -84,7 +89,7 @@ public:
 
 	void UpdateCamera();
 
-	void ModifyCameraInfo(const CameraInfo& camera_info);
+	void ModifyCurrentCameraInfo(const CameraInfo& camera_info);
 
 	void UpdateLightArray();
 
@@ -128,16 +133,23 @@ public:
 
 	//void BindFrameBuffer(unsigned int fbo){ glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
 	//void UnbindFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer()); }
-	void ModifyViewportInfo(const ViewportInfo& info);
+	ViewportInfo GetWindowViewportInfo() { return win_viewport_info; }
 
-	ViewportInfo GetViewportInfo() { return cur_viewport_info; }
-	CameraInfo GetCameraInfo() { return cur_camera_info; }
+	void ModifyCurrentViewportInfo(const ViewportInfo& info);
+
+	ViewportInfo GetCurrentViewportInfo() { return cur_viewport_info; }
+	CameraInfo GetCurrentCameraInfo() { return cur_camera_info; }
 
 	unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
-	void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; }
+	void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
+
+	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
 private:
 
+	bool b_prerendered{ false };
+
+	ViewportInfo win_viewport_info;
 	ViewportInfo cur_viewport_info;
 	CameraInfo cur_camera_info;
 
@@ -208,6 +220,8 @@ private:
 	friend class SceneManager;
 
 
+	ReflectionProbe* reflection_probe;
+	LightProbeRenderer* light_probe_renderer;
 
 };
 
