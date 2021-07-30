@@ -44,6 +44,13 @@ struct ViewportInfo
 	int height;
 };
 
+struct ProbeAABB
+{
+	vec4 probe_pos;
+	vec4 aabb_pos;
+	vec4 half_dimension;
+};
+
 //enum class FrameBuffer
 //{
 //	DEFAULT, //Ä¬ÈÏÖ¡»º´æ
@@ -75,7 +82,11 @@ public:
 
 	shared_ptr<PrefilterShader> prefilter_shader;
 	shared_ptr<IrradianceShader> irradiance_shader;
-	//shared_ptr<>
+	
+	CubeMap* blended_irradiance_cubemap;
+	CubeMap* blended_prefilter_cubemap;
+
+	bool b_prerendered{ false };
 
 	RenderManager();
 
@@ -92,6 +103,8 @@ public:
 	void ModifyCurrentCameraInfo(const CameraInfo& camera_info);
 
 	void UpdateLightArray();
+
+	void UpdateEnvironmentLight();
 
 	void ResetRenderArray();
 
@@ -127,7 +140,7 @@ public:
 	AttachmentTexture* GetGColor(){ return color_g_attachment; }
 
 
-
+	
 	//unsigned int lighting_pass_fbo;
 	//AttachmentTexture* color_tex;
 
@@ -145,9 +158,11 @@ public:
 
 	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
+	
+
 private:
 
-	bool b_prerendered{ false };
+
 
 	ViewportInfo win_viewport_info;
 	ViewportInfo cur_viewport_info;
@@ -193,6 +208,9 @@ private:
 
 	GLuint camera_ubo;
 	GLuint viewport_ubo;
+
+
+	GLuint probe_aabb_ubo;
 	//GLuint light_color_ssbo;
 
 	/*Defer Rendering*/
@@ -222,6 +240,8 @@ private:
 
 	ReflectionProbe* reflection_probe;
 	LightProbeRenderer* light_probe_renderer;
+
+
 
 };
 

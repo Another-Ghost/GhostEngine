@@ -115,6 +115,7 @@ class PBRDeferRenderer;
 struct Frustum;
 struct Plane;
 struct AABBVolume;
+class AABBModule;
 
 struct GBuffer;
 

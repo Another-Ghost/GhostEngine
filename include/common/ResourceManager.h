@@ -41,7 +41,11 @@ class ResourceManager : public Singleton<ResourceManager>
 
 	set<RenderUnit*> render_unit_array;
 
+
+
 public:
+
+	unique_ptr<GLTFLoader> gltf_loader;
 
 	ResourceManager();
 
@@ -66,7 +70,9 @@ public:
 
 	CubeMap* CreateCubemap(int width, int height, TextureType type = TextureType::CUBEMAP, bool b_buffer = false, TextureFile* file = nullptr);
 
-	unique_ptr<GLTFLoader> gltf_loader;
+
+
+
 
 
 };

@@ -12,7 +12,9 @@ public:
 
 	AABBVolume volume;
 
-	AABBModule(AABBVolume volume_ = AABBVolume()) :volume(volume_) {}
+	AABBModule(AABBVolume volume_ = AABBVolume(), const vec3& local_pos = { 0.f, 0.f, 0.f });
+	
+
 
 	vec3 GetWorldPosition();
 

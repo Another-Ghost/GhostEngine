@@ -8,9 +8,11 @@ public:
 
 	void Initialize() override;
 
-	void Capture() override;
 
+	void RenderPrefilterMap();
+	
 	CubeMap* prefilter_cubemap;
 
+	CubeMap* irradiance_cubemap;
 };
 

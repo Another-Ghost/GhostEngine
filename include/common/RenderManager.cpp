@@ -26,7 +26,8 @@
 #include "ReflectionProbe.h"
 #include "LightProbeRenderer.h"
 #include "AABBModule.h"
-
+#include "PrefilterShader.h"
+#include "IrradianceShader.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -74,15 +75,23 @@ RenderManager::RenderManager():
 
 	ViewportInfo viewport_info{ win_viewport_info.width, win_viewport_info.height };
 	glGenBuffers(1, &viewport_ubo);	// binding point is 1	//? 写成一个类
-	glObjectLabel(GL_BUFFER, viewport_ubo, -1, "window_ubo");
+	glObjectLabel(GL_BUFFER, viewport_ubo, -1, "viewport_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
 	ModifyCurrentViewportInfo(viewport_info);
+
+	glGenBuffers(1, &probe_aabb_ubo);	// binding point is 0	//? 写成一个类
+	glObjectLabel(GL_UNIFORM_BUFFER, probe_aabb_ubo, -1, "probe_aabb_ubo");
+	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, probe_aabb_ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 
 	glGenBuffers(1, &light_ssbo);
 	glObjectLabel(GL_BUFFER, light_ssbo, -1, "light_ssbo");
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, light_ssbo);	// binding point is 1
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 //
 //
@@ -151,6 +160,10 @@ RenderManager::RenderManager():
 	post_process_renderer = new PostProcessRenderer(viewport_info.width, viewport_info.height);
 
 	skybox_shader = new SkyboxShader();
+
+	prefilter_shader = make_shared<PrefilterShader>();
+
+	irradiance_shader = make_shared<IrradianceShader>();
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -182,9 +195,12 @@ bool RenderManager::Initialize(Renderer* renderer_)
 
 void RenderManager::PreRender()
 {
-	reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
-	light_probe_renderer = new LightProbeRenderer(reflection_probe->cubemap->width, reflection_probe->cubemap->height);
-	light_probe_renderer->Render(reflection_probe);	//? 可能是framebuffer绑定错误
+	light_probe_renderer = new LightProbeRenderer(LightProbe::s_capture_width, LightProbe::s_capture_height);
+	for (auto& probe : SceneManager::GetSingletonPtr()->reflection_probe_set)
+	{
+		//reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
+		light_probe_renderer->Render(probe);	//? 可能是framebuffer绑定错误
+	}
 	//light_probe_renderer->Render(reflection_probe);
 	b_prerendered = true;
 
@@ -193,6 +209,7 @@ void RenderManager::PreRender()
 void RenderManager::Render(float dt)
 {
 	UpdateLightArray();
+	UpdateEnvironmentLight();
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -218,6 +235,7 @@ void RenderManager::Update(float dt)
 {
 
 	UpdateLightArray();
+	UpdateEnvironmentLight();
 
 	camera = SceneManager::GetSingleton().main_camera;
 	CameraInfo camera_info;
@@ -309,6 +327,13 @@ void RenderManager::UpdateLightArray()
 
 }
 
+void RenderManager::UpdateEnvironmentLight()
+{
+	ReflectionProbe* probe = *SceneManager::GetSingleton().reflection_probe_set.begin();
+	blended_irradiance_cubemap = probe->irradiance_cubemap;
+	blended_prefilter_cubemap = probe->prefilter_cubemap;
+}
+
 
 
 
@@ -395,10 +420,11 @@ void RenderManager::CombineChannels(PlaneTexture* out_tex, PlaneTexture* tex1, P
 
 void RenderManager::ModifyCurrentViewportInfo(const ViewportInfo& info)
 {
+
 	cur_viewport_info = info;
 	glViewport(0, 0, info.width, info.height);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
 	//glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(int), NULL, GL_STATIC_DRAW);
 	//glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &viewport_info.width);
 	//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &viewport_info.height);

@@ -16,6 +16,8 @@ public:
 
 	Node* root_unit;
 
+	set<ReflectionProbe*> reflection_probe_set;
+
 	SceneManager();
 
 	void AddRenderNode(RenderNode* unit, Node* parent = nullptr);
@@ -28,6 +30,7 @@ public:
 
 	Light* CreateLight(const LightFactory& light_factory);
 	//Node* CreateNode();
+	ReflectionProbe* CreateReflectionProbe(const vec3& position, const AABBModule& aabb_module);
 
 private:
 	void AddLight(Light* light);

@@ -9,8 +9,10 @@ public:
 
 	virtual Transform GetWorldTransform(); 
 
+	void SetParent(TransformableModule* parent_) { parent = parent; }
+
 protected:
 
-	TransformableModule* parent;
+	TransformableModule* parent{ nullptr };
 };
 

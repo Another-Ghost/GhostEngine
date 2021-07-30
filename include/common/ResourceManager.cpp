@@ -14,6 +14,8 @@
 #include "BasicMaterialFactory.h"
 #include "PlaneTexture.h"
 
+
+
 template<> ResourceManager* Singleton<ResourceManager>::singleton = nullptr;
 ResourceManager::ResourceManager()
 {
@@ -201,5 +203,6 @@ CubeMap* ResourceManager::CreateCubemap(int width, int height, TextureType type,
     }
     return cube_map;
 }
+
 
 

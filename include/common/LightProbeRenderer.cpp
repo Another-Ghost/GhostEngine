@@ -51,4 +51,6 @@ void LightProbeRenderer::Render(LightProbe* probe)
 	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(0);
 	RenderManager::GetSingleton().cur_g_buffer = RenderManager::GetSingleton().g_buffer;
 	RenderManager::GetSingleton().ModifyCurrentViewportInfo(RenderManager::GetSingleton().GetWindowViewportInfo());
+
+	probe->Initialize();
 }

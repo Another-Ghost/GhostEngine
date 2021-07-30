@@ -7,6 +7,7 @@
 #include "RenderManager.h"
 #include "CameraFactory.h"
 #include "LightFactory.h"
+#include "ReflectionProbe.h"
 
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
@@ -73,6 +74,15 @@ Light* SceneManager::CreateLight(const LightFactory& light_factory)
 	//RenderManager::GetSingleton().UpdateLightArray();
 
 	return light;
+}
+
+ReflectionProbe* SceneManager::CreateReflectionProbe(const vec3& position, const AABBModule& aabb_module)
+{
+	ReflectionProbe* reflection_probe = new ReflectionProbe(position, aabb_module);
+
+	reflection_probe_set.emplace(reflection_probe);
+
+	return reflection_probe;
 }
 
 

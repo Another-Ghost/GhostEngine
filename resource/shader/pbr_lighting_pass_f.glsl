@@ -48,6 +48,15 @@ layout(std140, binding = 0) uniform Camera
     CameraInfo camera;
 };
 
+
+layout(std140, binding = 2) uniform ProbeAABB
+{
+	vec4 probe_pos;
+	vec4 aabb_pos;
+	vec4 half_dimention;
+};
+
+
 const float PI = 3.14159265359;
 
 
