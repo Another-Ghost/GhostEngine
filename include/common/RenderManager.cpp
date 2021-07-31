@@ -80,19 +80,22 @@ RenderManager::RenderManager():
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
 	ModifyCurrentViewportInfo(viewport_info);
 
-	glGenBuffers(1, &probe_aabb_ubo);	// binding point is 0	//? 写成一个类
-	glObjectLabel(GL_UNIFORM_BUFFER, probe_aabb_ubo, -1, "probe_aabb_ubo");
-	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, probe_aabb_ubo);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 
 
 	glGenBuffers(1, &light_ssbo);
 	glObjectLabel(GL_BUFFER, light_ssbo, -1, "light_ssbo");
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
-
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, light_ssbo);	// binding point is 1
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+
+	glGenBuffers(1, &probe_aabb_ubo);	// binding point is 0	//? 写成一个类
+	glObjectLabel(GL_UNIFORM_BUFFER, probe_aabb_ubo, -1, "probe_aabb_ubo");
+	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 5, probe_aabb_ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 //
 //
 //	glGenFramebuffers(1, &lighting_pass_fbo);
@@ -209,7 +212,7 @@ void RenderManager::PreRender()
 void RenderManager::Render(float dt)
 {
 	UpdateLightArray();
-	UpdateEnvironmentLight();
+	//UpdateEnvironmentLight();
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -332,6 +335,12 @@ void RenderManager::UpdateEnvironmentLight()
 	ReflectionProbe* probe = *SceneManager::GetSingleton().reflection_probe_set.begin();
 	blended_irradiance_cubemap = probe->irradiance_cubemap;
 	blended_prefilter_cubemap = probe->prefilter_cubemap;
+
+	ProbeAABBInfo info;
+	info.probe_pos = { probe->GetWorldTransform().GetPosition(), 1 };
+	info.aabb_pos = { probe->aabb_module->GetWorldPosition(), 1 };
+	info.half_dimension = { probe->aabb_module->volume.half_size, 1 };
+	ModifyProbeAABBInfo(info);
 }
 
 
@@ -442,6 +451,13 @@ vector<mat4> RenderManager::GetCaptureViewArray(const vec3& pos)
 		glm::lookAt(pos, pos + vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
 		glm::lookAt(pos, pos + vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
 	};
+}
+
+void RenderManager::ModifyProbeAABBInfo(const ProbeAABBInfo& info)
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(ProbeAABBInfo), &info, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 

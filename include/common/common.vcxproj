@@ -202,6 +202,7 @@
     <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
+    <ClCompile Include="PointLightShadowShader.cpp" />
     <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
@@ -222,6 +223,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShadowRenderer.cpp" />
     <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="SphereGeometryMesh.cpp" />
@@ -298,6 +300,7 @@
     <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
+    <ClInclude Include="PointLightShadowShader.h" />
     <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
@@ -319,6 +322,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShadowRenderer.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />

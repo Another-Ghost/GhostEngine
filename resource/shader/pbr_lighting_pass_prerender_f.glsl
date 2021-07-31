@@ -49,7 +49,7 @@ layout(std140, binding = 0) uniform Camera
 };
 
 
-layout(std140, binding = 5) uniform ProbeAABB
+layout(std140, binding = 5) uniform ProbeAABBInfo
 {
 	vec4 probe_pos;
 	vec4 aabb_pos;
@@ -108,130 +108,42 @@ vec3 FresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
 } 
 
 
-struct IntersectionInfo
-{
-	bool b_intersected;
-	vec3 position;
-};
-
-IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, vec3 half_dimension)
-{
-//		IntersectionInfo info;
+//struct IntersectionInfo
+//{
+//	bool b_intersected;
+//	vec3 position;
+//};
+//
+//IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, vec3 half_dimension)
+//{
+//	IntersectionInfo info;
 //	info.b_intersected = false;
 //
-//	half_dimension = vec3(16, 8, 16);
+//	vec3 aabb_min = aabb_pos - half_dimension;
+//	vec3 aabb_max = aabb_pos + half_dimension;
 //
-//	vec3 vmin = aabb_pos - half_dimension;
-//	vec3 vmax = aabb_pos + half_dimension;
+//	vec3 t_values = vec3(-1.f, -1.f, -1.f);
 //
-//	float t1 = (vmin.x - ray_ori.x) / ray_ori.x;
-//    float t2 = (vmax.x - ray_ori.x) / ray_ori.x;
-//    float t3 = (vmin.y - ray_ori.y) / ray_ori.y;
-//    float t4 = (vmax.y - ray_ori.y) / ray_ori.y;
-//    float t5 = (vmin.z - ray_ori.z) / ray_ori.z;
-//    float t6 = (vmax.z - ray_ori.z) / ray_ori.z;
-//
-//    float aMin = t1 < t2 ? t1 : t2;
-//    float bMin = t3 < t4 ? t3 : t4;
-//    float cMin = t5 < t6 ? t5 : t6;
-//
-//    float aMax = t1 > t2 ? t1 : t2;
-//    float bMax = t3 > t4 ? t3 : t4;
-//    float cMax = t5 > t6 ? t5 : t6;
-//
-//    float fMax = aMin > bMin ? aMin : bMin;
-//    float fMin = aMax < bMax ? aMax : bMax;
-//
-//    float t7 = fMax > cMin ? fMax : cMin;
-//    float t8 = fMin < cMax ? fMin : cMax;
-//
-//    float t9 = (t8 < 0 || t7 > t8) ? -1 : t7;
-//
-//	if(t9 > 0)
+//	for (int i = 0; i < 3; ++i)	//calculate t_exit
 //	{
-//		info.b_intersected = true;
-//		info.position = ray_ori + t9 * ray_dir;
+//		if (ray_dir[i] > 0)
+//		{
+//			t_values[i] = (aabb_min[i] - ray_ori[i]) / ray_dir[i];
+//		}
+//		else if (ray_dir[i] < 0)
+//		{
+//			t_values[i] = (aabb_max[i] - ray_ori[i]) / ray_dir[i];
+//		}
+//	}
+//	float best_t = t_values.x > t_values.y ? t_values.x : t_values.y;
+//    best_t = best_t > t_values.z ? best_t : t_values.z; //check if the ray enters all pairs of slabs
+//	if (best_t < 0.f)
+//	{
+//		return info;
 //	}
 //
-//	return info;
-
-
-	IntersectionInfo info;
-	info.b_intersected = false;
-
-	half_dimension = vec3(8, 8, 8);
-
-	vec3 aabb_min = aabb_pos - half_dimension;
-	vec3 aabb_max = aabb_pos + half_dimension;
-
-	vec3 t_max = vec3(-1.f, -1.f, -1.f);
-	vec3 t_min = vec3(-1.f, -1.f, -1.f);
-
-
-	for (int i = 0; i < 3; ++i)	//calculate t_exit
-	{
-		if (ray_dir[i] > 0)
-		{
-			t_max[i] = (aabb_max[i] - ray_ori[i]) / ray_dir[i];
-			t_min[i] = (aabb_min[i] - ray_ori[i]) / ray_dir[i];
-		}
-		else if (ray_dir[i] < 0)
-		{
-			t_max[i] = (aabb_min[i] - ray_ori[i]) / ray_dir[i];
-			t_min[i] = (aabb_max[i] - ray_ori[i]) / ray_dir[i];
-		}
-	}
-
-
-
-//	if (ray_dir.r <= 0)
-//	{
-//		t_values.r = (aabb_min.r - ray_ori.r) / ray_dir.r;
-//	}
-//	else //if (ray_dir.r > 0)
-//	{
-//		t_values.r = (aabb_max.r - ray_ori.r) / ray_dir.r;
-//	}
-//
-//	if (ray_dir.g <= 0)
-//	{
-//		t_values.g = (aabb_min.g - ray_ori.g) / ray_dir.g;
-//	}
-//	else //if (ray_dir.g > 0)
-//	{
-//		t_values.g = (aabb_max.g - ray_ori.g) / ray_dir.g;
-//	}
-//
-//	if (ray_dir.b <= 0)
-//	{
-//		t_values.b = (aabb_min.b - ray_ori.b) / ray_dir.b;
-//	}
-//	else //if (ray_dir.b > 0)
-//	{
-//		t_values.b = (aabb_max.b - ray_ori.b) / ray_dir.b;
-//	}
-
-
-
-	float t_exit = t_max.r > t_max.g ? t_max.g : t_max.r;
-    t_exit = t_exit > t_max.b ? t_max.b : t_exit; //check if the ray enters all pairs of slabs
-
-
-	float t_enter = t_min.r > t_min.g ? t_min.r : t_min.g;
-    t_enter = t_enter > t_min.b ? t_enter : t_min.b;
-
-//	float best_t = max(t_values.r, t_values.g);
-//	best_t = max(best_t, t_values.b);
-	
-	if (t_exit < 0.f || t_enter >= t_exit || t_enter > 0)
-	{
-		return info;
-	}
-
-
-
-	vec3 intersection = ray_ori + (ray_dir * t_exit);
-	const float epsilon = 0.00001f;
+//	vec3 intersection = ray_ori + (ray_dir * best_t);
+//	const float epsilon = 0.00001f;
 //	for (int i = 0; i < 3; ++i)
 //	{
 //		if (intersection[i] + epsilon < aabb_min[i] ||
@@ -240,45 +152,13 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
 //			return info;
 //		}
 //	}
-
-	info.b_intersected = true;
-	info.position = intersection;
-	//info.distance = best_t;
-
-	return info;
-}
-
-IntersectionInfo RaySphereIntersection(vec3 ray_ori, vec3 ray_dir, vec3 sphere_ori, float radius)
-{
-	IntersectionInfo info;
-	info.b_intersected = false;
-
-	vec3 dir = sphere_ori - ray_ori;
-
-	float sphere_proj = dot(dir, ray_dir);
-
-	if(sphere_proj < 0.f)
-	{
-		return info;
-	}
-
-	vec3 point = ray_ori + ray_dir * sphere_proj;
-
-	float sphere_dist = length(point - sphere_ori);
-	
-	if(sphere_dist > radius)
-	{
-		return info;
-	}
-
-	float offset = sqrt(radius * radius - sphere_dist * sphere_dist);
-
-	float ray_distance = sphere_proj - offset;
-	info.position = ray_ori + ray_dir * ray_distance;
-	info.b_intersected = true;
-
-	return info;
-}
+//
+//	info.b_intersected = true;
+//	info.position = intersection;
+//	//info.distance = best_t;
+//
+//	return info;
+//}
 
 void main()
 {
@@ -357,21 +237,15 @@ void main()
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
 
-	vec3 prefiltered_radiance = vec3(0);
-	IntersectionInfo info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
+//	vec3 prefiltered_radiance = vec3(0);
+//	IntersectionInfo info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
+//	if(info.b_intersected)	//move into function /?
+//	{
+//		vec3 parallax_corrected_sample_dir = normalize(probe_pos.rgb - info.position);
+//		prefiltered_radiance = textureLod(light_prefilter_map, parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;    
+//	}
 
-	if(info.b_intersected)	//move into function /?
-	{
-		vec3 parallax_corrected_sample_dir = normalize(info.position - probe_pos.rgb);
-		//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
-		prefiltered_radiance = textureLod(light_prefilter_map, parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;  
-		
-		//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
-	}
-
-    //vec3 prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+    vec3 prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
     
 	vec2 brdf  = texture(brdf_lut, vec2(max(dot(N, V), 0.0), roughness)).rg;
 	vec3 FssEss = kS * brdf.x + brdf.y;

@@ -8,9 +8,11 @@
 #include "GBuffer.h"
 #include "SkyboxShader.h"
 #include "AttachmentTexture.h"
+#include "WindowManager.h"
 
 PBRDeferRenderer::PBRDeferRenderer()
 {
+	WindowManager::GetSingleton().s_current_window->AddEventListener(this);
 	//1.
 	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
@@ -39,6 +41,8 @@ PBRDeferRenderer::PBRDeferRenderer()
 
 	pbr_geometry_pass_shader = make_unique<PBRShader>(File::GetShaderPath("pbr_geometry_pass_v"), File::GetShaderPath("pbr_geometry_pass_f"));
 	pbr_lighting_pass_shader = make_unique<PBRLightingPassShader>();
+	
+	lighting_prerender_shader = make_unique<PBRLightingPassShader>(File::GetShaderPath("basic_v"), File::GetShaderPath("pbr_lighting_pass_prerender_f"));
 }
 
 void PBRDeferRenderer::Update(float dt)
@@ -106,11 +110,22 @@ void PBRDeferRenderer::Update(float dt)
 
 	glDepthMask(GL_FALSE);	//禁止lighting pass 写入（破坏）深度缓冲（不禁止读取），以免造成skybox无法通过深度测试正确渲染
 	//glDisable(GL_DEPTH_TEST);	//禁止写入和读取
-	RenderManager::GetSingleton().DrawCaptureQuadMesh(&*pbr_lighting_pass_shader);
+	
+	if (RenderManager::GetSingleton().b_prerendered)
+	{
+		RenderManager::GetSingleton().DrawCaptureQuadMesh(&*pbr_lighting_pass_shader);
+	}
+	else
+	{
+		RenderManager::GetSingleton().DrawCaptureQuadMesh(&*lighting_prerender_shader);
+	}
+
+	//RenderManager::GetSingleton().DrawCaptureQuadMesh(&*lighting_prerender_shader);
+
 	//glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 
-	pbr_lighting_pass_shader->Draw();
+	//pbr_lighting_pass_shader->Draw();
 
 
 /*Skybox*/
@@ -122,4 +137,13 @@ void PBRDeferRenderer::Update(float dt)
 	g_buffer->Unbind();
 
 
+}
+
+void PBRDeferRenderer::OnKeyPressed(Window* window)
+{
+	GLFWwindow* glfw_window = window->GetGLFWWindow();
+	if (glfwGetKey(glfw_window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		pbr_lighting_pass_shader->Reload();
+	}
 }

@@ -44,7 +44,7 @@ struct ViewportInfo
 	int height;
 };
 
-struct ProbeAABB
+struct ProbeAABBInfo
 {
 	vec4 probe_pos;
 	vec4 aabb_pos;
@@ -78,7 +78,7 @@ public:
 
 	map<BasicMaterial*, set<RenderUnit*>> basic_mat_unit_map;
 
-	const mat4 probe_capture_projection{ glm::perspective(glm::radians(90.f), 1.f, 0.1f, 100.f) };
+	const mat4 probe_capture_projection{ glm::perspective(glm::radians(90.f), 1.f, 0.1f, 500.f) };
 
 	shared_ptr<PrefilterShader> prefilter_shader;
 	shared_ptr<IrradianceShader> irradiance_shader;
@@ -158,7 +158,7 @@ public:
 
 	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
-	
+	void ModifyProbeAABBInfo(const ProbeAABBInfo& info);
 
 private:
 

@@ -13,12 +13,13 @@
 #include <algorithm>
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+//#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/type_ptr.hpp>
 #include "Transform.h"
 #include "File.h"
 #include "Debug.h"
+#include "Math.h"
 
 using std::cout;
 using std::endl;
@@ -34,13 +35,7 @@ using std::priority_queue;
 using std::make_unique;
 using std::make_shared;
 
-using glm::vec2;
-using glm::vec3;
-using glm::vec4;
-using glm::mat2;
-using glm::mat3;
-using glm::mat4;
-using glm::quat;
+
 //const float PI = glm::pi<float>();
 
 class Window;

@@ -38,23 +38,23 @@ int main()
 	//Root* root = new Root(1920, 1080, "PBR Demo");
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
-	
+
 	HDRTextureFile* hdr_file = dynamic_cast<HDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::HDR, true, File::GetTexturePath("hdr/night.hdr")));
 	RenderManager::GetSingleton().BindSkyboxTexture(hdr_file);	//? 改成绑定到SceneManager中的skybox class 对象
-	
+
 	//WFTestRenderer* renderer = new WFTestRenderer();
 	PBRRenderer* renderer = new PBRRenderer();
 	Root::GetSingleton().Initialize(renderer);
 
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
-	camera->SetPosition(vec3(0, 4, 8));
+	camera->SetPosition(vec3(0, 4, 6));
 	//camera->SetYaw(45.f);
 
 	Window* window = WindowManager::GetSingleton().s_current_window;
 	//window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	window->AddEventListener(camera);
 
-	window->AddEventListener(renderer);
+	//window->AddEventListener(renderer);
 
 
 
@@ -103,27 +103,28 @@ int main()
 
 
 
-/*Mesh*/
+	/*Mesh*/
 	SphereGeometryMesh* sphere_mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
 	CubeGeometryMesh* cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
 
-/*Node*/
+	/*Node*/
 
-	//RenderNode* sphere_node = new RenderNode();
-	//RootRenderModule* sphere_root_render_module = new RootRenderModule();
-	//ResourceManager::GetSingleton().CreateRenderUnit(sphere_root_render_module, sphere_mesh, material);
-	//sphere_node->AttachRenderModule(sphere_root_render_module);
-	//sphere_node->local_transform.SetDimension({ 2.f, 2.f, 2.f });
-	//sphere_node->local_transform.SetPosition({ 2.f, 4.f, 2.f });
+		//RenderNode* sphere_node = new RenderNode();
+		//RootRenderModule* sphere_root_render_module = new RootRenderModule();
+		//ResourceManager::GetSingleton().CreateRenderUnit(sphere_root_render_module, sphere_mesh, material);
+		//sphere_node->AttachRenderModule(sphere_root_render_module);
+		//sphere_node->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+		//sphere_node->local_transform.SetPosition({ 2.f, 4.f, 2.f });
 
-	//int column_num = 7;
-	//for (int col = 0; col < column_num; ++col) {
+		//int column_num = 7;
+		//for (int col = 0; col < column_num; ++col) {
 	RenderNode* cube_node = new RenderNode();
-		RootRenderModule* root_render_module = new RootRenderModule();
-		root_render_module->local_transform.SetPosition({ 0.f, 0.f, 0.f });
-		root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
-		ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
-		cube_node->AttachRenderModule(root_render_module);
+	RootRenderModule* root_render_module = new RootRenderModule();
+	root_render_module->local_transform.SetPosition({ 0.f, 0.f, 0.f });
+	//root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
+	root_render_module->local_transform.SetDimension({ 8.f, 1.f, 8.f });
+	ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
+	cube_node->AttachRenderModule(root_render_module);
 
 	//	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
 	//}
@@ -155,6 +156,24 @@ int main()
 	wall3->local_transform.SetPosition({ -8.f, 2.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
 
+	//front
+	RenderNode* wall4 = new RenderNode();
+	RootRenderModule* wall4_root_rm = new RootRenderModule();
+	ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
+	wall4->AttachRenderModule(wall4_root_rm);
+	wall4->local_transform.SetDimension({ 8.f, 4.f, 0.5f });
+	wall4->local_transform.SetPosition({ 0.f, 2.f, 8.f });
+	wall4->local_transform.SetYaw(180.f);
+
+
+	//middle
+	RenderNode* wall5 = new RenderNode();
+	RootRenderModule* wall5_root_rm = new RootRenderModule();
+	ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, cube_mat);
+	wall5->AttachRenderModule(wall5_root_rm);
+	wall5->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
+	wall5->local_transform.SetPosition({ -5.f, 5.f, -5.f });
+
 
 	//origin
 	//RenderNode* box = new RenderNode();
@@ -183,12 +202,16 @@ int main()
 	////tri_node->local_transform.SetDimension({ 1, 1, 1 });
 	//tri_node2->local_transform.SetDimension({ 20, 20, 20 });
 
-/*Light*/
-	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 5.f, 10.f);
 
-	light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 7.f, 7.f);
+
+
+
+/*Light*/
+	//PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
+	//light->postion = vec3(0.f, 5.f, 0.f);
+
+	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
+	light->postion = vec3(0.f, 6.f, 0.f);
 	light->color = vec3(1.f, 0.f, 1.f);
 
 
@@ -197,30 +220,34 @@ int main()
 	//tri_node->local_transform.SetDimension({ 10, 10, 10 });
 
 	/*Light Probe*/
-	
-	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 4, 0 }, AABBModule(AABBVolume({ 8, 4, 8 }), {0, 4, 0}));
+
+	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 4, 0 }, AABBModule(AABBVolume({ 8, 4, 8 }), { 0, 4, 0 }));
 	//SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 4, 8, -4 }, AABBModule());
 
 
-	RenderNode* point1 = new RenderNode();
-	RootRenderModule* point1_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(point1_root_rm, sphere_mesh, point_mat);
-	point1->AttachRenderModule(point1_root_rm);
-	point1->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
-	shared_ptr<AABBModule> aabb = probe1->aabb_module;
-	point1->local_transform.SetPosition(aabb->volume.GetCorner(aabb->GetWorldPosition(), {1.f, 1.f, 1.f}));
+	//RenderNode* point1 = new RenderNode();
+	//RootRenderModule* point1_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(point1_root_rm, sphere_mesh, point_mat);
+	//point1->AttachRenderModule(point1_root_rm);
+	//point1->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
+	//shared_ptr<AABBModule> aabb = probe1->aabb_module;
+	//point1->local_transform.SetPosition(aabb->volume.GetCorner(aabb->GetWorldPosition(), { 1.f, 1.f, 1.f }));
 
-	RenderNode* point2 = new RenderNode();
-	RootRenderModule* point2_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(point2_root_rm, sphere_mesh, point_mat);
-	point2->AttachRenderModule(point2_root_rm);
-	point2->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
-	//shared_ptr<AABBModule> aabb = probe1->aabb;
-	point2->local_transform.SetPosition(aabb->volume.GetCorner(aabb->GetWorldPosition(), { -1.f, -1.f, -1.f }));
+	//RenderNode* point2 = new RenderNode();
+	//RootRenderModule* point2_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(point2_root_rm, sphere_mesh, point_mat);
+	//point2->AttachRenderModule(point2_root_rm);
+
+	//point2->local_transform.SetDimension({ 1.0f, 1.f, 1.f });
+	//point2->local_transform.SetPosition({ -4, 3, 4 });
+
+	//point2->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
+	//point2->local_transform.SetPosition(aabb->volume.GetCorner(aabb->GetWorldPosition(), { -1.f, -1.f, -1.f }));
+
 
 
 /*Loop*/
-	float max_delta_time = 1.f / 60.f;
+	float max_delta_time = 1.f / 60.f; 
 	float current_frame_time;
 	float delta_time = 1 / 60.f;
 	float last_frame_time = 0.f;
