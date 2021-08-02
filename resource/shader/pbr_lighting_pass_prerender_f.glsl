@@ -21,6 +21,12 @@ uniform sampler2D brdf_lut;
 
 //uniform sampler2D ssda_lut;
 
+//shadow
+uniform samplerCube point_depth_maps[8];
+//uniform int num_depth_maps;
+uniform float shadow_far_plane;
+uniform bool b_shadow;
+
 //light
 struct LightInfo
 {
@@ -107,6 +113,19 @@ vec3 FresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
     return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(max(1.0 - cos_theta, 0.0), 5.0);
 } 
 
+
+float ShadowCalculation(vec3 frag_pos, int i)
+{
+	vec3 frag_to_light = frag_pos - light_info_array[i].position.rgb;
+	//vec3 frag_to_light = normalize(frag_pos - light_info_array[i].position.rgb);
+	float closest_depth = texture(point_depth_maps[i], normalize(frag_to_light)).r;
+	closest_depth *= shadow_far_plane;
+	float current_depth = length(frag_to_light);
+	float bias = 0.05;
+	float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
+
+	return shadow;
+}
 
 //struct IntersectionInfo
 //{
@@ -214,7 +233,12 @@ void main()
 
 		float NdotL = max(dot(N, L), 0.f);
 
-		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+		float shadow = ShadowCalculation(world_pos, i);
+		vec3 Lo_i = (kD * albedo / PI + specular) * radiance * NdotL;
+		
+		Lo_i *= (1.0 - shadow);
+
+		Lo += Lo_i; 
 
 		//Lo+=1000;
 	}

@@ -7,6 +7,8 @@ CubeMap::CubeMap(int width_, int height_, TextureType type_, TextureFile* file_)
 {
 	width = width_;
 	height = height_;
+	data_type = GL_FLOAT;
+	wrap_param = GL_CLAMP_TO_EDGE;
 }
 
 bool CubeMap::Buffer()

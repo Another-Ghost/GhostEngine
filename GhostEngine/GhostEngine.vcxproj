@@ -197,6 +197,9 @@
     <None Include="..\resource\shader\pbr_lighting_pass_f.glsl" />
     <None Include="..\resource\shader\pbr_lighting_pass_prerender_f.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />
+    <None Include="..\resource\shader\point_shadow_depth_f.glsl" />
+    <None Include="..\resource\shader\point_shadow_depth_g.glsl" />
+    <None Include="..\resource\shader\point_shadow_depth_v.glsl" />
     <None Include="..\resource\shader\reflection_probe_f.glsl" />
     <None Include="..\resource\shader\single_scattering_energy_f.glsl" />
     <None Include="..\resource\shader\ssao_blur_f.glsl" />

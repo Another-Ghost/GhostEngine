@@ -88,6 +88,12 @@ public:
 
 	bool b_prerendered{ false };
 
+	/*Shadow*/
+	ShadowRenderer* shadow_renderer;
+
+	const int point_shadow_width{ 1024 };
+	const int point_shadow_height{ 1024 };
+
 	RenderManager();
 
 	bool Initialize(Renderer* renderer_ = nullptr);
@@ -154,15 +160,20 @@ public:
 	CameraInfo GetCurrentCameraInfo() { return cur_camera_info; }
 
 	unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
+
+	void BindCurrentOutputFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, cur_output_fbo); }
+
 	void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
 
 	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
 	void ModifyProbeAABBInfo(const ProbeAABBInfo& info);
 
+	void DrawMeshes(MVPShader* shader);
+
+	void BindFrameBuffer(FrameBuffer* fb);
+
 private:
-
-
 
 	ViewportInfo win_viewport_info;
 	ViewportInfo cur_viewport_info;
@@ -226,13 +237,8 @@ private:
 	AttachmentTexture* normal_g_attachment;
 	AttachmentTexture* color_g_attachment;
 	
-
-
 	/*Post Process*/
 	PostProcessRenderer* post_process_renderer;
-
-
-
 
 
 	friend class SceneManager;
@@ -240,6 +246,8 @@ private:
 
 	ReflectionProbe* reflection_probe;
 	LightProbeRenderer* light_probe_renderer;
+
+	FrameBuffer* cur_framebuffer;
 
 
 

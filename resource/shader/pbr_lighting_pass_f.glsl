@@ -14,10 +14,20 @@ uniform sampler2D g_emissive;
 
 uniform float roughness;
 
+
+
 //IBL
 uniform samplerCube irradiance_map;
 uniform samplerCube light_prefilter_map;
 uniform sampler2D brdf_lut;
+
+
+//shadow
+uniform samplerCube point_depth_maps[8];
+//uniform int num_depth_maps;
+uniform float far_plane;
+uniform bool b_shadow;
+
 
 //uniform sampler2D ssda_lut;
 
@@ -58,6 +68,8 @@ layout(std140, binding = 5) uniform ProbeAABB
 
 
 const float PI = 3.14159265359;
+
+
 
 
 float DistributionGGX(vec3 N, vec3 H, float roughness)
@@ -116,45 +128,6 @@ struct IntersectionInfo
 
 IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, vec3 half_dimension)
 {
-//		IntersectionInfo info;
-//	info.b_intersected = false;
-//
-//	half_dimension = vec3(16, 8, 16);
-//
-//	vec3 vmin = aabb_pos - half_dimension;
-//	vec3 vmax = aabb_pos + half_dimension;
-//
-//	float t1 = (vmin.x - ray_ori.x) / ray_ori.x;
-//    float t2 = (vmax.x - ray_ori.x) / ray_ori.x;
-//    float t3 = (vmin.y - ray_ori.y) / ray_ori.y;
-//    float t4 = (vmax.y - ray_ori.y) / ray_ori.y;
-//    float t5 = (vmin.z - ray_ori.z) / ray_ori.z;
-//    float t6 = (vmax.z - ray_ori.z) / ray_ori.z;
-//
-//    float aMin = t1 < t2 ? t1 : t2;
-//    float bMin = t3 < t4 ? t3 : t4;
-//    float cMin = t5 < t6 ? t5 : t6;
-//
-//    float aMax = t1 > t2 ? t1 : t2;
-//    float bMax = t3 > t4 ? t3 : t4;
-//    float cMax = t5 > t6 ? t5 : t6;
-//
-//    float fMax = aMin > bMin ? aMin : bMin;
-//    float fMin = aMax < bMax ? aMax : bMax;
-//
-//    float t7 = fMax > cMin ? fMax : cMin;
-//    float t8 = fMin < cMax ? fMin : cMax;
-//
-//    float t9 = (t8 < 0 || t7 > t8) ? -1 : t7;
-//
-//	if(t9 > 0)
-//	{
-//		info.b_intersected = true;
-//		info.position = ray_ori + t9 * ray_dir;
-//	}
-//
-//	return info;
-
 
 	IntersectionInfo info;
 	info.b_intersected = false;
@@ -183,36 +156,6 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
 	}
 
 
-
-//	if (ray_dir.r <= 0)
-//	{
-//		t_values.r = (aabb_min.r - ray_ori.r) / ray_dir.r;
-//	}
-//	else //if (ray_dir.r > 0)
-//	{
-//		t_values.r = (aabb_max.r - ray_ori.r) / ray_dir.r;
-//	}
-//
-//	if (ray_dir.g <= 0)
-//	{
-//		t_values.g = (aabb_min.g - ray_ori.g) / ray_dir.g;
-//	}
-//	else //if (ray_dir.g > 0)
-//	{
-//		t_values.g = (aabb_max.g - ray_ori.g) / ray_dir.g;
-//	}
-//
-//	if (ray_dir.b <= 0)
-//	{
-//		t_values.b = (aabb_min.b - ray_ori.b) / ray_dir.b;
-//	}
-//	else //if (ray_dir.b > 0)
-//	{
-//		t_values.b = (aabb_max.b - ray_ori.b) / ray_dir.b;
-//	}
-
-
-
 	float t_exit = t_max.r > t_max.g ? t_max.g : t_max.r;
     t_exit = t_exit > t_max.b ? t_max.b : t_exit; //check if the ray enters all pairs of slabs
 
@@ -220,8 +163,6 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
 	float t_enter = t_min.r > t_min.g ? t_min.r : t_min.g;
     t_enter = t_enter > t_min.b ? t_enter : t_min.b;
 
-//	float best_t = max(t_values.r, t_values.g);
-//	best_t = max(best_t, t_values.b);
 	
 	if (t_exit < 0.f || t_enter >= t_exit || t_enter > 0)
 	{
@@ -280,6 +221,29 @@ IntersectionInfo RaySphereIntersection(vec3 ray_ori, vec3 ray_dir, vec3 sphere_o
 	return info;
 }
 
+
+// array of offset direction for sampling
+vec3 grid_sampling_disk[20] = vec3[]
+(
+   vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+   vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+   vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+   vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+   vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+);
+
+float ShadowCalculation(vec3 frag_pos, int i)
+{
+	vec3 frag_to_light = frag_pos - light_info_array[i].position.rgb;
+	float closest_depth = texture(point_depth_maps[i], frag_to_light).r;
+	closest_depth *= far_plane;
+	float current_depth = length(frag_to_light);
+	float bias = 0.05;
+	float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
+
+	return shadow;
+}
+
 void main()
 {
 	vec3 world_pos = texture(g_world_position, TexCoords).rgb; 
@@ -334,7 +298,11 @@ void main()
 
 		float NdotL = max(dot(N, L), 0.f);
 
-		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+		//float shadow = b_shadow ? ShadowCalculation(world_pos, i) : 0.f;
+		float shadow = ShadowCalculation(world_pos, i);
+		vec3 Lo_i = (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
+
+		Lo += Lo_i; 
 
 		//Lo+=1000;
 	}

@@ -9,6 +9,9 @@
 #include "SkyboxShader.h"
 #include "AttachmentTexture.h"
 #include "WindowManager.h"
+#include "SceneManager.h"
+#include "PointLight.h"
+#include "ShadowRenderer.h"
 
 PBRDeferRenderer::PBRDeferRenderer()
 {
@@ -106,6 +109,15 @@ void PBRDeferRenderer::Update(float dt)
 	TextureUnit::Bind2DTexture(TextureUnit::g_ao_roughness_metalness, g_buffer->ao_roughness_metalness_tex);
 	TextureUnit::Bind2DTexture(TextureUnit::g_emissive, g_buffer->emissive_tex);
 
+	
+	const vector<PointLight*> point_lights = SceneManager::GetSingletonPtr()->point_light_array;
+	for (int i = 0; i < point_lights.size(); ++i)
+	{
+		TextureUnit::BindCubemapTexture(TextureUnit::point_depth_maps[i], point_lights[i]->shadow_cubemap);
+	}
+
+	//TextureUnit::BindCubemapTexture(TextureUnit::point_depth_map1, )
+
 	glTextureBarrier();// To safely read the result of a written texel via a texel fetch in a subsequent drawing command
 
 	glDepthMask(GL_FALSE);	//禁止lighting pass 写入（破坏）深度缓冲（不禁止读取），以免造成skybox无法通过深度测试正确渲染
@@ -117,6 +129,7 @@ void PBRDeferRenderer::Update(float dt)
 	}
 	else
 	{
+		lighting_prerender_shader->SetFloat("shadow_far_plane", RenderManager::GetSingletonPtr()->shadow_renderer->far_plane);
 		RenderManager::GetSingleton().DrawCaptureQuadMesh(&*lighting_prerender_shader);
 	}
 
@@ -145,5 +158,6 @@ void PBRDeferRenderer::OnKeyPressed(Window* window)
 	if (glfwGetKey(glfw_window, GLFW_KEY_R) == GLFW_PRESS)
 	{
 		pbr_lighting_pass_shader->Reload();
+		lighting_prerender_shader->Reload();
 	}
 }

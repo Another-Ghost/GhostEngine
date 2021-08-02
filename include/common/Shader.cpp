@@ -21,8 +21,10 @@ const TextureUnit TextureUnit::g_view_normal = { "g_view_normal", 13 };
 const TextureUnit TextureUnit::g_ao_roughness_metalness = { "g_ao_roughness_metalness", 14 };
 const TextureUnit TextureUnit::g_emissive = { "g_emissive", 15 };
 const TextureUnit TextureUnit::g_color = { "g_color", 16 };
-
-
+//const TextureUnit TextureUnit::point_depth_map1 = { "point_depth_map1", 17 };
+//const TextureUnit TextureUnit::point_depth_map2 = { "point_depth_map2", 18 };
+const vector<TextureUnit> TextureUnit::point_depth_maps = { {"point_depth_maps[0]", 17},  {"point_depth_maps[1]", 18},  {"point_depth_maps[2]", 19},  {"point_depth_maps[3]", 20},
+	{"point_depth_maps[4]", 21},  {"point_depth_maps[5]", 22},  {"point_depth_maps[6]", 23} ,  {"point_depth_maps[7]", 24} };
 
 
 void TextureUnit::Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture)
@@ -51,6 +53,22 @@ void TextureUnit::BindCubemapTexture(const TextureUnit& unit, CubeMap* texture)
 	}
 }
 
+void TextureUnit::BindCubemapTextures(const vector<TextureUnit> units, const vector<CubeMap*> cubemaps)
+{
+	for (int i = 0; i < cubemaps.size(); ++i)
+	{
+		glActiveTexture(GL_TEXTURE0 + units[i].number);
+		if (cubemaps[i])
+		{
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemaps[i]->id);
+		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+		}
+	}
+}
+
 
 Shader::Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_):
 	vertex_path(vertex_path_), fragment_path(fragment_path_), geometry_path(geometry_path_)
@@ -75,21 +93,29 @@ void Shader::Generate()
 	fragment_shader_file.exceptions(ifstream::failbit | ifstream::badbit);
 	geometry_shader_file.exceptions(ifstream::failbit | ifstream::badbit);
 
+#ifdef DEBUG_MODE
 	cout << vertex_path << endl;
 	cout << fragment_path << endl;
+	if (geometry_path != "")
+	{
+		cout << geometry_path << endl;
+	}
+#endif
 
 	try
 	{
 		vertex_shader_file.open(vertex_path);
-		fragment_shader_file.open(fragment_path);
-		stringstream vertex_shader_stream, fragment_shader_stream;
+		stringstream vertex_shader_stream;
 		vertex_shader_stream << vertex_shader_file.rdbuf();
-		fragment_shader_stream << fragment_shader_file.rdbuf();
 		vertex_shader_file.close();
-		fragment_shader_file.close();
-
 		vertex_code = vertex_shader_stream.str();
+
+		fragment_shader_file.open(fragment_path);
+		stringstream fragment_shader_stream;
+		fragment_shader_stream << fragment_shader_file.rdbuf();
+		fragment_shader_file.close();
 		fragment_code = fragment_shader_stream.str();
+
 		if (geometry_path != "")
 		{
 			geometry_shader_file.open(geometry_path);

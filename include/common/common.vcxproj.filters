@@ -324,7 +324,13 @@
     <ClCompile Include="ShadowRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointLightShadowShader.cpp">
+    <ClCompile Include="PointShadowShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointShadowDepthShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -617,7 +623,13 @@
     <ClInclude Include="ShadowRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointLightShadowShader.h">
+    <ClInclude Include="PointShadowShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointShadowDepthShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

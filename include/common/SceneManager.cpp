@@ -8,6 +8,7 @@
 #include "CameraFactory.h"
 #include "LightFactory.h"
 #include "ReflectionProbe.h"
+#include "PointLight.h"
 
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
@@ -60,16 +61,17 @@ void SceneManager::Update(float dt)
 	//}
 }
 
-void SceneManager::AddLight(Light* light)
+void SceneManager::AddPointLight(PointLight* light)
 {
-	light_array.emplace_back(light);
+	point_light_array.emplace_back(light);
 }
 
 Light* SceneManager::CreateLight(const LightFactory& light_factory)
 {
-	Light* light= light_factory.CreateLight();
+	PointLight* light = dynamic_cast<PointLight*>(light_factory.CreateLight());
 	
-	light_array.emplace_back(light);
+	
+	point_light_array.emplace_back(light);
 
 	//RenderManager::GetSingleton().UpdateLightArray();
 

@@ -167,6 +167,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
@@ -202,7 +203,8 @@
     <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
-    <ClCompile Include="PointLightShadowShader.cpp" />
+    <ClCompile Include="PointShadowDepthShader.cpp" />
+    <ClCompile Include="PointShadowShader.cpp" />
     <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
@@ -265,6 +267,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
@@ -300,7 +303,8 @@
     <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
-    <ClInclude Include="PointLightShadowShader.h" />
+    <ClInclude Include="PointShadowDepthShader.h" />
+    <ClInclude Include="PointShadowShader.h" />
     <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />

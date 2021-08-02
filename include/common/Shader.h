@@ -49,18 +49,21 @@ struct TextureUnit
 	static const TextureUnit g_ao_roughness_metalness;
 	static const TextureUnit g_emissive;
 	static const TextureUnit g_color;
-
+	//static const TextureUnit point_depth_map1;
+	//static const TextureUnit point_depth_map2;
+	static const vector<TextureUnit> point_depth_maps;
 
 	//? static void Reset();
 	static void Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture);
 	static void BindCubemapTexture(const TextureUnit& unit, CubeMap* texture);
+
+	static void BindCubemapTextures(const vector<TextureUnit> units, const vector<CubeMap*> cubemaps);
 };
 
 class Shader
 {
 
 public:
-
 
 	Shader(const string& vertex_path_, const string& fragment_path_, const string& geometry_path_ = "");
 

@@ -28,6 +28,8 @@
 #include "AABBModule.h"
 #include "PrefilterShader.h"
 #include "IrradianceShader.h"
+#include "ShadowRenderer.h"
+#include "FrameBuffer.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -79,8 +81,6 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
 	ModifyCurrentViewportInfo(viewport_info);
-
-
 
 
 	glGenBuffers(1, &light_ssbo);
@@ -191,6 +191,8 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		b_initialized = true;
 
 		basic_renderer = new BasicRenderer();
+
+		shadow_renderer = new ShadowRenderer();
 	}
 
 	return b_initialized;
@@ -198,6 +200,11 @@ bool RenderManager::Initialize(Renderer* renderer_)
 
 void RenderManager::PreRender()
 {
+	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	{
+		shadow_renderer->DrawDepthMap(point_light);
+	}
+
 	light_probe_renderer = new LightProbeRenderer(LightProbe::s_capture_width, LightProbe::s_capture_height);
 	for (auto& probe : SceneManager::GetSingletonPtr()->reflection_probe_set)
 	{
@@ -205,6 +212,8 @@ void RenderManager::PreRender()
 		light_probe_renderer->Render(probe);	//? 可能是framebuffer绑定错误
 	}
 	//light_probe_renderer->Render(reflection_probe);
+
+
 	b_prerendered = true;
 
 }
@@ -213,6 +222,11 @@ void RenderManager::Render(float dt)
 {
 	UpdateLightArray();
 	//UpdateEnvironmentLight();
+
+	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	{
+		shadow_renderer->DrawDepthMap(point_light);
+	}
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -247,6 +261,12 @@ void RenderManager::Update(float dt)
 	camera_info.projection = camera->PerspectiveMatrix();
 	ModifyCurrentCameraInfo(camera_info);
 
+	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	{
+		shadow_renderer->DrawDepthMap(point_light);
+	}
+
+
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -273,9 +293,9 @@ void RenderManager::Update(float dt)
 
 	if (!b_prerendered)
 	{
-		PreRender();
-		//skybox_cubemap = reflection_probe->cubemap;
 		//PreRender();
+
+		//skybox_cubemap = reflection_probe->cubemap;
 	}
 	//light_probe_renderer->Render(reflection_probe);
 
@@ -312,7 +332,7 @@ void RenderManager::UpdateLightArray()
 {
 
 	vector<PointLightInfo> light_info_array;
-	for (const auto& light : SceneManager::GetSingleton().light_array)
+	for (const auto& light : SceneManager::GetSingleton().point_light_array)
 	{
 		if (dynamic_cast<PointLight*>(light) && light->b_enabled)
 		{
@@ -410,6 +430,7 @@ void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)
 		skybox_cubemap = ResourceManager::GetSingleton().CreateCubemap(512, 512, TextureType::CUBEMAP);
 		skybox_cubemap->b_genarate_mipmap = false;
 		skybox_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+		skybox_cubemap->data_type = GL_FLOAT;
 		skybox_cubemap->Buffer();
 	}
 
@@ -458,6 +479,54 @@ void RenderManager::ModifyProbeAABBInfo(const ProbeAABBInfo& info)
 	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(ProbeAABBInfo), &info, GL_DYNAMIC_COPY);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+
+
+void RenderManager::DrawMeshes(MVPShader* shader)
+{
+	auto comp = [](const std::pair<float, PBRMaterial*>& a, const std::pair<float, PBRMaterial*>& b) {return a.first < b.first; };	//大顶堆，因为先渲染cameraZ值大的（靠前的）
+
+	priority_queue<std::pair<float, PBRMaterial*>, vector<std::pair<float, PBRMaterial*>>, decltype(comp)> heap(comp);
+
+	for (const auto& pair : RenderManager::GetSingleton().pbr_mat_unit_map)
+	{
+		heap.emplace((*pair.second.begin())->GetCameraZDistance(), pair.first);
+	}
+
+
+	while (!heap.empty())
+	{
+		const auto& material = heap.top().second;
+		//pbr_geometry_pass_shader->BindMaterial(material);
+
+		const auto& ru_set = RenderManager::GetSingleton().pbr_mat_unit_map[material];
+		for (const auto& render_unit : ru_set)
+		{
+			Mesh* mesh = render_unit->GetMesh();
+			mat4 model = render_unit->GetParent()->GetWorldTransform().GetMatrix();
+			shader->SetModelMatrix(model);
+			mesh->Draw(shader);
+		}
+		heap.pop();
+	}
+}
+
+void RenderManager::BindFrameBuffer(FrameBuffer* fb)
+{
+	if (cur_framebuffer == fb)
+	{
+		return;
+	}
+
+	if (cur_framebuffer->width != cur_viewport_info.width || cur_framebuffer->height != cur_viewport_info.width)
+	{
+		glViewport(0, 0, fb->width, fb->height);
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, fb->id);
+
+	cur_framebuffer = fb;
 }
 
 

@@ -117,3 +117,9 @@ struct GBuffer;
 class LightProbe;
 class ReflectionProbe;
 class LightProbeRenderer;
+
+class ShadowRenderer;
+class PointShadowShader;
+class PointShadowDepthShader;
+
+class FrameBuffer;

@@ -10,7 +10,7 @@ public:
 
 	vector<RenderNode*> render_unit_array;
 
-	vector<Light*> light_array;
+	vector<PointLight*> point_light_array;
 
 	Camera* main_camera;
 
@@ -33,6 +33,6 @@ public:
 	ReflectionProbe* CreateReflectionProbe(const vec3& position, const AABBModule& aabb_module);
 
 private:
-	void AddLight(Light* light);
+	void AddPointLight(PointLight* light);
 };
 

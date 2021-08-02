@@ -118,6 +118,7 @@ int main()
 
 		//int column_num = 7;
 		//for (int col = 0; col < column_num; ++col) {
+	/*top*/
 	RenderNode* cube_node = new RenderNode();
 	RootRenderModule* root_render_module = new RootRenderModule();
 	root_render_module->local_transform.SetPosition({ 0.f, 0.f, 0.f });
@@ -134,7 +135,7 @@ int main()
 	RootRenderModule* wall1_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
 	wall1->AttachRenderModule(wall1_root_rm);
-	wall1->local_transform.SetDimension({ 8.f, 4.f, 0.5f });
+	wall1->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
 	wall1->local_transform.SetPosition({ 0.f, 4.f, -8.f });
 	wall1->local_transform.SetYaw(0.f);
 
@@ -143,7 +144,7 @@ int main()
 	RootRenderModule* wall2_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall2_root_rm, cube_mesh, material);
 	wall2->AttachRenderModule(wall2_root_rm);
-	wall2->local_transform.SetDimension({ 8.f, 4.f, 0.5f });
+	wall2->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
 	wall2->local_transform.SetPosition({ 8.f, 4.f, 0.f });
 	wall2->local_transform.SetYaw(90.f);
 
@@ -152,7 +153,7 @@ int main()
 	RootRenderModule* wall3_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);
 	wall3->AttachRenderModule(wall3_root_rm);
-	wall3->local_transform.SetDimension({ 8.f, 4.f, 0.5f });
+	wall3->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
 	wall3->local_transform.SetPosition({ -8.f, 2.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
 
@@ -161,7 +162,7 @@ int main()
 	RootRenderModule* wall4_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
 	wall4->AttachRenderModule(wall4_root_rm);
-	wall4->local_transform.SetDimension({ 8.f, 4.f, 0.5f });
+	wall4->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
 	wall4->local_transform.SetPosition({ 0.f, 2.f, 8.f });
 	wall4->local_transform.SetYaw(180.f);
 
@@ -172,8 +173,15 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, cube_mat);
 	wall5->AttachRenderModule(wall5_root_rm);
 	wall5->local_transform.SetDimension({ 0.5f, 0.5f, 0.5f });
-	wall5->local_transform.SetPosition({ -5.f, 5.f, -5.f });
+	wall5->local_transform.SetPosition({ -5.f, 4.f, -5.f });
 
+	//top
+	RenderNode* wall6 = new RenderNode();
+	RootRenderModule* wall6_root_rm = new RootRenderModule();
+	ResourceManager::GetSingleton().CreateRenderUnit(wall6_root_rm, cube_mesh, cube_mat);
+	wall6->AttachRenderModule(wall6_root_rm);
+	wall6->local_transform.SetDimension({ 8.f, 0.5f, 8.f });
+	wall6->local_transform.SetPosition({ 0.f, 10.f, 0.f });
 
 	//origin
 	//RenderNode* box = new RenderNode();
@@ -203,17 +211,16 @@ int main()
 	//tri_node2->local_transform.SetDimension({ 20, 20, 20 });
 
 
-
-
-
 /*Light*/
+
+
 	//PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	//light->postion = vec3(0.f, 5.f, 0.f);
+	//light->postion = vec3(0.f, 4.f, 0.f);
+	//light->color = vec3(1.f, 0.f, 1.f);
+	//light->intensity = 300.f;
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 6.f, 0.f);
-	light->color = vec3(1.f, 0.f, 1.f);
-
+	light->postion = vec3(2.f, 5.f, 2.f);
 
 	//tri_node->AttachRenderModule(model.LoadScene(File::GetModelPath("BoomBoxSpecularGlossiness/BoomBox-Default.gltf"), MaterialType::PBR));	//backpack/backpack.obj, nanosuit/nanosuit.obj BoomBoxSpecularGlossiness/BoomBox-Default.gltf
 	//tri_node->local_transform.SetPosition({ 0, 5, 0 });

@@ -22,6 +22,14 @@ void PBRLightingPassShader::Initialize(bool b_reload)
 	UseTextureUnit(TextureUnit::light_prefilter_map);
 	UseTextureUnit(TextureUnit::brdf_lut);
 
+	for (const auto& shadow_map_tu : TextureUnit::point_depth_maps)
+	{
+		UseTextureUnit(shadow_map_tu);
+	}
+
+	//UseTextureUnit(TextureUnit::point_depth_map1);
+	//UseTextureUnit(TextureUnit::point_depth_map2);
+
 	if (b_reload)
 	{
 		MVPShader::Initialize(false);
