@@ -168,6 +168,12 @@
     <None Include="..\resource\shader\point_shadow_depth_f.glsl">
       <Filter>shader</Filter>
     </None>
+    <None Include="..\resource\shader\pbr_direct_lighting_f.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\resource\shader\pbr_indirect_lighting.glsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\resource\shader\irradiance_convolution_fs.glsl">

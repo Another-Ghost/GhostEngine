@@ -193,6 +193,8 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		basic_renderer = new BasicRenderer();
 
 		shadow_renderer = new ShadowRenderer();
+
+		light_probe_renderer = new LightProbeRenderer(LightProbe::s_capture_width, LightProbe::s_capture_height);
 	}
 
 	return b_initialized;
@@ -200,12 +202,12 @@ bool RenderManager::Initialize(Renderer* renderer_)
 
 void RenderManager::PreRender()
 {
-	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
-	{
-		shadow_renderer->DrawDepthMap(point_light);
-	}
+	//UpdateLightArray();
+	//for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	//{
+	//	shadow_renderer->DrawDepthMap(point_light);
+	//}
 
-	light_probe_renderer = new LightProbeRenderer(LightProbe::s_capture_width, LightProbe::s_capture_height);
 	for (auto& probe : SceneManager::GetSingletonPtr()->reflection_probe_set)
 	{
 		//reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
@@ -213,45 +215,50 @@ void RenderManager::PreRender()
 	}
 	//light_probe_renderer->Render(reflection_probe);
 
-
 	b_prerendered = true;
 
 }
 
 void RenderManager::Render(float dt)
 {
+	//UpdateLightArray();
+	////UpdateEnvironmentLight();
+
+	//for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	//{
+	//	shadow_renderer->DrawDepthMap(point_light);
+	//}
+
+	//glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//pbr_defer_renderer->Update(dt);
+
+	////post_process_renderer->Update(dt);
+	//
+	////ResetRenderArray();
+}
+
+
+void RenderManager::Update(float dt)
+{
 	UpdateLightArray();
-	//UpdateEnvironmentLight();
+
+	UpdateLightArray();
 
 	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
 	{
 		shadow_renderer->DrawDepthMap(point_light);
 	}
 
-	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	pbr_defer_renderer->Update(dt);
 
-	//post_process_renderer->Update(dt);
-	
-	//ResetRenderArray();
-}
+	if (!b_prerendered)
+	{
+		//PreRender();
+	}
 
-//void RenderManager::Render(const CameraInfo& camera_info)
-//{
-//	UpdateLightArray();
-//	UpdateCameraInfo(camera_info);
-//
-//	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//	pbr_defer_renderer->Update(dt);
-//}
+	PreRender();
 
-void RenderManager::Update(float dt)
-{
 
-	UpdateLightArray();
 	UpdateEnvironmentLight();
 
 	camera = SceneManager::GetSingleton().main_camera;
@@ -260,11 +267,6 @@ void RenderManager::Update(float dt)
 	camera_info.view = camera->ViewMatrix();
 	camera_info.projection = camera->PerspectiveMatrix();
 	ModifyCurrentCameraInfo(camera_info);
-
-	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
-	{
-		shadow_renderer->DrawDepthMap(point_light);
-	}
 
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -291,12 +293,11 @@ void RenderManager::Update(float dt)
 	post_process_renderer->Update(dt);
 
 
-	if (!b_prerendered)
-	{
-		//PreRender();
-
-		//skybox_cubemap = reflection_probe->cubemap;
-	}
+	//if (!b_prerendered)
+	//{
+	//	//PreRender();
+	//	//skybox_cubemap = reflection_probe->cubemap;
+	//}
 	//light_probe_renderer->Render(reflection_probe);
 
 	ResetRenderArray();
@@ -364,12 +365,6 @@ void RenderManager::UpdateEnvironmentLight()
 }
 
 
-
-
-
-
-
-
 void RenderManager::ResetRenderArray()
 {
 	pbr_mat_unit_map.clear();
@@ -385,16 +380,19 @@ bool RenderManager::InsertRenderUnit(RenderUnit* ru)
 
 	ru->SetCameraZDistance((camera->ViewMatrix() * vec4(ru->GetPosition(), 1)).z);
 
-	vec3 pos = ru->GetPosition();
-	vec3 dimen = ru->GetParent()->GetWorldTransform().GetDimention();
-	AABBVolume aabb = ru->GetAABBVolume();
-	if (camera->frustum->AABBIntersection(ru->GetPosition(), ru->GetAABBVolume()))
+	if (b_frustum_culling)
 	{
-		//ru->SetCameraZDistance(dot(camera_to_ru, camera->GetForward()));
-	}
-	else
-	{
-		return false;
+		//vec3 pos = ru->GetPosition();
+		//vec3 dimen = ru->GetParent()->GetWorldTransform().GetDimention();
+		AABBVolume aabb = ru->GetAABBVolume();
+		if (camera->frustum->AABBIntersection(ru->GetPosition(), ru->GetAABBVolume()))
+		{
+			//ru->SetCameraZDistance(dot(camera_to_ru, camera->GetForward()));
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	if (material->type == MaterialType::BASIC)

@@ -40,6 +40,7 @@ void ShadowRenderer::DrawDepthMap(PointLight* light)
 
 	vector<mat4> view_matrices = RenderManager::GetSingletonPtr()->GetCaptureViewArray(light->GetPosition());
 	
+	vector<mat4> shadow_matrices;
 	for (int i = 0; i < 6; ++i)
 	{
 		shadow_matrices.emplace_back(shadow_projection * view_matrices[i]);

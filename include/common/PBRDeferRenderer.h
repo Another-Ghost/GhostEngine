@@ -1,7 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include "PBRShader.h"
-#include "PBRLightingPassShader.h"
+
 
 class PBRDeferRenderer : public Renderer
 {
@@ -12,19 +11,26 @@ public:
 
 	void OnKeyPressed(Window* window) override;
 
+	void RnderGeometryPass();
+	
+	void RenderDirectLight();
+
+	void Render();
+
 private:
-	unique_ptr<PBRShader> pbr_geometry_pass_shader;
-	unique_ptr<PBRLightingPassShader> pbr_lighting_pass_shader;
+	shared_ptr<PBRShader> pbr_geometry_pass_shader;
+	shared_ptr<PBRLightingPassShader> pbr_lighting_pass_shader;
 
-	unique_ptr<PBRLightingPassShader> lighting_prerender_shader;
+	shared_ptr<PBRLightingPassShader> lighting_prerender_shader;
 
+	shared_ptr<PBRLightingPassShader> direct_lighting_shader;
+	shared_ptr<PBRLightingPassShader> indirect_lighting_shader;
 
 	CubeMap* irradiance_cubemap;
 
 	CubeMap* prefilter_cubemap;
 
 	PlaneTexture* brdf_lut;
-
 
 };
 

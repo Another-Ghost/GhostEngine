@@ -4,6 +4,7 @@
 #include "LightProbe.h"
 #include "RenderManager.h"
 #include "CubeMap.h"
+#include "PBRDeferRenderer.h"
 
 LightProbeRenderer::LightProbeRenderer(int width, int height)
 	:viewport_width(width), viewport_height(height)
@@ -11,6 +12,8 @@ LightProbeRenderer::LightProbeRenderer(int width, int height)
 	g_buffer = make_shared<GBuffer>(viewport_width, viewport_height);
 	post_process_renderer = make_unique<PostProcessRenderer>(viewport_width, viewport_height);
 
+	glGenFramebuffers(1, &capture_fbo);
+	glGenRenderbuffers(1, &capture_rbo);
 }
 
 void LightProbeRenderer::Render(LightProbe* probe)
@@ -20,9 +23,9 @@ void LightProbeRenderer::Render(LightProbe* probe)
 	RenderManager::GetSingleton().ModifyCurrentViewportInfo(viewport_info);
 	RenderManager::GetSingleton().cur_g_buffer = g_buffer;
 
-	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(RenderManager::GetSingleton().GetCaptureFBO());
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
-	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(capture_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, viewport_width, viewport_height);
 	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 
@@ -35,17 +38,18 @@ void LightProbeRenderer::Render(LightProbe* probe)
 
 	for (unsigned int i = 0; i < 6; ++i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+		glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 
 		camera_info.view = capture_view_array[i];
 		RenderManager::GetSingleton().ModifyCurrentCameraInfo(camera_info);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, probe->cubemap->id, 0);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		RenderManager::GetSingleton().Render(0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		RenderManager::GetSingleton().pbr_defer_renderer->RenderDirectLight();
 		post_process_renderer->Update(0);
 		//glTextureBarrier();
 	}
 
+	
 
 	RenderManager::GetSingleton().UpdateCamera();
 	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(0);

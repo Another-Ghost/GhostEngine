@@ -29,6 +29,7 @@ void PBRLightingPassShader::Initialize(bool b_reload)
 
 	//UseTextureUnit(TextureUnit::point_depth_map1);
 	//UseTextureUnit(TextureUnit::point_depth_map2);
+	SetFloat("shadow_far_plane", RenderManager::GetSingletonPtr()->shadow_far_plane);
 
 	if (b_reload)
 	{

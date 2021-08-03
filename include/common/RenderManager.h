@@ -94,6 +94,13 @@ public:
 	const int point_shadow_width{ 1024 };
 	const int point_shadow_height{ 1024 };
 
+	float shadow_far_plane{ 25 };
+
+	/*Defer Rendering*/
+	unique_ptr<PBRDeferRenderer> pbr_defer_renderer;
+
+	bool b_defer_rendering{ true };
+
 	RenderManager();
 
 	bool Initialize(Renderer* renderer_ = nullptr);
@@ -108,9 +115,9 @@ public:
 
 	void ModifyCurrentCameraInfo(const CameraInfo& camera_info);
 
-	void UpdateLightArray();
+	void UpdateLightArray();	//? 一个tick只用更新一次
 
-	void UpdateEnvironmentLight();
+	void UpdateEnvironmentLight();	
 
 	void ResetRenderArray();
 
@@ -216,7 +223,6 @@ private:
 	GLuint light_ssbo;
 
 
-
 	GLuint camera_ubo;
 	GLuint viewport_ubo;
 
@@ -224,10 +230,7 @@ private:
 	GLuint probe_aabb_ubo;
 	//GLuint light_color_ssbo;
 
-	/*Defer Rendering*/
-	unique_ptr<PBRDeferRenderer> pbr_defer_renderer;
 
-	bool b_defer_rendering{true};
 
 	/*G-buffer*/
 	unsigned int gbuffer_fbo;
@@ -250,6 +253,6 @@ private:
 	FrameBuffer* cur_framebuffer;
 
 
-
+	bool b_frustum_culling{ false };
 };
 

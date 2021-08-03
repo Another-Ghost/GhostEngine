@@ -25,8 +25,6 @@ private:
 	const unsigned int shadow_width{ 1024 };
 	const unsigned int shadow_height{ 1024 };
 
-	vector<mat4> shadow_matrices;
-
 
 
 	mat4 shadow_projection;

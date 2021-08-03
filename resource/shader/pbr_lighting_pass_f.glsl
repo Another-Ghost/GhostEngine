@@ -14,8 +14,6 @@ uniform sampler2D g_emissive;
 
 uniform float roughness;
 
-
-
 //IBL
 uniform samplerCube irradiance_map;
 uniform samplerCube light_prefilter_map;
@@ -24,19 +22,14 @@ uniform sampler2D brdf_lut;
 
 //shadow
 uniform samplerCube point_depth_maps[8];
-//uniform int num_depth_maps;
-uniform float far_plane;
+uniform float shadow_far_plane;
 uniform bool b_shadow;
-
-
-//uniform sampler2D ssda_lut;
 
 //light
 struct LightInfo
 {
 vec4 position;
 vec4 color;
-//bool b_rendering;
 };
 
 layout (std430, binding = 3) buffer LightInfoArray
@@ -45,8 +38,6 @@ layout (std430, binding = 3) buffer LightInfoArray
 };
 
 //camera
-//uniform vec3 cam_pos;
-
 struct CameraInfo
 {
     vec4 position;
@@ -235,11 +226,25 @@ vec3 grid_sampling_disk[20] = vec3[]
 float ShadowCalculation(vec3 frag_pos, int i)
 {
 	vec3 frag_to_light = frag_pos - light_info_array[i].position.rgb;
-	float closest_depth = texture(point_depth_maps[i], frag_to_light).r;
-	closest_depth *= far_plane;
 	float current_depth = length(frag_to_light);
-	float bias = 0.05;
-	float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
+
+    float shadow = 0.0;
+    float bias = 0.15;
+    int samples = 20;
+
+	float view_distance = length(camera.position.xyz - frag_pos);
+	float disk_radius = (1.f + view_distance / shadow_far_plane) / shadow_far_plane;
+	for(int j = 0; j < samples; ++j)
+	{
+		float closest_depth = texture(point_depth_maps[i], frag_to_light + grid_sampling_disk[j] * disk_radius).r;
+		closest_depth *= shadow_far_plane;
+		if(current_depth - bias > closest_depth)
+		{
+			shadow += 1.f;
+		}
+	}
+
+	shadow /= float(samples);
 
 	return shadow;
 }
@@ -269,7 +274,6 @@ void main()
 	vec3 F0 = vec3(0.04);
 	F0 = mix(F0, albedo, metalness);
 
-	//? need to change the kD term
 	vec3 Lo = vec3(0.f);	
 	for(int i = 0; i < light_info_array.length(); ++i)
 	//for(int i = 0; i < 1; ++i)
@@ -300,11 +304,12 @@ void main()
 
 		//float shadow = b_shadow ? ShadowCalculation(world_pos, i) : 0.f;
 		float shadow = ShadowCalculation(world_pos, i);
-		vec3 Lo_i = (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
+		vec3 Lo_i = (kD * albedo / PI + specular) * radiance * NdotL;
+		
+		Lo_i *= (1.0 - shadow);
 
 		Lo += Lo_i; 
 
-		//Lo+=1000;
 	}
 
 	//环境光部分与直接光源是独立的，互不影响
@@ -319,7 +324,7 @@ void main()
     //vec3 kD = 1.0 - kS;
     //kD *= 1.0 - metalness;	
 
-	vec3 irradiance = texture(irradiance_map, N).rgb;
+	vec3 irradiance = texture(irradiance_map, N).rgb;	// 是否需要视差校正 /?
     //vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
 
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
@@ -362,6 +367,7 @@ void main()
 	color += emissive;
 	//color = color * ao + Lo;
 	//color += Lo ;
+	//color = Lo * ao;
 
 	//HDR tone mapping
 	color = color / (color + vec3(1.0));	//? replace to way of adjusting exposure 

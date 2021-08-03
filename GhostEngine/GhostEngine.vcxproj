@@ -190,10 +190,12 @@
     <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl" />
     <None Include="..\resource\shader\kulla_conty_pbr_f.glsl" />
     <None Include="..\resource\shader\output_f.glsl" />
+    <None Include="..\resource\shader\pbr_direct_lighting_f.glsl" />
     <None Include="..\resource\shader\pbr_forward_f.glsl" />
     <None Include="..\resource\shader\pbr_fs.glsl" />
     <None Include="..\resource\shader\pbr_geometry_pass_f.glsl" />
     <None Include="..\resource\shader\pbr_geometry_pass_v.glsl" />
+    <None Include="..\resource\shader\pbr_indirect_lighting.glsl" />
     <None Include="..\resource\shader\pbr_lighting_pass_f.glsl" />
     <None Include="..\resource\shader\pbr_lighting_pass_prerender_f.glsl" />
     <None Include="..\resource\shader\pbr_vs.glsl" />

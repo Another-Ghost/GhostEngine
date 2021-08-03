@@ -11,9 +11,9 @@ public:
 	void Render(LightProbe* probe);
 
 private:
-	virtual void Update(float dt) override { };
 
-
+	GLuint capture_fbo;
+	GLuint capture_rbo;
 
 	shared_ptr<GBuffer> g_buffer;
 
@@ -23,5 +23,7 @@ private:
 	int viewport_height;
 
 	CameraInfo camera_info;
+
+	virtual void Update(float dt) override { };
 };
 

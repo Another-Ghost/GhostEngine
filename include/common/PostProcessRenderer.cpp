@@ -132,7 +132,6 @@ void PostProcessRenderer::UpdateSSAO()
 	//TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().color_tex);
 	TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().cur_g_buffer->color_tex);
 
-
 	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_blur_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(output_shader);
