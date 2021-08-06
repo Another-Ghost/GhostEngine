@@ -102,7 +102,6 @@ int main()
 	point_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, point_tex_file);
 
 
-
 	/*Mesh*/
 	SphereGeometryMesh* sphere_mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
 	CubeGeometryMesh* cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
@@ -121,7 +120,7 @@ int main()
 	/*bottom*/
 	RenderNode* cube_node = new RenderNode();
 	RootRenderModule* root_render_module = new RootRenderModule();
-	root_render_module->local_transform.SetPosition({ 0.f, 0.f, 0.f });
+	root_render_module->local_transform.SetPosition({ 0.f, -8.f, 0.f });
 	//root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
 	root_render_module->local_transform.SetDimension({ 8.f, 1.f, 8.f });
 	ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
@@ -136,7 +135,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
 	wall1->AttachRenderModule(wall1_root_rm);
 	wall1->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
-	wall1->local_transform.SetPosition({ 0.f, 4.f, -8.f });
+	wall1->local_transform.SetPosition({ 0.f, 0.f, -8.f });
 	wall1->local_transform.SetYaw(0.f);
 
 	//right
@@ -145,7 +144,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall2_root_rm, cube_mesh, material);
 	wall2->AttachRenderModule(wall2_root_rm);
 	wall2->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
-	wall2->local_transform.SetPosition({ 8.f, 4.f, 0.f });
+	wall2->local_transform.SetPosition({ 8.f, 0.f, 0.f });
 	wall2->local_transform.SetYaw(90.f);
 
 	//left
@@ -154,7 +153,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);
 	wall3->AttachRenderModule(wall3_root_rm);
 	wall3->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
-	wall3->local_transform.SetPosition({ -8.f, 2.f, 0.f });
+	wall3->local_transform.SetPosition({ -8.f, 0.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
 
 	//front
@@ -163,7 +162,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
 	wall4->AttachRenderModule(wall4_root_rm);
 	wall4->local_transform.SetDimension({ 8.f, 8.f, 0.5f });
-	wall4->local_transform.SetPosition({ 0.f, 2.f, 8.f });
+	wall4->local_transform.SetPosition({ 0.f, 0.f, 8.f });
 	wall4->local_transform.SetYaw(180.f);
 
 	//top
@@ -180,7 +179,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, point_mat);
 	wall5->AttachRenderModule(wall5_root_rm);
 	wall5->local_transform.SetDimension({ 0.8f, 0.8f, 0.8f });
-	wall5->local_transform.SetPosition({ -3.f, 4.f, 0.f });
+	wall5->local_transform.SetPosition({ -3.f, 0.f, 0.f });
 
 
 
@@ -233,7 +232,7 @@ int main()
 
 	/*Light Probe*/
 
-	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 4, 0 }, AABBModule(AABBVolume({ 8, 4, 8 }), { 0, 4, 0 }));
+	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, 0 }, AABBModule(AABBVolume({ 8, 4, 8 }), { 0, 0, 0 }));
 	//SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 4, 8, -4 }, AABBModule());
 
 

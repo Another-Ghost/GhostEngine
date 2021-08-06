@@ -254,9 +254,10 @@ void RenderManager::Update(float dt)
 	if (!b_prerendered)
 	{
 		//PreRender();
+		PreRender();
 	}
 
-	PreRender();
+	
 
 
 	UpdateEnvironmentLight();
