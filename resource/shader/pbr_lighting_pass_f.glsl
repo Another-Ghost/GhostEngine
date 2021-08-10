@@ -255,7 +255,7 @@ void main()
 {
 	vec3 world_pos = texture(g_world_position, TexCoords).rgb; 
 
-	vec3 albedo = pow(texture(g_basecolor, TexCoords).rgb, vec3(2.2)); //gamma correction
+	vec3 albedo = pow(texture(g_basecolor, TexCoords).rgb, vec3(2.2)); //base color是在sRGB空间的，本不需要结尾的gamma correction，但为了此处就先进行一个逆gamma correction
 	//vec3 albedo = vec3(1.f, 1.f, 1.f);
 	float ao = texture(g_ao_roughness_metalness, TexCoords).r;
     //float metalness  = texture(metalness_map, Tex_Coords).r;
@@ -320,20 +320,34 @@ void main()
 	
 	//vec3 Fr = max(vec3(1.0 - roughness), F0) - F0; 
 	//vec3 kS = F0 + Fr * pow(1.0-max(dot(N, V), 0.0), 5.0);
-
 	//vec3 F = FresnelSchlick(N, V, F0);
-
     //vec3 kD = 1.0 - kS;
     //kD *= 1.0 - metalness;	
 
-	vec3 irradiance = texture(irradiance_map, N).rgb;	// 是否需要视差校正 /?
+
+	IntersectionInfo info = RayAABBIntersection(world_pos, V, aabb_pos.rgb, aabb_half_size.rgb);
+	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
+	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
+	vec3 irradiance = vec3(0.f);	// 是否需要视差校正 /?
+	if(info.b_intersected)	//move into function /?
+	{
+		vec3 parallax_corrected_sample_dir = normalize(info.position - probe_pos.rgb);
+		//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
+		irradiance = texture(irradiance_map, parallax_corrected_sample_dir).rgb;  
+		//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+	}
+	else
+	{
+		irradiance = texture(irradiance_map, N).rgb;	
+	}
+	
     //vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
 
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
 
 	vec3 prefiltered_radiance = vec3(0);
-	IntersectionInfo info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
+	info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
 	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
 	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
 
