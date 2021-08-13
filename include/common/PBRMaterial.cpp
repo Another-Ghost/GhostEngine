@@ -19,7 +19,7 @@ PlaneTexture* PBRMaterial::CreateMetalnessRoughnessMap()
 	metalness_roughness_map->height = roughness_map->height;
 	metalness_roughness_map->b_genarate_mipmap = false;
 	metalness_roughness_map->Buffer();
-	RenderManager::GetSingleton().CombineChannels(metalness_roughness_map, roughness_map, metalness_map);
+	RenderManager::GetSingleton().CombineChannels(metalness_roughness_map, metalness_map, roughness_map);
 	return metalness_roughness_map;
 }
 

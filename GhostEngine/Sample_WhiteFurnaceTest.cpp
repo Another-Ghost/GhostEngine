@@ -34,7 +34,7 @@
 int main()
 {
 	//Init
-	Root* root = new Root(1280, 720, "PBR_Demo");
+	Root* root = new Root(1920, 1080, "PBR_Demo");
 	//Root* root = new Root(1920, 1080, "PBR Demo");
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
@@ -47,7 +47,7 @@ int main()
 	Root::GetSingleton().Initialize(renderer);
 
 	Camera* camera = SceneManager::GetSingleton().CreateCamera(CameraFactory());
-	camera->SetPosition(vec3(0, 4, 6));
+	camera->SetPosition(vec3(0, 4, 7));
 	//camera->SetYaw(45.f);
 
 	Window* window = WindowManager::GetSingleton().s_current_window;
@@ -179,7 +179,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, point_mat);
 	wall5->AttachRenderModule(wall5_root_rm);
 	wall5->local_transform.SetDimension({ 0.8f, 0.8f, 0.8f });
-	wall5->local_transform.SetPosition({ -3.f, 0.f, 0.f });
+	wall5->local_transform.SetPosition({ -3.f, 0.f, -0.f });
 
 
 
@@ -218,7 +218,7 @@ int main()
 	//light->intensity = 300.f;
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 5.f, 0.f);
+	light->postion = vec3(0.f, 3.f, 0.f);
 	light->intensity = 200.f;
 
 	//light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
@@ -232,7 +232,7 @@ int main()
 
 	/*Light Probe*/
 
-	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, 0 }, AABBModule(AABBVolume({ 8, 4, 8 }), { 0, 0, 0 }));
+	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, 0 }, AABBModule(AABBVolume({ 8, 8, 8 }), { 0, 0, 0 }));
 	//SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 4, 8, -4 }, AABBModule());
 
 

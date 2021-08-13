@@ -61,8 +61,6 @@ layout(std140, binding = 5) uniform ProbeAABB
 const float PI = 3.14159265359;
 
 
-
-
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
 	float alpha = roughness * roughness;
@@ -370,8 +368,8 @@ void main()
 	vec3 Favg = F0 + (1 - F0) / 21;
 	vec3 Fms = FssEss * Favg / (1 - (1 - Ess) * Favg);
 
-	vec3 Edss = vec3(1.f) - (FssEss + Fms * Ems);
-	vec3 kD =  Edss * albedo * (1 - metalness);	//mutiplying (1 - metalness) is due to only dielectrics have this Kd term
+	vec3 Ed = vec3(1.f) - (FssEss + Fms * Ems);
+	vec3 kD =  Ed * albedo * (1 - metalness);	//mutiplying (1 - metalness) is due to only dielectrics have this Kd term
 	//the base color map is the combination of diffuse part of dielectrics and specular part of conductor
 
 	//vec3 kD = vec3(0);
