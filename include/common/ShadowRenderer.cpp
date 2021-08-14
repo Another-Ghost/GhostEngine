@@ -7,7 +7,7 @@
 #include "PointLight.h"
 
 
-ShadowRenderer::ShadowRenderer()
+ShadowRenderer::ShadowRenderer(float far_plane_): far_plane(far_plane_)
 {
 	point_shadow_depth_shader = new PointShadowDepthShader();
 	//point_shadow_shader = make_unique<PointShadowShader>();
@@ -30,6 +30,7 @@ ShadowRenderer::ShadowRenderer()
 	shadow_projection = glm::perspective(glm::radians(90.0f), (float)shadow_width / (float)shadow_height, near_plane, far_plane);
 	
 }
+
 
 void ShadowRenderer::Update(float dt)
 {

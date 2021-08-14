@@ -40,6 +40,10 @@ RenderManager::RenderManager():
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+
 	glGenFramebuffers(1, &capture_fbo);	
 	glGenRenderbuffers(1, &capture_rbo);
 
@@ -64,9 +68,7 @@ RenderManager::RenderManager():
 
 	//brdf_lut->data_format = GL_RG;
 
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CW);
+
 
 	glGenBuffers(1, &camera_ubo);	// binding point is 0	//? 写成一个类
 	glObjectLabel(GL_UNIFORM_BUFFER, camera_ubo, -1, "camera_ubo");
@@ -192,7 +194,8 @@ bool RenderManager::Initialize(Renderer* renderer_)
 
 		basic_renderer = new BasicRenderer();
 
-		shadow_renderer = new ShadowRenderer();
+		shadow_renderer = new ShadowRenderer(shadow_far_plane);
+	
 
 		light_probe_renderer = new LightProbeRenderer(LightProbe::s_capture_width, LightProbe::s_capture_height);
 	}
@@ -420,6 +423,24 @@ bool RenderManager::InsertRenderUnit(RenderUnit* ru)
 	}
 
 	return true;
+}
+
+void RenderManager::DrawCaptureCubeMesh(Shader* shader)
+{
+	glDisable(GL_CULL_FACE);
+	capture_cube_mesh->Draw(shader);
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
+}
+
+void RenderManager::DrawCaptureQuadMesh(Shader* shader)
+{
+	glDisable(GL_CULL_FACE);
+	capture_quad_mesh->Draw(shader);
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
 }
 
 void RenderManager::BindSkyboxTexture(HDRTextureFile* hdr_file)

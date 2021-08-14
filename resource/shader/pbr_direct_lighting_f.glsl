@@ -162,6 +162,8 @@ void main()
 		float dist = length(light_info_array[i].position.xyz - world_pos);
 		float attenuation = 1.0 / (dist * dist);
 		vec3 radiance = light_info_array[i].color.xyz * attenuation;
+
+		//radiance *= 10;
 	
 		// Cook-Torrance BRDF
 		float D = DistributionGGX(N, H, roughness);

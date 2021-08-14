@@ -4,9 +4,9 @@ class ShadowRenderer : public Renderer
 {
 public:
 	float near_plane{ 0.1f };
-	float far_plane{ 25.f };
+	float far_plane;
 
-	ShadowRenderer();
+	ShadowRenderer(float far_plane_);
 
 	void Update(float dt) override;
 

@@ -123,7 +123,7 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
 	IntersectionInfo info;
 	info.b_intersected = false;
 
-	half_dimension = vec3(8, 8, 8);
+	//half_dimension = vec3(8, 8, 8);
 
 	vec3 aabb_min = aabb_pos - half_dimension;
 	vec3 aabb_max = aabb_pos + half_dimension;
@@ -284,6 +284,8 @@ void main()
 		float dist = length(light_info_array[i].position.xyz - world_pos);
 		float attenuation = 1.0 / (dist * dist);
 		vec3 radiance = light_info_array[i].color.xyz * attenuation;
+
+		//radiance *= 10;
 	
 		// Cook-Torrance BRDF
 		float D = DistributionGGX(N, H, roughness);

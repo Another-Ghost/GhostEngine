@@ -220,7 +220,6 @@ void PBRDeferRenderer::RenderDirectLight()
 	for (int i = 0; i < point_lights.size(); ++i)
 	{
 		TextureUnit::BindCubemapTexture(TextureUnit::point_depth_maps[i], point_lights[i]->shadow_cubemap);
-
 	}
 	TextureUnit::Bind2DTexture(TextureUnit::g_world_position, g_buffer->world_position_tex);
 	TextureUnit::Bind2DTexture(TextureUnit::g_world_normal, g_buffer->world_normal_tex);

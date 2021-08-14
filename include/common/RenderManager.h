@@ -94,7 +94,7 @@ public:
 	const int point_shadow_width{ 1024 };
 	const int point_shadow_height{ 1024 };
 
-	float shadow_far_plane{ 25 };
+	float shadow_far_plane{64};
 
 	/*Defer Rendering*/
 	unique_ptr<PBRDeferRenderer> pbr_defer_renderer;
@@ -128,9 +128,9 @@ public:
 
 	const CubeGeometryMesh* GetCaptureCubeMesh() { return capture_cube_mesh; }	//底层const，指向常量的指针
 
-	void DrawCaptureCubeMesh(Shader* shader) { capture_cube_mesh->Draw(shader); }
+	void DrawCaptureCubeMesh(Shader* shader);
 
-	void DrawCaptureQuadMesh(Shader* shader) { capture_quad_mesh->Draw(shader); }
+	void DrawCaptureQuadMesh(Shader* shader); 
 
 	const vector<mat4>& GetCaptureViewArray() { return capture_view_array; }
 
