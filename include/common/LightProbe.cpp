@@ -12,6 +12,7 @@ LightProbe::LightProbe(const vec3& position, const AABBModule& aabb_)
 
 	cubemap = ResourceManager::GetSingleton().CreateCubemap(s_capture_width, s_capture_height, TextureType::CUBEMAP, true);
 	glObjectLabel(GL_TEXTURE, cubemap->id, -1, "lightprobe_cubemap");
+
 }
 
 void LightProbe::Initialize()

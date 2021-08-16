@@ -8,7 +8,7 @@ class LightProbeRenderer : public Renderer
 public:
 	LightProbeRenderer(int width, int height);
 
-	void Render(LightProbe* probe);
+	void Render(ReflectionProbe* probe);
 
 private:
 

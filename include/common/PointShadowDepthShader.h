@@ -12,7 +12,6 @@ public:
 
 	void Initialize(bool b_reload) override;
 
-
 	void SetShadowMatrix(const vector<mat4>& shadow_matrices); 
 
 	void Draw(CubeMap* depth_cube_map, PointLight* light);

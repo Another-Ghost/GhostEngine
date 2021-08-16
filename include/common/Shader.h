@@ -37,8 +37,8 @@ struct TextureUnit
 	static const TextureUnit ao_map;
 	static const TextureUnit metalness_roughness_map;
 	static const TextureUnit emissive_map;
-	static const TextureUnit irradiance_map;
-	static const TextureUnit light_prefilter_map;
+	//static const TextureUnit irradiance_map;
+	//static const TextureUnit light_prefilter_map;
 	static const TextureUnit brdf_lut;
 	static const TextureUnit ssao;
 	static const TextureUnit g_world_position;
@@ -52,6 +52,9 @@ struct TextureUnit
 	//static const TextureUnit point_depth_map1;
 	//static const TextureUnit point_depth_map2;
 	static const vector<TextureUnit> point_depth_maps;
+	static const vector<TextureUnit> irradiance_maps;
+	static const vector<TextureUnit> light_prefilter_maps;
+	static const vector<TextureUnit> probe_depth_maps;
 
 	//? static void Reset();
 	static void Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture);

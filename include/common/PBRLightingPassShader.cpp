@@ -18,9 +18,24 @@ void PBRLightingPassShader::Initialize(bool b_reload)
 	UseTextureUnit(TextureUnit::g_basecolor);
 	UseTextureUnit(TextureUnit::g_ao_roughness_metalness);
 	UseTextureUnit(TextureUnit::g_emissive);
-	UseTextureUnit(TextureUnit::irradiance_map);
-	UseTextureUnit(TextureUnit::light_prefilter_map);
+	//UseTextureUnit(TextureUnit::irradiance_map);
+	//UseTextureUnit(TextureUnit::light_prefilter_map);
 	UseTextureUnit(TextureUnit::brdf_lut);
+
+	for (const auto& tu : TextureUnit::irradiance_maps)
+	{
+		UseTextureUnit(tu);
+	}
+
+	for (const auto& tu : TextureUnit::light_prefilter_maps)
+	{
+		UseTextureUnit(tu);
+	}
+
+	for (const auto& tu : TextureUnit::probe_depth_maps)
+	{
+		UseTextureUnit(tu);
+	}
 
 	for (const auto& shadow_map_tu : TextureUnit::point_depth_maps)
 	{

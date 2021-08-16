@@ -51,6 +51,7 @@ struct ProbeAABBInfo
 	vec4 half_dimension;
 };
 
+
 //enum class FrameBuffer
 //{
 //	DEFAULT, //Ä¬ÈÏÖ¡»º´æ
@@ -85,6 +86,10 @@ public:
 	
 	CubeMap* blended_irradiance_cubemap;
 	CubeMap* blended_prefilter_cubemap;
+
+	//vector<CubeMap*> irradiance_cubemaps;
+	//vector<CubeMap*> prefilter_cubemaps;
+	vector<ReflectionProbe*> enabled_probes;
 
 	bool b_prerendered{ false };
 
@@ -174,7 +179,7 @@ public:
 
 	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
-	void ModifyProbeAABBInfo(const ProbeAABBInfo& info);
+	void ModifyProbeAABBInfo(const vector<ProbeAABBInfo>& info);
 
 	void DrawMeshes(MVPShader* shader);
 
@@ -227,7 +232,7 @@ private:
 	GLuint viewport_ubo;
 
 
-	GLuint probe_aabb_ubo;
+	GLuint probe_aabb_ssbo;
 	//GLuint light_color_ssbo;
 
 

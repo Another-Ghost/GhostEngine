@@ -13,7 +13,7 @@ uniform sampler2D g_ao_roughness_metalness;
 uniform sampler2D g_emissive;
 
 //shadow
-uniform samplerCube point_depth_maps[8];
+uniform samplerCube point_depth_maps[4];
 uniform float shadow_far_plane;
 uniform bool b_shadow;
 

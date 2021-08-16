@@ -50,8 +50,8 @@ void PBRShader::Initialize(bool b_reload)
 	UseTextureUnit(TextureUnit::ao_map);
 	UseTextureUnit(TextureUnit::metalness_roughness_map);
 	UseTextureUnit(TextureUnit::emissive_map);
-	UseTextureUnit(TextureUnit::irradiance_map);
-	UseTextureUnit(TextureUnit::light_prefilter_map);
+	//UseTextureUnit(TextureUnit::irradiance_map);
+	//UseTextureUnit(TextureUnit::light_prefilter_map);
 	UseTextureUnit(TextureUnit::brdf_lut);
 
 	if (b_reload)

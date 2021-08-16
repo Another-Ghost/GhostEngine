@@ -60,7 +60,7 @@ void ShadowRenderer::DrawDepthMap(PointLight* light)
 	//RenderManager::GetSingleton().DrawCaptureCubeMesh(&*point_shadow_depth_shader);
 	RenderManager::GetSingletonPtr()->DrawMeshes(&*point_shadow_depth_shader);
 
-	glTextureBarrier();
+	glTextureBarrier();	//?
 
 	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);

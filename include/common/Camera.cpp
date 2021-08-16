@@ -10,7 +10,8 @@ Camera::Camera(vec3 postion_, float pitch_, float yaw_, float aspect_, float fov
     transform.SetPitch(pitch);
     transform.SetYaw(yaw);
     frustum = std::make_unique<Frustum>();
-
+    
+    move_speed = 8; //? 想办法一致
 }
 
 Camera::~Camera()

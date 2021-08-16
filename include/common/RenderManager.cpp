@@ -78,7 +78,7 @@ RenderManager::RenderManager():
 
 
 	ViewportInfo viewport_info{ win_viewport_info.width, win_viewport_info.height };
-	glGenBuffers(1, &viewport_ubo);	// binding point is 1	//? 写成一个类
+	glGenBuffers(1, &viewport_ubo);	// binding point is 1	
 	glObjectLabel(GL_BUFFER, viewport_ubo, -1, "viewport_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, viewport_ubo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, viewport_ubo);
@@ -92,11 +92,11 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
-	glGenBuffers(1, &probe_aabb_ubo);	// binding point is 0	//? 写成一个类
-	glObjectLabel(GL_UNIFORM_BUFFER, probe_aabb_ubo, -1, "probe_aabb_ubo");
-	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 5, probe_aabb_ubo);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glGenBuffers(1, &probe_aabb_ssbo);	
+	glObjectLabel(GL_SHADER_STORAGE_BUFFER, probe_aabb_ssbo, -1, "probe_aabb_ssbo");
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, probe_aabb_ssbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, probe_aabb_ssbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 //
 //
@@ -248,7 +248,7 @@ void RenderManager::Update(float dt)
 
 	UpdateLightArray();
 
-	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)
+	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)	//? 移到PreRender
 	{
 		shadow_renderer->DrawDepthMap(point_light);
 	}
@@ -349,7 +349,7 @@ void RenderManager::UpdateLightArray()
 	}
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, light_ssbo);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(PointLightInfo)* light_info_array.size(), &light_info_array[0], GL_STREAM_COPY);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(PointLightInfo) * light_info_array.size(), &light_info_array[0], GL_STREAM_COPY);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
@@ -357,15 +357,33 @@ void RenderManager::UpdateLightArray()
 
 void RenderManager::UpdateEnvironmentLight()
 {
-	ReflectionProbe* probe = *SceneManager::GetSingleton().reflection_probe_set.begin();
-	blended_irradiance_cubemap = probe->irradiance_cubemap;
-	blended_prefilter_cubemap = probe->prefilter_cubemap;
+	//irradiance_cubemaps.clear();
+	//prefilter_cubemaps.clear();
+	enabled_probes.clear();
 
-	ProbeAABBInfo info;
-	info.probe_pos = { probe->GetWorldTransform().GetPosition(), 1 };
-	info.aabb_pos = { probe->aabb_module->GetWorldPosition(), 1 };
-	info.half_dimension = { probe->aabb_module->volume.half_size, 1 };
-	ModifyProbeAABBInfo(info);
+	vector<ProbeAABBInfo> infos;
+	for (const auto& probe : SceneManager::GetSingleton().reflection_probe_set)
+	{
+		//irradiance_cubemaps.emplace_back(probe->irradiance_cubemap);
+		//prefilter_cubemaps.emplace_back(probe->prefilter_cubemap);
+		enabled_probes.emplace_back(probe);
+
+		ProbeAABBInfo info;
+		info.probe_pos = { probe->GetWorldTransform().GetPosition(), 1 };
+		info.aabb_pos = { probe->aabb_module->GetWorldPosition(), 1 };
+		info.half_dimension = { probe->aabb_module->volume.half_size, 1 };
+		infos.emplace_back(info);
+	}
+
+	//ReflectionProbe* probe = *SceneManager::GetSingleton().reflection_probe_set.begin();
+	//blended_irradiance_cubemap = probe->irradiance_cubemap;
+	//blended_prefilter_cubemap = probe->prefilter_cubemap;
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, probe_aabb_ssbo);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(ProbeAABBInfo) * infos.size(), &infos[0], GL_STREAM_COPY);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+
+	//ModifyProbeAABBInfo(infos);
 }
 
 
@@ -494,11 +512,11 @@ vector<mat4> RenderManager::GetCaptureViewArray(const vec3& pos)
 	};
 }
 
-void RenderManager::ModifyProbeAABBInfo(const ProbeAABBInfo& info)
+void RenderManager::ModifyProbeAABBInfo(const vector<ProbeAABBInfo>& infos)
 {
-	glBindBuffer(GL_UNIFORM_BUFFER, probe_aabb_ubo);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(ProbeAABBInfo), &info, GL_DYNAMIC_COPY);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, probe_aabb_ssbo);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(ProbeAABBInfo) * infos.size(), &infos[0], GL_STREAM_COPY);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
 

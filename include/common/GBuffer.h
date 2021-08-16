@@ -15,6 +15,7 @@ struct GBuffer
 	AttachmentTexture* emissive_tex;
 	AttachmentTexture* color_tex;
 
+
 	GBuffer();
 
 	GBuffer(int width, int height);

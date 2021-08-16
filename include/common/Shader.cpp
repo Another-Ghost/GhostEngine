@@ -9,8 +9,8 @@ const TextureUnit TextureUnit::normal_map = { "normal_map", 1 };
 const TextureUnit TextureUnit::ao_map = { "ao_map", 2 };
 const TextureUnit TextureUnit::metalness_roughness_map = { "metalness_roughness_map", 3 };
 const TextureUnit TextureUnit::emissive_map = { "emissive_map", 4 };
-const TextureUnit TextureUnit::irradiance_map = { "irradiance_map", 5 };
-const TextureUnit TextureUnit::light_prefilter_map = { "light_prefilter_map", 6 };
+//const TextureUnit TextureUnit::irradiance_map = { "irradiance_map", 5 };
+//const TextureUnit TextureUnit::light_prefilter_map = { "light_prefilter_map", 6 };
 const TextureUnit TextureUnit::brdf_lut = { "brdf_lut", 7 };
 const TextureUnit TextureUnit::ssao = { "ssao", 8 };
 const TextureUnit TextureUnit::g_world_position = { "g_world_position", 9 };
@@ -23,9 +23,11 @@ const TextureUnit TextureUnit::g_emissive = { "g_emissive", 15 };
 const TextureUnit TextureUnit::g_color = { "g_color", 16 };
 //const TextureUnit TextureUnit::point_depth_map1 = { "point_depth_map1", 17 };
 //const TextureUnit TextureUnit::point_depth_map2 = { "point_depth_map2", 18 };
-const vector<TextureUnit> TextureUnit::point_depth_maps = { {"point_depth_maps[0]", 17},  {"point_depth_maps[1]", 18},  {"point_depth_maps[2]", 19},  {"point_depth_maps[3]", 20},
-	{"point_depth_maps[4]", 21},  {"point_depth_maps[5]", 22},  {"point_depth_maps[6]", 23} ,  {"point_depth_maps[7]", 24} };
+const vector<TextureUnit> TextureUnit::point_depth_maps = { {"point_depth_maps[0]", 17},  {"point_depth_maps[1]", 18},  {"point_depth_maps[2]", 19},  {"point_depth_maps[3]", 20}};
 
+const vector<TextureUnit> TextureUnit::irradiance_maps = { { "irradiance_maps[0]", 5 }, { "irradiance_maps[1]", 21 }, { "irradiance_maps[2]", 24 }, { "irradiance_maps[3]", 27 } };
+const vector<TextureUnit> TextureUnit::light_prefilter_maps = { { "light_prefilter_maps[0]", 6 }, { "light_prefilter_maps[1]", 22 },{ "light_prefilter_maps[2]", 25 }, { "light_prefilter_maps[3]", 29 } };
+const vector<TextureUnit> TextureUnit::probe_depth_maps = { { "probe_depth_maps[0]", 23 }, { "probe_depth_maps[1]", 26 },{ "probe_depth_maps[2]", 29 }, { "probe_depth_maps[3]", 30 } };
 
 void TextureUnit::Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture)
 {

@@ -70,8 +70,8 @@ void PBRRenderer::Update(float dt)
 		const auto& material = heap.top().second;
 		pbr_shader->BindMaterial(material);
 
-		TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
-		TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
+		//TextureUnit::BindCubemapTexture(TextureUnit::irradiance_map, irradiance_cubemap);
+		//TextureUnit::BindCubemapTexture(TextureUnit::light_prefilter_map, prefilter_cubemap);
 		TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, brdf_lut);
 
 

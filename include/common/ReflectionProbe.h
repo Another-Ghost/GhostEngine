@@ -14,5 +14,9 @@ public:
 	CubeMap* prefilter_cubemap;
 
 	CubeMap* irradiance_cubemap;
+
+	CubeMap* world_pos_cubemap;
+
+	CubeMap* depth_cubemap;
 };
 

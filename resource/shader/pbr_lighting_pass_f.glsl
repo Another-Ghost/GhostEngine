@@ -15,13 +15,13 @@ uniform sampler2D g_emissive;
 uniform float roughness;
 
 //IBL
-uniform samplerCube irradiance_map;
-uniform samplerCube light_prefilter_map;
+uniform samplerCube irradiance_maps[4];
+uniform samplerCube light_prefilter_maps[4];
+uniform samplerCube probe_depth_maps[4];
 uniform sampler2D brdf_lut;
 
-
 //shadow
-uniform samplerCube point_depth_maps[8];
+uniform samplerCube point_depth_maps[4];
 uniform float shadow_far_plane;
 uniform bool b_shadow;
 
@@ -37,6 +37,18 @@ layout (std430, binding = 3) buffer LightInfoArray
 	LightInfo light_info_array[]; 
 };
 
+struct ProbeInfo
+{
+	vec4 probe_pos;
+	vec4 aabb_pos;
+	vec4 aabb_half_size;
+};
+
+layout (std430, binding = 5) buffer ProbeInfos
+{
+	ProbeInfo probe_infos[];
+};
+
 //camera
 struct CameraInfo
 {
@@ -44,17 +56,10 @@ struct CameraInfo
     mat4 view;
     mat4 projection;
 };
+
 layout(std140, binding = 0) uniform Camera
 {
     CameraInfo camera;
-};
-
-
-layout(std140, binding = 5) uniform ProbeAABB
-{
-	vec4 probe_pos;
-	vec4 aabb_pos;
-	vec4 aabb_half_size;
 };
 
 
@@ -117,6 +122,39 @@ struct IntersectionInfo
 	vec3 position;
 };
 
+bool PointAABBIntersection(vec3 point_pos, vec3 aabb_pos, vec3 half_dimension){ 
+
+	vec3 aabb_min = aabb_pos - half_dimension;
+	vec3 aabb_max = aabb_pos + half_dimension;
+   return
+
+    (point_pos[0] >= aabb_min[0]) && (point_pos[0] <= aabb_max[0]) &&
+
+    (point_pos[1] >= aabb_min[1]) && (point_pos[1] <= aabb_max[1]) &&
+
+    (point_pos[2] >= aabb_min[2]) && (point_pos[2] <= aabb_max[2]);
+}
+
+float MaxElement(vec3 v)
+{
+	float ret = v.r > v.g ? v.r : v.g;
+	return ret > v.b ? ret : v.b;
+}
+
+float GetAABBInfluenceWeight(vec3 point_pos, vec3 aabb_pos, vec3 half_dimension)
+{
+	vec3 local_dir = abs(point_pos - aabb_pos);
+	local_dir /= half_dimension;
+	return max(1.f - MaxElement(local_dir), 0.00001);
+	//return 1.f - MaxElement(local_dir);
+}
+
+float GetSphereinfluenceWeight(vec3 point_pos, vec3 origin, float radius)
+{
+	float dist = length(point_pos - origin);
+	return max(1.f - dist / radius, 0.00001);
+}
+
 IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, vec3 half_dimension)
 {
 
@@ -155,7 +193,7 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
     t_enter = t_enter > t_min.b ? t_enter : t_min.b;
 
 	
-	if (t_exit < 0.f || t_enter >= t_exit || t_enter > 0)
+	if (t_exit < 0.f || t_enter >= t_exit )//|| t_enter > 0)
 	{
 		return info;
 	}
@@ -324,41 +362,115 @@ void main()
     //vec3 kD = 1.0 - kS;
     //kD *= 1.0 - metalness;	
 
+	vec3 irradiance = vec3(0.f);
+	int num_intersected_probes = 0;
+	float irradiance_weight_sum = 0.f;
+	for(int i = 0; i < probe_infos.length(); ++i)
+	{
+		IntersectionInfo info = RayAABBIntersection(world_pos, V, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb);
+		//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
+		//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
 
-	IntersectionInfo info = RayAABBIntersection(world_pos, V, aabb_pos.rgb, aabb_half_size.rgb);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
-	vec3 irradiance = vec3(0.f);	// 是否需要视差校正 /?
-	if(info.b_intersected)	//move into function /?
-	{
-		vec3 parallax_corrected_sample_dir = normalize(info.position - probe_pos.rgb);
-		//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
-		irradiance = texture(irradiance_map, parallax_corrected_sample_dir).rgb;  
-		//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+		if(info.b_intersected)	//move into function /?
+		{
+			vec3 parallax_corrected_sample_dir = normalize(info.position - probe_infos[i].probe_pos.rgb);
+
+//			if(texture(probe_depth_maps[i], parallax_corrected_sample_dir).r >= 1.0f)
+//			{
+//				continue;
+//			}
+
+			//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
+			vec3 sample_value = texture(irradiance_maps[i], parallax_corrected_sample_dir).rgb; //改为用写入的深度值判断 /？
+			
+//			if(sample_value != vec3(0))
+//			//if(sample_value.r>0.0001 && sample_value.g > 0.0001 && sample_value.b > 0.0001)
+//			{
+			float weight = GetSphereinfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+
+			irradiance += sample_value * weight;
+			irradiance_weight_sum += weight;
+
+			//irradiance += sample_value;
+			++num_intersected_probes;
+//			}
+			//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+
+		}
 	}
-	else
-	{
-		irradiance = texture(irradiance_map, N).rgb;	
-	}
-	
-    //vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
+	irradiance /= num_intersected_probes == 0 ? max(irradiance_weight_sum, 0.00001) : 1.f;
+
+	//vec3 diffuse = irradiance * albedo;	//albedo表示表面颜色/基础反射率/折射吸收系数
 
 	// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
 
-	vec3 prefiltered_radiance = vec3(0);
-	info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
-	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
-
-	if(info.b_intersected)	//move into function /?
+	vec3 prefiltered_radiance = vec3(0.f);
+	num_intersected_probes = 0;
+	float radiance_weight_sum = 0.f;
+	for(int i = 0; i < probe_infos.length(); ++i)
 	{
-		vec3 parallax_corrected_sample_dir = normalize(info.position - probe_pos.rgb);
-		//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
-		prefiltered_radiance = textureLod(light_prefilter_map, parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;  
-		
-		//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+//		if(!PointAABBIntersection(world_pos, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb))
+//		{
+//			continue;
+//		}
+
+		IntersectionInfo info = RayAABBIntersection(world_pos, R, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb);
+		//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
+		//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
+
+		if(info.b_intersected)	//move into function /?
+		{
+			vec3 parallax_corrected_sample_dir = normalize(info.position - probe_infos[i].probe_pos.rgb);
+			//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
+
+//			if(texture(probe_depth_maps[i], parallax_corrected_sample_dir).r >= 1.0f)
+//			{
+//				continue;
+//			}
+			vec3 sample_pos = texture(probe_depth_maps[i], parallax_corrected_sample_dir).rgb;
+			if(!PointAABBIntersection(sample_pos, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb))
+			{
+				continue;
+			}
+
+
+			vec3 sample_value = textureLod(light_prefilter_maps[i], parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;  
+
+			//if(sample_value != vec3(0))
+			//if(sample_value.r != 0 && sample_value.g != 0 && sample_value.b != 0)
+			//float weight = GetAABBInfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb);
+			float weight = GetSphereinfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+
+			prefiltered_radiance += sample_value * weight;
+			radiance_weight_sum += weight;
+			++num_intersected_probes;
+
+			//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+		}
 	}
+	if(num_intersected_probes > 0)
+	{
+		prefiltered_radiance /= max(radiance_weight_sum, 0.00001);
+	}
+	//prefiltered_radiance /= num_intersected_probes == 0 ? 1 : num_intersected_probes;
+
+
+//	vec3 prefiltered_radiance = vec3(0);
+//	info = RayAABBIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.rgb);
+//	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, aabb_half_size.r);
+//	//IntersectionInfo info = RaySphereIntersection(world_pos, R, aabb_pos.rgb, 12.f);
+//
+//	if(info.b_intersected)	//move into function /?
+//	{
+//		vec3 parallax_corrected_sample_dir = normalize(info.position - probe_pos.rgb);
+//		//parallax_corrected_sample_dir.x = -parallax_corrected_sample_dir.x;
+//		prefiltered_radiance = textureLod(light_prefilter_map, parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;  
+//		
+//		//prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+//	}
+
+
 
     //vec3 prefiltered_radiance = textureLod(light_prefilter_map, R,  roughness * MAX_REFLECTION_LOD).rgb;    
     
@@ -376,14 +488,24 @@ void main()
 
 	//vec3 kD = vec3(0);
 
-	vec3 color = FssEss * prefiltered_radiance + (Fms * Ems + kD) * irradiance; 
+	vec3 color = FssEss * prefiltered_radiance; //+ (Fms * Ems + kD) * irradiance; 
+
+	//color =  FssEss * prefiltered_radiance;
+	//color = (Fms * Ems + kD) * irradiance; 
+	//color = prefiltered_radiance;
+
 	//vec3 color = Edss;
 
 	color = (color + Lo) * ao;
+
+	//color = color * ao;
+	//color = Lo * ao;
+	
+
 	color += emissive;
 	//color = color * ao + Lo;
 	//color += Lo ;
-	//color = Lo * ao;
+
 
 	//HDR tone mapping
 	color = color / (color + vec3(1.0));	//? replace to way of adjusting exposure 

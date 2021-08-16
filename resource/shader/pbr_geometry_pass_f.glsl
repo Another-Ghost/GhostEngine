@@ -7,6 +7,7 @@ layout (location = 3) out vec3 GViewPosition;
 layout (location = 4) out vec3 GViewNormal;
 layout (location = 5) out vec3 GAORoughnessMetalness;
 layout (location = 6) out vec3 GEmissive;
+layout (location = 7) out vec3 GProbeWorldPosition;
 
 in vec2 TexCoords;
 in vec3 WorldPos;
@@ -55,4 +56,5 @@ void main()
 	GViewPosition = ViewPos;
 	GViewNormal = GetNormalFromMap(ViewNormal);
 
+	GProbeWorldPosition =  WorldPos;
 }
