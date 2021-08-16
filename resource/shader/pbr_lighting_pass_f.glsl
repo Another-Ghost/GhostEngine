@@ -149,9 +149,11 @@ float GetAABBInfluenceWeight(vec3 point_pos, vec3 aabb_pos, vec3 half_dimension)
 	//return 1.f - MaxElement(local_dir);
 }
 
-float GetSphereinfluenceWeight(vec3 point_pos, vec3 origin, float radius)
+float GetSphereInfluenceWeight(vec3 point_pos, vec3 origin, float radius)
 {
 	float dist = length(point_pos - origin);
+	  
+	//return dist / radius;
 	return max(1.f - dist / radius, 0.00001);
 }
 
@@ -386,7 +388,7 @@ void main()
 //			if(sample_value != vec3(0))
 //			//if(sample_value.r>0.0001 && sample_value.g > 0.0001 && sample_value.b > 0.0001)
 //			{
-			float weight = GetSphereinfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+			float weight = GetSphereInfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
 
 			irradiance += sample_value * weight;
 			irradiance_weight_sum += weight;
@@ -437,10 +439,13 @@ void main()
 
 			vec3 sample_value = textureLod(light_prefilter_maps[i], parallax_corrected_sample_dir,  roughness * MAX_REFLECTION_LOD).rgb;  
 
+
 			//if(sample_value != vec3(0))
 			//if(sample_value.r != 0 && sample_value.g != 0 && sample_value.b != 0)
 			//float weight = GetAABBInfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, probe_infos[i].aabb_half_size.rgb);
-			float weight = GetSphereinfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+			float weight = GetSphereInfluenceWeight(world_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+			//float weight = GetSphereInfluenceWeight(sample_pos, probe_infos[i].aabb_pos.rgb, length(probe_infos[i].aabb_half_size.rgb));
+
 
 			prefiltered_radiance += sample_value * weight;
 			radiance_weight_sum += weight;

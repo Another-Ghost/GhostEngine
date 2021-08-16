@@ -34,7 +34,8 @@
 int main()
 {
 	//Init
-	Root* root = new Root(1280, 720, "PBR_Demo");
+	//Root* root = new Root(1280, 720, "PBR_Demo");
+	Root* root = new Root(1920, 1080, "PBR_Demo");
 	//Root* root = new Root(1920, 1080, "PBR Demo");
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
@@ -185,33 +186,33 @@ int main()
 	wall5->AttachRenderModule(wall5_root_rm);
 	wall5->local_transform.SetDimension({ 1.f, 1.f, 1.f });
 	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	wall5->local_transform.SetPosition({ 8.f, -3.f, -probe_size + 1 });
+	wall5->local_transform.SetPosition({ -8.f, -3.f, -probe_size + 1 });
 
 	//middle
 	RenderNode* wall7 = new RenderNode();
 	RootRenderModule* wall7_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall7_root_rm, cube_mesh, point_mat);
 	wall7->AttachRenderModule(wall7_root_rm);
-	wall7->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
+	wall7->local_transform.SetPosition({ -8.f, -3.f, probe_size - 1 });
 
 
-	//middle
-	RenderNode* wall8 = new RenderNode();
-	RootRenderModule* wall8_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
-	wall8->AttachRenderModule(wall8_root_rm);
-	wall8->local_transform.SetDimension({ 1.f, 1.f, 1.f });
-	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	wall8->local_transform.SetPosition({ 8.f, -3.f, 0 });
+	////middle
+	//RenderNode* wall8 = new RenderNode();
+	//RootRenderModule* wall8_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
+	//wall8->AttachRenderModule(wall8_root_rm);
+	//wall8->local_transform.SetDimension({ 1.f, 1.f, 1.f });
+	////wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
+	//wall8->local_transform.SetPosition({ 8.f, -3.f, 0 });
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 3.f, -probe_size + 1);
-	light->intensity = 400.f;
+	light->intensity = 300.f;
 
 	light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 3.f, probe_size - 1);
-	light->color = vec3(1.f, 0.1f, 0.5f);
-	light->intensity = 1000.f;
+	light->color = vec3(1.f, 0.1f, 1.0f);
+	light->intensity = 800.f;
 
 	//PointLight* light2 = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	//light2->postion = vec3(0.f, probe_size - 1, 0.f);
@@ -219,6 +220,8 @@ int main()
 	//light2->intensity = 300.f;
 
 	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, -probe_size + 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, -probe_size + 4 }));	// + 0.0001
+	//ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ -8, 0, -probe_size + 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, -probe_size + 4 }));	// + 0.0001
+
 
 	ReflectionProbe* probe2 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, probe_size - 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, probe_size - 4 }));
 
