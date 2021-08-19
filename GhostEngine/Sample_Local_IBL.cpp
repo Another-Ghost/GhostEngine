@@ -28,14 +28,15 @@
 
 #include <memory>
 
-//#define SAMPLE_WFTEST
-#ifdef SAMPLE_WFTEST
+#define SAMPLE_LOCAL_IBL
+#ifdef SAMPLE_LOCAL_IBL
 
 int main()
 {
 	//Init
 	//Root* root = new Root(1280, 720, "PBR_Demo");
 	Root* root = new Root(1920, 1080, "PBR Demo");
+	 
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
 
@@ -118,16 +119,16 @@ int main()
 
 		//int column_num = 7;
 		//for (int col = 0; col < column_num; ++col) {
-	
+
 	float probe_size = 16.f;
-	
-		/*bottom*/
+
+	/*bottom*/
 	RenderNode* cube_node = new RenderNode();
 	RootRenderModule* root_render_module = new RootRenderModule();
 
 	//root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
-	root_render_module->local_transform.SetDimension({ probe_size, 0.5f, probe_size * 2 });
-	root_render_module->local_transform.SetPosition({ 0.f, -probe_size, 0.f });
+	root_render_module->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
+	root_render_module->local_transform.SetPosition({ 0.f, -probe_size / 2, 0.f });
 	ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
 	cube_node->AttachRenderModule(root_render_module);
 
@@ -140,7 +141,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
 	wall1->AttachRenderModule(wall1_root_rm);
 	wall1->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
-	wall1->local_transform.SetPosition({ 0.f, 0.f, -probe_size * 2 + 4});
+	wall1->local_transform.SetPosition({ 0.f, 0.f, -probe_size });
 	wall1->local_transform.SetYaw(0.f);
 
 	//right
@@ -148,7 +149,7 @@ int main()
 	RootRenderModule* wall2_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall2_root_rm, cube_mesh, material);
 	wall2->AttachRenderModule(wall2_root_rm);
-	wall2->local_transform.SetDimension({ probe_size * 2, probe_size, 0.5f });
+	wall2->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
 	wall2->local_transform.SetPosition({ probe_size, 0.f, 0.f });
 	wall2->local_transform.SetYaw(90.f);
 
@@ -157,7 +158,7 @@ int main()
 	RootRenderModule* wall3_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);
 	wall3->AttachRenderModule(wall3_root_rm);
-	wall3->local_transform.SetDimension({ probe_size * 2, probe_size, 0.5f });
+	wall3->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
 	wall3->local_transform.SetPosition({ -probe_size, 0.f, 0.f });
 	wall3->local_transform.SetYaw(-90.f);
 
@@ -167,7 +168,7 @@ int main()
 	ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
 	wall4->AttachRenderModule(wall4_root_rm);
 	wall4->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
-	wall4->local_transform.SetPosition({ 0.f, 0.f, probe_size * 2 - 4});
+	wall4->local_transform.SetPosition({ 0.f, 0.f, probe_size });
 	wall4->local_transform.SetYaw(180.f);
 
 	//top
@@ -175,8 +176,8 @@ int main()
 	RootRenderModule* wall6_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall6_root_rm, cube_mesh, cube_mat);
 	wall6->AttachRenderModule(wall6_root_rm);
-	wall6->local_transform.SetDimension({ probe_size, 0.5f, probe_size * 2 });
-	wall6->local_transform.SetPosition({ 0.f, probe_size, 0.f });
+	wall6->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
+	wall6->local_transform.SetPosition({ 0.f, probe_size / 2, 0.f });
 
 	//middle
 	RenderNode* wall5 = new RenderNode();
@@ -185,34 +186,35 @@ int main()
 	wall5->AttachRenderModule(wall5_root_rm);
 	wall5->local_transform.SetDimension({ 2.f, 2.f, 2.f });
 	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	wall5->local_transform.SetPosition({ -8.f, -3.f, -probe_size + 1 });
+	wall5->local_transform.SetPosition({ -probe_size / 2, -3.f, -probe_size / 2 + 1 });
 
 	//middle
 	RenderNode* wall7 = new RenderNode();
 	RootRenderModule* wall7_root_rm = new RootRenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall7_root_rm, cube_mesh, point_mat);
-	wall7->local_transform.SetDimension({ 2.f, 2.f, 2.f });
 	wall7->AttachRenderModule(wall7_root_rm);
-	wall7->local_transform.SetPosition({ -8.f, -3.f, probe_size - 1 });
+	wall7->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+	wall7->local_transform.SetPosition({ -probe_size / 2, -3.f, probe_size / 2 - 1 });
 
 
-	////middle
-	//RenderNode* wall8 = new RenderNode();
-	//RootRenderModule* wall8_root_rm = new RootRenderModule();
-	//ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
-	//wall8->AttachRenderModule(wall8_root_rm);
-	//wall8->local_transform.SetDimension({ 1.f, 1.f, 1.f });
-	////wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	//wall8->local_transform.SetPosition({ 8.f, -3.f, 0 });
+	//middle
+	RenderNode* wall8 = new RenderNode();
+	RootRenderModule* wall8_root_rm = new RootRenderModule();
+	ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
+	wall8->AttachRenderModule(wall8_root_rm);
+	wall8->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
+	wall8->local_transform.SetPosition({ -probe_size / 2, -3.f, 0 });
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 3.f, -probe_size + 1);
-	light->intensity = 200.f;
+	light->postion = vec3(0.f, 3.f, -probe_size / 2 + 1);
+	light->intensity = 300.f;
 
-	light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
-	light->postion = vec3(0.f, 3.f, probe_size - 1);
-	light->color = vec3(1.f, 0.1f, 1.0f);
-	light->intensity = 800.f;
+	//light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
+	//light->postion = vec3(0.f, 3.f, probe_size - 1);
+	//light->color = vec3(1.f, 0.1f, 1.0f);
+	//light->intensity = 800.f;
+
 
 	//PointLight* light2 = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	//light2->postion = vec3(0.f, probe_size - 1, 0.f);
@@ -220,10 +222,12 @@ int main()
 	//light2->intensity = 300.f;
 
 	//ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, -probe_size + 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, -probe_size + 4 }));	// + 0.0001
-	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ probe_size - 4, 0, -probe_size + 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, -probe_size + 4 }));	// + 0.0001
+	ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ probe_size - 1, 0, 0}, AABBModule(AABBVolume(vec3(probe_size - 0.499) - vec3(0, (probe_size - 0.499) / 2, 0)), { 0, 0, 0 }));	// + 0.0001
+	//ReflectionProbe* probe1 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, 0}, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, 0 }));	// + 0.0001
 
 
-	ReflectionProbe* probe2 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ probe_size - 4, 0, probe_size - 4 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, probe_size - 4 }));
+
+	//ReflectionProbe* probe2 = SceneManager::GetSingletonPtr()->CreateReflectionProbe({ 0, 0, 0 }, AABBModule(AABBVolume(vec3(probe_size - 0.499)), { 0, 0, 0 }));
 
 	//origin
 	//RenderNode* box = new RenderNode();
@@ -297,7 +301,7 @@ int main()
 
 
 /*Loop*/
-	float max_delta_time = 1.f / 60.f; 
+	float max_delta_time = 1.f / 60.f;
 	float current_frame_time;
 	float delta_time = 1 / 60.f;
 	float last_frame_time = 0.f;

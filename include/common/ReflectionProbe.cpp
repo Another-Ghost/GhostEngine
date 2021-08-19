@@ -7,7 +7,7 @@
 ReflectionProbe::ReflectionProbe(const vec3& position, const AABBModule& aabb_):
 	LightProbe(position, aabb_)
 {
-	prefilter_cubemap = ResourceManager::GetSingleton().CreateCubemap(128, 128, TextureType::CUBEMAP, false);
+	prefilter_cubemap = ResourceManager::GetSingleton().CreateCubemap(256, 256, TextureType::CUBEMAP, false);
 	prefilter_cubemap->b_genarate_mipmap = true;
 	prefilter_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
 	prefilter_cubemap->Buffer();

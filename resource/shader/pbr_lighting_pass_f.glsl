@@ -493,7 +493,7 @@ void main()
 
 	//vec3 kD = vec3(0);
 
-	vec3 color = FssEss * prefiltered_radiance; //+ (Fms * Ems + kD) * irradiance; 
+	vec3 color = FssEss * prefiltered_radiance + (Fms * Ems + kD) * irradiance; 
 
 	//color =  FssEss * prefiltered_radiance;
 	//color = (Fms * Ems + kD) * irradiance; 
@@ -502,6 +502,7 @@ void main()
 	//vec3 color = Edss;
 
 	color = (color + Lo) * ao;
+
 
 	//color = color * ao;
 	//color = Lo * ao;

@@ -156,6 +156,7 @@
     <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="Sample_IBL.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Sample_Local_IBL.cpp" />
     <ClCompile Include="Sample_WhiteFurnaceTest.cpp" />
     <ClCompile Include="WFTestRenderer.cpp" />
     <ClCompile Include="WFTestShader.cpp" />

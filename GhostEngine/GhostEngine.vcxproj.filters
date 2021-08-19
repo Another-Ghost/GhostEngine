@@ -47,6 +47,9 @@
     <ClCompile Include="Sample_WhiteFurnaceTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sample_Local_IBL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRepositry.h">
