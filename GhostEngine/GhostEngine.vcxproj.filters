@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasicRepositry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -35,16 +32,10 @@
     <ClCompile Include="BasicRenderModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sample_IBL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WFTestRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WFTestShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sample_WhiteFurnaceTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sample_Local_IBL.cpp">

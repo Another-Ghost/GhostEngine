@@ -5,6 +5,11 @@
 #include <iostream>
 #include <assert.h>
 
+#include "imGui/imgui.h"
+#include "imGui/imgui_impl_glfw.h"
+#include "imGui/imgui_impl_opengl3.h"
+
+
 template<> WindowManager* Singleton<WindowManager>::singleton = nullptr;
 Window* WindowManager::s_current_window = nullptr;
 vector<Window*> WindowManager::window_array;
@@ -13,6 +18,8 @@ vector<Window*> WindowManager::window_array;
 WindowManager::WindowManager(int width, int height, const string& title) :
 	b_initialized(false)
 {
+	glfwSetErrorCallback(GLFWErrorCallback);
+
 	if (!glfwInit())
 	{
 		cout << "ERROR<Window>: glfw init failed.\n";
@@ -40,10 +47,18 @@ void WindowManager::Update(float dt)
 }
 void WindowManager::EndUpdate(float dt)
 {
+	UpdateImGui();
+
 	s_current_window->EndUpdate();
 }
 void WindowManager::Terminate()
 {
+	// Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
+	glfwDestroyWindow(s_current_window->glfw_window);
 	glfwTerminate();
 }
 Window* WindowManager::CreateWindow(int width, int height, const std::string& title)
@@ -69,6 +84,10 @@ Window* WindowManager::CreateWindow(int width, int height, const std::string& ti
 	//- 生成一个Window的时候自动将上下文切换至新生成的window
 	glfwMakeContextCurrent(glfw_window);
 
+	glfwSwapInterval(1); // Enable vsync 启用垂直同步
+
+
+
 	glfwSetFramebufferSizeCallback(glfw_window, FrameBufferSizeCallBack);
 	glfwSetCursorPosCallback(glfw_window, MouseCallback);
 	glfwSetScrollCallback(glfw_window, ScrollCallback);
@@ -85,6 +104,8 @@ Window* WindowManager::CreateWindow(int width, int height, const std::string& ti
 		}
 		b_initialized = true;
 	}
+
+	SetupImGui();
 
 	return window;
 }
@@ -139,5 +160,78 @@ void WindowManager::ScrollCallback(GLFWwindow* window, double x_offset, double y
 	}
 	else
 		std::cout << "ERROR<Window> from: ScrollCallback\n";
+}
+
+void WindowManager::SetupImGui()
+{
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(s_current_window->glfw_window, true);
+	// GLSL 130
+	const char* glsl_version = "#version 130";
+	ImGui_ImplOpenGL3_Init(glsl_version);
+
+
+}
+
+void WindowManager::UpdateImGui()
+{
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
+	bool b_show_demo_window = true;
+	ImGui::ShowDemoWindow(&b_show_demo_window);
+
+	bool b_show_another_window = false;
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	{
+		static float f = 0.0f;
+		static int counter = 0;
+
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::Checkbox("Demo Window", &b_show_demo_window);      // Edit bools storing our window open/close state
+		ImGui::Checkbox("Another Window", &b_show_another_window);
+
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+			counter++;
+		ImGui::SameLine();
+		ImGui::Text("counter = %d", counter);
+
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+
+	// 3. Show another simple window.
+	if (b_show_another_window)
+	{
+		ImGui::Begin("Another Window", &b_show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Text("Hello from another window!");
+		if (ImGui::Button("Close Me"))
+			b_show_another_window = false;
+		ImGui::End();
+	}
+
+	// Rendering
+	ImGui::Render();
+
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

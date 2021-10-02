@@ -7,6 +7,8 @@
 #include <string>
 
 
+
+
 class WindowManager : public Singleton<WindowManager>
 {
 public:
@@ -34,6 +36,14 @@ private:
 	static void MouseCallback(GLFWwindow* window, double x_pos, double y_pos);
 	static void ScrollCallback(GLFWwindow* window, double x_offset, double y_offset);
 
+	/*imGui*/
+	static void GLFWErrorCallback(int error, const char* description)
+	{
+		fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+	}
 
+	void SetupImGui();
+
+	void UpdateImGui();
 };
 

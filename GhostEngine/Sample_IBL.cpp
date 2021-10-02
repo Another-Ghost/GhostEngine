@@ -1,4 +1,5 @@
-﻿#ifdef SAMPLE_IBL
+﻿#define SAMPLE_IBL
+#ifdef SAMPLE_IBL
 
 #include "common/Root.h"
 #include "common/WindowManager.h"

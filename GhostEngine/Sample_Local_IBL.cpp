@@ -34,8 +34,8 @@
 int main()
 {
 	//Init
-	//Root* root = new Root(1280, 720, "PBR_Demo");
-	Root* root = new Root(1920, 1080, "PBR Demo");
+	Root* root = new Root(1280, 720, "PBR_Demo");
+	//Root* root = new Root(1920, 1080, "PBR Demo");
 	 
 	//BasicWindowFactory* window_factory = new BasicWindowFactory();
 	//BasicWindow* window = dynamic_cast<BasicWindow*>(WindowManager::GetSingleton().CreateWindow(window_factory, 1280, 720, "Demo"));
@@ -55,10 +55,7 @@ int main()
 	//window->SetCamera(camera);	//? 改成在内部initialize里从SceneManger获取
 	window->AddEventListener(camera);
 
-
 	//window->AddEventListener(renderer);
-
-
 
 /*Material*/
 	PBRMaterial* material = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));

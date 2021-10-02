@@ -28,8 +28,8 @@ uniform bool b_shadow;
 //light
 struct LightInfo
 {
-vec4 position;
-vec4 color;
+	vec4 position;
+	vec4 color;
 };
 
 layout (std430, binding = 3) buffer LightInfoArray
@@ -195,7 +195,7 @@ IntersectionInfo RayAABBIntersection(vec3 ray_ori, vec3 ray_dir, vec3 aabb_pos, 
     t_enter = t_enter > t_min.b ? t_enter : t_min.b;
 
 	
-	if (t_exit < 0.f || t_enter >= t_exit )//|| t_enter > 0)
+	if (t_exit < 0.f )// || t_enter >= t_exit || t_enter > 0)
 	{
 		return info;
 	}

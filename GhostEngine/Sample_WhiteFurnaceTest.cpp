@@ -28,7 +28,7 @@
 
 #include <memory>
 
-//#define SAMPLE_WFTEST
+#define SAMPLE_WFTEST
 #ifdef SAMPLE_WFTEST
 
 int main()

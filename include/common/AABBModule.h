@@ -14,8 +14,6 @@ public:
 
 	AABBModule(AABBVolume volume_ = AABBVolume(), const vec3& local_pos = { 0.f, 0.f, 0.f });
 	
-
-
 	vec3 GetWorldPosition();
 
 };

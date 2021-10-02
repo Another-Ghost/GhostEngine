@@ -21,7 +21,7 @@ void Window::Update(float dt)
 void Window::EndUpdate()
 {
 	glfwSwapBuffers(glfw_window);
-	glfwPollEvents();
+	glfwPollEvents();	//处理pending的事件
 }
 
 void Window::FrameBufferSizeCallBack()

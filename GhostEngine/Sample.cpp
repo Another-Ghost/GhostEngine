@@ -18,6 +18,7 @@
 #include "common/PointLightFactory.h"
 #include <memory>
 
+
 #ifdef Sample
 
 int main()

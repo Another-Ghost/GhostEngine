@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -18,36 +18,55 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="imGui\imconfig.h" />
+    <ClInclude Include="imGui\imgui.h" />
+    <ClInclude Include="imGui\imgui_impl_glfw.h" />
+    <ClInclude Include="imGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="imGui\imgui_internal.h" />
+    <ClInclude Include="imGui\imstb_rectpack.h" />
+    <ClInclude Include="imGui\imstb_textedit.h" />
+    <ClInclude Include="imGui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="imGui\imgui.cpp" />
+    <ClCompile Include="imGui\imgui_demo.cpp" />
+    <ClCompile Include="imGui\imgui_draw.cpp" />
+    <ClCompile Include="imGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imGui\imgui_tables.cpp" />
+    <ClCompile Include="imGui\imgui_widgets.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b02e0115-dd4b-4e12-9d59-f8006fb06f1a}</ProjectGuid>
-    <RootNamespace>MIAOEngine</RootNamespace>
+    <ProjectGuid>{4c34553e-4ca1-422e-b69a-0a8ba25b5b38}</ProjectGuid>
+    <RootNamespace>Dependencies</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>GhostEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -87,13 +106,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -103,13 +121,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -119,13 +136,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -135,87 +151,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="BasicCamera.cpp" />
-    <ClCompile Include="BasicRenderModule.cpp" />
-    <ClCompile Include="BasicRepositry.cpp" />
-    <ClCompile Include="BasicNode.cpp" />
-    <ClCompile Include="BasicWindow.cpp" />
-    <ClCompile Include="BasicWindowFactory.cpp" />
-    <ClCompile Include="Sample_Local_IBL.cpp" />
-    <ClCompile Include="WFTestRenderer.cpp" />
-    <ClCompile Include="WFTestShader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\include\common\common.vcxproj">
-      <Project>{286780d4-36af-4ad8-be7c-1733f4747a9b}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BasicCamera.h" />
-    <ClInclude Include="BasicRenderModule.h" />
-    <ClInclude Include="BasicRepositry.h" />
-    <ClInclude Include="BasicNode.h" />
-    <ClInclude Include="BasicWindow.h" />
-    <ClInclude Include="BasicWindowFactory.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="WFTestRenderer.h" />
-    <ClInclude Include="WFTestShader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\resource\shader\background_fs.glsl" />
-    <None Include="..\resource\shader\background_vs.glsl" />
-    <None Include="..\resource\shader\basic_f.glsl" />
-    <None Include="..\resource\shader\basic_fs.glsl" />
-    <None Include="..\resource\shader\basic_pbr_v.glsl" />
-    <None Include="..\resource\shader\basic_v.glsl" />
-    <None Include="..\resource\shader\basic_vs.glsl" />
-    <None Include="..\resource\shader\brdf_fs.glsl" />
-    <None Include="..\resource\shader\brdf_vs.glsl" />
-    <None Include="..\resource\shader\cubemap_vs.glsl" />
-    <None Include="..\resource\shader\equirectangular_to_cubemap_fs.glsl" />
-    <None Include="..\resource\shader\kulla_conty_pbr_f.glsl" />
-    <None Include="..\resource\shader\output_f.glsl" />
-    <None Include="..\resource\shader\pbr_direct_lighting_f.glsl" />
-    <None Include="..\resource\shader\pbr_forward_f.glsl" />
-    <None Include="..\resource\shader\pbr_fs.glsl" />
-    <None Include="..\resource\shader\pbr_geometry_pass_f.glsl" />
-    <None Include="..\resource\shader\pbr_geometry_pass_v.glsl" />
-    <None Include="..\resource\shader\pbr_indirect_lighting.glsl" />
-    <None Include="..\resource\shader\pbr_lighting_pass_f.glsl" />
-    <None Include="..\resource\shader\pbr_lighting_pass_prerender_f.glsl" />
-    <None Include="..\resource\shader\pbr_vs.glsl" />
-    <None Include="..\resource\shader\point_shadow_depth_f.glsl" />
-    <None Include="..\resource\shader\point_shadow_depth_g.glsl" />
-    <None Include="..\resource\shader\point_shadow_depth_v.glsl" />
-    <None Include="..\resource\shader\reflection_probe_f.glsl" />
-    <None Include="..\resource\shader\single_scattering_energy_f.glsl" />
-    <None Include="..\resource\shader\ssao_blur_f.glsl" />
-    <None Include="..\resource\shader\ssao_f.glsl" />
-    <None Include="..\resource\shader\texture_v.glsl" />
-    <None Include="..\resource\shader\channel_combination_f.glsl" />
-    <None Include="..\resource\shader\white_furnace_test_pbr_f.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\resource\shader\cubemap_fs.glsl" />
-    <Text Include="..\resource\shader\irradiance_convolution_fs.glsl" />
-    <Text Include="..\resource\shader\prefilter_fs.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="GhostEngine.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

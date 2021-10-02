@@ -38,12 +38,13 @@ vec2 Hammersley(uint i, uint N) //低差异序列
 	return vec2(float(i)/float(N), RadicalInverse_VdC(i));
 }
 // ----------------------------------------------------------------------------
-vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)
+//围绕N也就是镜面反射方向R生成
+vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)  
 {
 	float a = roughness*roughness;
 	
-	float phi = 2.0 * PI * Xi.x;
-	float cosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a*a - 1.0) * Xi.y));
+	float phi = 2.0 * PI * Xi.x;    //(0, 2*pi)
+	float cosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a*a - 1.0) * Xi.y)); 
 	float sinTheta = sqrt(1.0 - cosTheta*cosTheta);
 	
 	// from spherical coordinates to cartesian coordinates - halfway vector
@@ -53,7 +54,7 @@ vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)
 	H.z = cosTheta;
 	
 	// from tangent-space H vector to world-space sample vector
-	vec3 up          = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
+	vec3 up          = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);    //避免N.z = 1时（因为N是单位向量，代表N就是(0, 0, 1.0)），up与N相同叉乘为0
 	vec3 tangent   = normalize(cross(up, N));
 	vec3 bitangent = cross(N, tangent);
 	
@@ -65,8 +66,9 @@ void main()
 {		
     vec3 N = normalize(World_Pos);
     
+    //N相当于prefilter被使用时的采样方向，也就是当时的输出方向L_o对于法线的镜面反射方向。将以N为中心形成的lobe的L(radiance)累加和记录在cubemap的相应方向的像素中
     // make the simplyfying assumption that V equals R equals the normal 
-    vec3 R = N; //镜面反射方向
+    vec3 R = N;
     vec3 V = R;
 
     const uint SAMPLE_COUNT = 4096u;
@@ -85,7 +87,7 @@ void main()
         {
             // sample from the environment's mip level based on roughness/pdf
             float D   = DistributionGGX(N, H, roughness);   //根据夹角theta和roughness，求出与中间向量h取向一致的微平面的比率
-            float NdotH = max(dot(N, H), 0.0);  //代表微平面法线（half vector）与世界坐标法线（N）的夹角余弦
+            float NdotH = max(dot(N, H), 0.0);  //代表微平面法线（half vector）与世界坐标法线（N）的夹角余弦 /?
             float HdotV = max(dot(H, V), 0.0);
             float pdf = D * NdotH / (4.0 * HdotV) + 0.0001; 
 

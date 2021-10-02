@@ -169,6 +169,7 @@ RenderManager::RenderManager():
 	prefilter_shader = make_shared<PrefilterShader>();
 
 	irradiance_shader = make_shared<IrradianceShader>();
+
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -261,8 +262,6 @@ void RenderManager::Update(float dt)
 	}
 
 	
-
-
 	UpdateEnvironmentLight();
 
 	camera = SceneManager::GetSingleton().main_camera;
