@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,7 +168,6 @@
     <ClCompile Include="Datatype.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GBuffer.cpp" />
@@ -256,7 +255,6 @@
     <ClInclude Include="Datatype.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
-    <ClInclude Include="File.h" />
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GBuffer.h" />
@@ -339,6 +337,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\resource\resource.vcxproj">
+      <Project>{18f1f27c-58ef-47be-8b3a-3e66fc7b6401}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\window\window.vcxproj">
       <Project>{993adbba-ce14-40c8-a138-09b744537251}</Project>

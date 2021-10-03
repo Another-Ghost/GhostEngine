@@ -48,13 +48,7 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
@@ -297,6 +291,9 @@
     <ClCompile Include="FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -310,9 +307,6 @@
     </ClInclude>
     <ClInclude Include="RenderManager.h">
       <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="Repositry.h">
       <Filter>Resource</Filter>

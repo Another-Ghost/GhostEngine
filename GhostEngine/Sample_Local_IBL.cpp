@@ -9,7 +9,7 @@
 #include "common/RenderModule.h"
 #include "common/ResourceManager.h"
 #include "common/PBRMaterial.h"
-#include "common/File.h"
+#include "File.h"
 #include "common/PointLight.h"
 #include "common/RootRenderModule.h"
 #include "common/SphereGeometryMesh.h"

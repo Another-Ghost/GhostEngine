@@ -16,7 +16,6 @@ Camera::Camera(vec3 postion_, float pitch_, float yaw_, float aspect_, float fov
 
 Camera::~Camera()
 {
-
 }
 
 void Camera::Update(float dt)
