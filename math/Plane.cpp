@@ -1,5 +1,6 @@
 #include "Plane.h"
 
+
 Plane::Plane(const vec3& normal_, float distance_)
 {
 	float length = sqrt(dot(normal_, normal_));

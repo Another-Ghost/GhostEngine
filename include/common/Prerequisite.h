@@ -3,14 +3,16 @@
 
 #include "Config.h"
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <memory>
-#include <map>
-#include <set>
-#include <queue>
-#include <algorithm>
+#include "BasicDependencies.h"
+
+//#include <iostream>
+//#include <vector>
+//#include <string>
+//#include <memory>
+//#include <map>
+//#include <set>
+//#include <queue>
+//#include <algorithm>
 
 
 //#include <glm/glm.hpp>
@@ -21,19 +23,19 @@
 #include "Debug.h"
 #include "Math.h"
 
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-using std::map;
-using std::set;
-using std::multimap;
-using std::multiset;
-using std::unique_ptr;
-using std::shared_ptr;
-using std::priority_queue;
-using std::make_unique;
-using std::make_shared;
+//using std::cout;
+//using std::endl;
+//using std::vector;
+//using std::string;
+//using std::map;
+//using std::set;
+//using std::multimap;
+//using std::multiset;
+//using std::unique_ptr;
+//using std::shared_ptr;
+//using std::priority_queue;
+//using std::make_unique;
+//using std::make_shared;
 
 
 //const float PI = glm::pi<float>();
