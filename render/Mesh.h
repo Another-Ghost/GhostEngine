@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Prerequisite.h"
 #include "Shader.h"
 #include "AABBVolume.h"
 

@@ -19,7 +19,8 @@ void CubeMapShader::RenderCubeMap(const CubeMap* cube_map)
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, cube_map->width, cube_map->height);	//创建一个深度渲染缓冲对象
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
 
-	GLCall(glViewport(0, 0, cube_map->width, cube_map->height));
+	//GLCall(glViewport(0, 0, cube_map->width, cube_map->height));
+	glViewport(0, 0, cube_map->width, cube_map->height);
 
 	const vector<mat4>& capture_view_array = RenderManager::GetSingleton().GetCaptureViewArray();
 	for (int i = 0; i < 6; ++i)

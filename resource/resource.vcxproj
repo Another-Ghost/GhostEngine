@@ -152,17 +152,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="File.cpp" />
-    <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="TextureFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File.h" />
-    <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="TextureFile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\base\base.vcxproj">
+      <Project>{30b2dd8d-2c97-498f-a559-bd11019a253d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\framework\framework.vcxproj">
       <Project>{cfc40881-00a1-4303-8963-d3e2c34a83ba}</Project>
     </ProjectReference>

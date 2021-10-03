@@ -19,6 +19,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "window", "window\window.vcxproj", "{993ADBBA-CE14-40C8-A138-09B744537251}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render", "render\render.vcxproj", "{F138511F-1810-41B5-8AF8-EE2931BA1C84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18F1F27C-58EF-47BE-8B3A-3E66FC7B6401} = {18F1F27C-58EF-47BE-8B3A-3E66FC7B6401}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resource", "resource\resource.vcxproj", "{18F1F27C-58EF-47BE-8B3A-3E66FC7B6401}"
 EndProject

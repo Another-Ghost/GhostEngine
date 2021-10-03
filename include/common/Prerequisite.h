@@ -18,7 +18,7 @@
 //#include <glm/gtc/type_ptr.hpp>
 #include "Transform.h"
 #include "File.h"
-#include "Debug.h"
+//#include "Debug.h"
 #include "Math.h"
 
 //using std::cout;

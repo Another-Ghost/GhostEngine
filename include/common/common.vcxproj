@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;$(SolutionDir)render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;$(SolutionDir)render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;$(SolutionDir)render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;$(SolutionDir)render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -151,23 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AttachmentTexture.cpp" />
-    <ClCompile Include="BasicMaterial.cpp" />
-    <ClCompile Include="BasicMaterialFactory.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BasicShader.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Config.cpp" />
-    <ClCompile Include="CubeGeometryMesh.cpp" />
-    <ClCompile Include="CubeGeometryMeshFactory.cpp" />
-    <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="CubeMapShader.cpp" />
     <ClCompile Include="Datatype.cpp" />
-    <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="EquirectangularMap.cpp" />
-    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="GBuffer.cpp" />
-    <ClCompile Include="GeometryMesh.cpp" />
+    <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
@@ -177,18 +168,10 @@
     <ClCompile Include="PBRDeferRenderer.cpp" />
     <ClCompile Include="PBRGeometryPassShader.cpp" />
     <ClCompile Include="PBRLightingPassShader.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MaterialFactory.cpp" />
-    <ClCompile Include="MaterialMap.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshFactory.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MVPShader.cpp" />
-    <ClCompile Include="PBRMaterial.cpp" />
-    <ClCompile Include="PBRMaterialFacotry.cpp" />
     <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
-    <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
     <ClCompile Include="PointShadowDepthShader.cpp" />
@@ -196,7 +179,6 @@
     <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
-    <ClCompile Include="QuadGeometryMesh.cpp" />
     <ClCompile Include="ReflectionProbe.cpp" />
     <ClCompile Include="ReflectionProbeShader.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -209,36 +191,21 @@
     <ClCompile Include="RootRenderModule.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowRenderer.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
-    <ClCompile Include="SphereGeometryMesh.cpp" />
-    <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TriangleMesh.cpp" />
-    <ClCompile Include="TriangleMeshFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttachmentTexture.h" />
-    <ClInclude Include="BasicMaterial.h" />
-    <ClInclude Include="BasicMaterialFactory.h" />
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BasicShader.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="CubeGeometryMesh.h" />
-    <ClInclude Include="CubeGeometryMeshFactory.h" />
-    <ClInclude Include="CubeMap.h" />
     <ClInclude Include="CubeMapShader.h" />
     <ClInclude Include="Datatype.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="EquirectangularMap.h" />
-    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GBuffer.h" />
-    <ClInclude Include="GeometryMesh.h" />
+    <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
@@ -248,18 +215,10 @@
     <ClInclude Include="PBRDeferRenderer.h" />
     <ClInclude Include="PBRGeometryPassShader.h" />
     <ClInclude Include="PBRLightingPassShader.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="MaterialFactory.h" />
-    <ClInclude Include="MaterialMap.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshFactory.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MVPShader.h" />
-    <ClInclude Include="PBRMaterial.h" />
-    <ClInclude Include="PBRMaterialFactory.h" />
     <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
-    <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
     <ClInclude Include="PointShadowDepthShader.h" />
@@ -267,7 +226,6 @@
     <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
-    <ClInclude Include="QuadGeometryMesh.h" />
     <ClInclude Include="ReflectionProbe.h" />
     <ClInclude Include="ReflectionProbeShader.h" />
     <ClInclude Include="Renderer.h" />
@@ -280,17 +238,11 @@
     <ClInclude Include="RootRenderModule.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowRenderer.h" />
     <ClInclude Include="SkyboxShader.h" />
-    <ClInclude Include="SphereGeometryMesh.h" />
-    <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
     <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TriangleMesh.h" />
-    <ClInclude Include="TriangleMeshFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="common.rc" />
@@ -310,6 +262,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\render\render.vcxproj">
+      <Project>{f138511f-1810-41b5-8af8-ee2931ba1c84}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\resource\resource.vcxproj">
       <Project>{18f1f27c-58ef-47be-8b3a-3e66fc7b6401}</Project>

@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Prerequisite.h"
 #include "TextureFile.h"
 #include <string>
 #include <stb_image.h>

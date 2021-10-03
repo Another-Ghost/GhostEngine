@@ -12,6 +12,7 @@ public:
 
 	void SetParent(TransformableModule* parent_) { parent = parent; }
 
+
 protected:
 
 	TransformableModule* parent{ nullptr };
