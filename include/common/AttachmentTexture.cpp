@@ -11,4 +11,5 @@ AttachmentTexture::AttachmentTexture():
 	mag_filter_param = GL_NEAREST;
 	data_type = GL_FLOAT;
 	wrap_param = GL_CLAMP_TO_EDGE;
+
 }
