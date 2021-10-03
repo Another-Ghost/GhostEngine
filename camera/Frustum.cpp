@@ -30,6 +30,7 @@ void Frustum::Initialize(Camera* camera)
 	// FAR
 	plane_array[5] = Plane(waxis - zaxis,
 		(matrix[3][3] - matrix[3][2]));
+
 }
 
 bool Frustum::AABBIntersection(const vec3& pos, const AABBVolume& aabb) const

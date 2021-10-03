@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "BasicDependencies.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+
 
 class WindowEventListener;
 
@@ -23,6 +22,8 @@ public:
 
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
+
+	float GetDeltaTime() { return delta_time; }
 
 	double GetCurrentFrameTime() { return glfwGetTime(); }
 

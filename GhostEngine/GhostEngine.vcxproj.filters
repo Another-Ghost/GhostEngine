@@ -17,9 +17,6 @@
     <ClCompile Include="BasicRepositry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasicNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -38,9 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRepositry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicNode.h">

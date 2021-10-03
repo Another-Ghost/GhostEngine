@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Prerequisite.h"
+#include "BasicDependencies.h"
 #include "Transform.h"
 #include "Window.h"
+#include "Frustum.h"
 
 
 enum class CameraCommand

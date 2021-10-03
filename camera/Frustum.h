@@ -1,6 +1,9 @@
 #pragma once
-#include "Prerequisite.h"
+#include "BasicDependencies.h"
 #include "Plane.h"
+#include "AABBVolume.h"
+
+class Camera;
 
 struct Frustum
 {
@@ -15,8 +18,6 @@ struct Frustum
 	bool SphereIntersection(const vec3& pos, float radius) const;
 
 	bool PointInsideFrustum(const vec3& pos) const;
-
-
 
 };
 

@@ -2,7 +2,7 @@
 #include "common/ResourceManager.h"
 #include "common/RenderManager.h"
 #include "common/SceneManager.h"
-#include "common/Camera.h"
+#include "Camera.h"
 #include "Window.h"
 #include "WindowManager.h"
 #include "common/PBRMaterial.h"

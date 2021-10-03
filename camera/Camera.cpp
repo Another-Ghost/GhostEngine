@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include "Root.h"
 #include "Frustum.h"
 
 
@@ -97,7 +96,7 @@ void Camera::OnMouseMove(double x_offset, double y_offset)
 void Camera::OnKeyPressed(Window* window)
 {
     GLFWwindow* glfw_window = window->GetGLFWWindow();
-    float delta_time = Root::GetSingleton().GetDeltaTime();
+    float delta_time = window->GetDeltaTime();
 	if (glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS)  
 		SetPosition(GetPosition() + GetForward() * delta_time * move_speed);
 	if (glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS)

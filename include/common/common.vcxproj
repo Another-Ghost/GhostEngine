@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -158,8 +158,6 @@
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BasicShader.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraFactory.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CubeGeometryMesh.cpp" />
     <ClCompile Include="CubeGeometryMeshFactory.cpp" />
@@ -169,7 +167,6 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
-    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -180,7 +177,6 @@
     <ClCompile Include="LightFactory.cpp" />
     <ClCompile Include="LightProbe.cpp" />
     <ClCompile Include="LightProbeRenderer.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="OutputShader.cpp" />
     <ClCompile Include="PBRDeferRenderer.cpp" />
     <ClCompile Include="PBRGeometryPassShader.cpp" />
@@ -228,6 +224,7 @@
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TransformableModule.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="TriangleMeshFactory.cpp" />
@@ -241,8 +238,6 @@
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BasicShader.h" />
     <ClInclude Include="BRDFLUTShader.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraFactory.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CubeGeometryMesh.h" />
     <ClInclude Include="CubeGeometryMeshFactory.h" />
@@ -252,7 +247,6 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
     <ClInclude Include="FrameBuffer.h" />
-    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
@@ -263,7 +257,6 @@
     <ClInclude Include="LightFactory.h" />
     <ClInclude Include="LightProbe.h" />
     <ClInclude Include="LightProbeRenderer.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="OutputShader.h" />
     <ClInclude Include="PBRDeferRenderer.h" />
     <ClInclude Include="PBRGeometryPassShader.h" />
@@ -324,6 +317,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\base\base.vcxproj">
       <Project>{30b2dd8d-2c97-498f-a559-bd11019a253d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\camera\camera.vcxproj">
+      <Project>{9e2df78f-f54f-4f8a-b9ce-980627ad7cbd}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Dependencies\Dependencies.vcxproj">
       <Project>{4c34553e-4ca1-422e-b69a-0a8ba25b5b38}</Project>

@@ -2,7 +2,6 @@
 //This document must be included before other header file
 
 #include "Config.h"
-
 #include "BasicDependencies.h"
 
 //#include <iostream>
@@ -13,7 +12,6 @@
 //#include <set>
 //#include <queue>
 //#include <algorithm>
-
 
 //#include <glm/glm.hpp>
 //#include <glm/gtc/matrix_transform.hpp>

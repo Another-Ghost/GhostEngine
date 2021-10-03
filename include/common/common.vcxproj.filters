@@ -39,9 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RootRenderModule.cpp">
@@ -234,9 +228,6 @@
     <ClCompile Include="PlaneTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PBRDeferRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -256,9 +247,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AABBModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReflectionProbeShader.cpp">
@@ -282,11 +270,11 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TransformableModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Root.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -346,9 +334,6 @@
     </ClInclude>
     <ClInclude Include="Prerequisite.h">
       <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraFactory.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RootRenderModule.h">
       <Filter>Scene</Filter>
@@ -485,9 +470,6 @@
     <ClInclude Include="HDRIShader.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PBRDeferRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -507,9 +489,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AABBModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TransformableModule.h">
