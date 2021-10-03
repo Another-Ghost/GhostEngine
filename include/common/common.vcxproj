@@ -173,7 +173,6 @@
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Global.cpp" />
-    <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
@@ -186,7 +185,6 @@
     <ClCompile Include="PBRDeferRenderer.cpp" />
     <ClCompile Include="PBRGeometryPassShader.cpp" />
     <ClCompile Include="PBRLightingPassShader.cpp" />
-    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="MaterialMap.cpp" />
@@ -230,8 +228,6 @@
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureFile.cpp" />
-    <ClCompile Include="TransformableModule.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="TriangleMeshFactory.cpp" />
@@ -260,7 +256,6 @@
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Global.h" />
-    <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
@@ -273,7 +268,6 @@
     <ClInclude Include="PBRDeferRenderer.h" />
     <ClInclude Include="PBRGeometryPassShader.h" />
     <ClInclude Include="PBRLightingPassShader.h" />
-    <ClInclude Include="Loader.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MaterialMap.h" />
@@ -318,7 +312,6 @@
     <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TextureFile.h" />
     <ClInclude Include="TransformableModule.h" />
     <ClInclude Include="TriangleMesh.h" />
     <ClInclude Include="Node.h" />
