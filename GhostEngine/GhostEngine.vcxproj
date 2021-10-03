@@ -149,7 +149,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicRenderModule.cpp" />
-    <ClCompile Include="BasicRepositry.cpp" />
     <ClCompile Include="BasicNode.cpp" />
     <ClCompile Include="Sample_Local_IBL.cpp" />
     <ClCompile Include="WFTestRenderer.cpp" />
@@ -174,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRenderModule.h" />
-    <ClInclude Include="BasicRepositry.h" />
     <ClInclude Include="BasicNode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="WFTestRenderer.h" />

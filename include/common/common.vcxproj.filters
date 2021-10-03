@@ -57,12 +57,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Repositry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Root.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -263,12 +257,6 @@
     <ClInclude Include="RenderManager.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Repositry.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -291,9 +279,6 @@
       <Filter>Support</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
-      <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="Global.h">
       <Filter>Support</Filter>
     </ClInclude>
     <ClInclude Include="Prerequisite.h">

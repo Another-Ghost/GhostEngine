@@ -22,6 +22,7 @@ PBRDeferRenderer::PBRDeferRenderer()
 	WindowManager::GetSingleton().s_current_window->AddEventListener(this);
 	//1.
 	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
+
 	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
 
 	//irradiance_cubemap = ResourceManager::GetSingleton().CreateCubemap(32, 32, TextureType::CUBEMAP);	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作

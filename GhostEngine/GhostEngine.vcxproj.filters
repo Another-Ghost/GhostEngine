@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicRepositry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasicNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,9 +31,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicRepositry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BasicNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>

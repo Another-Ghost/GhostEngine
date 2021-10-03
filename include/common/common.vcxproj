@@ -168,7 +168,6 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
-    <ClCompile Include="Global.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
@@ -205,7 +204,6 @@
     <ClCompile Include="RenderModule.cpp" />
     <ClCompile Include="RenderNode.cpp" />
     <ClCompile Include="RenderUnit.cpp" />
-    <ClCompile Include="Repositry.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="RootRenderModule.cpp" />
@@ -241,7 +239,6 @@
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
-    <ClInclude Include="Global.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
@@ -278,8 +275,6 @@
     <ClInclude Include="RenderModule.h" />
     <ClInclude Include="RenderNode.h" />
     <ClInclude Include="RenderUnit.h" />
-    <ClInclude Include="Repositry.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Root.h" />
     <ClInclude Include="RootRenderModule.h" />
