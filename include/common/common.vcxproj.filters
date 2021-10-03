@@ -72,19 +72,10 @@
     <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderNode.cpp">
@@ -111,9 +102,6 @@
     <ClCompile Include="PBRMaterialFacotry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,9 +112,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SphereGeometryMeshFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PointLightFactory.cpp">
@@ -240,9 +225,6 @@
     <ClCompile Include="ReflectionProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AABBModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ReflectionProbeShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -264,7 +246,10 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TransformableModule.cpp">
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,12 +275,6 @@
     <ClInclude Include="Shader.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="RenderModule.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -303,12 +282,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
@@ -330,9 +303,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="PointLightFactory.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="LightFactory.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CubeGeometryMesh.h">
@@ -476,12 +446,6 @@
     <ClInclude Include="ReflectionProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AABBModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformableModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ReflectionProbeShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -498,6 +462,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

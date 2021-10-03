@@ -1,7 +1,7 @@
 #pragma once
 #include "Prerequisite.h"
 #include "AABBVolume.h"
-#include "RenderModule.h"
+
 
 class RenderUnit
 {
@@ -41,7 +41,7 @@ public:
 
 	AABBVolume GetAABBVolume();
 	                                    
-	vec3 GetPosition() { /*Transform tf = parent->GetWorldTransform(); vec3 pos = parent->GetWorldTransform().GetPosition(); vec3 pos2 = tf.GetPosition();*/ return parent->GetWorldTransform().GetPosition(); }
+	vec3 GetPosition();
 
 	struct CameraZDistanceComp
 	{

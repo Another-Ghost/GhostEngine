@@ -1,5 +1,6 @@
 #include "RenderUnit.h"
 #include "RenderManager.h"
+#include "RenderModule.h"
 #include "AABBVolume.h"
 
 
@@ -38,5 +39,11 @@ AABBVolume RenderUnit::GetAABBVolume()
 		}
 	}
 	return AABBVolume();
+}
+
+vec3 RenderUnit::GetPosition()
+{
+	/*Transform tf = parent->GetWorldTransform(); vec3 pos = parent->GetWorldTransform().GetPosition(); vec3 pos2 = tf.GetPosition();*/ 
+	return parent->GetWorldTransform().GetPosition();
 }
 

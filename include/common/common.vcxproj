@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;$(SolutionDir)resource;$(SolutionDir)camera;$(SolutionDir)framework;$(SolutionDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABBModule.cpp" />
     <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
@@ -173,8 +172,6 @@
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LightFactory.cpp" />
     <ClCompile Include="LightProbe.cpp" />
     <ClCompile Include="LightProbeRenderer.cpp" />
     <ClCompile Include="OutputShader.cpp" />
@@ -223,13 +220,10 @@
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TransformableModule.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="TriangleMeshFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABBModule.h" />
     <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
@@ -251,8 +245,6 @@
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="LightFactory.h" />
     <ClInclude Include="LightProbe.h" />
     <ClInclude Include="LightProbeRenderer.h" />
     <ClInclude Include="OutputShader.h" />
@@ -302,9 +294,7 @@
     <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TransformableModule.h" />
     <ClInclude Include="TriangleMesh.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="TriangleMeshFactory.h" />
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +318,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\resource\resource.vcxproj">
       <Project>{18f1f27c-58ef-47be-8b3a-3e66fc7b6401}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scene\scene.vcxproj">
+      <Project>{5f9a9752-9863-4381-adf0-7af7ae2ac22b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\window\window.vcxproj">
       <Project>{993adbba-ce14-40c8-a138-09b744537251}</Project>

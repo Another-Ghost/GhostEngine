@@ -1,6 +1,5 @@
 #pragma once
-#include "Prerequisite.h"
-
+#include "Object.h"
 
 
 struct Light
