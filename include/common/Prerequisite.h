@@ -124,4 +124,4 @@ class ShadowRenderer;
 class PointShadowShader;
 class PointShadowDepthShader;
 
-class FrameBuffer;
+struct FrameBuffer;

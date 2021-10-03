@@ -9,18 +9,18 @@
 
 std::string File::GetShaderPath(const std::string& name)
 {
-    return "../resource/shader/" + name + ".glsl";  //VS中默认的当前路径为vcxproj文件所在目录  //? 不加glsl
+    return "../resources/shader/" + name + ".glsl";  //VS中默认的当前路径为vcxproj文件所在目录  //? 不加glsl
 }
 
 std::string File::GetScenePath(const std::string& path)
 {
-    return "../resource/scene/" + path;
+    return "../resources/scene/" + path;
 }
 
 std::string File::GetTexturePath(const std::string& path)
 {
     
-    return "../resource/texture/" + path;
+    return "../resources/texture/" + path;
 }
 
 std::string File::GetModelPath(const std::string& path) //? 改用std::filesystem::path
@@ -44,7 +44,7 @@ std::string File::GetModelPath(const std::string& path) //? 改用std::filesyste
     }
     buffer = buffer.substr(0, buffer.find_last_of('\\'));
     char absulute[] = __FILE__;
-    buffer = buffer + std::string("\\resource\\object\\") + path;
+    buffer = buffer + std::string("\\resources\\object\\") + path;
     buffer = ReplaceSubstring(buffer, "\\", "/");
 
     return buffer;

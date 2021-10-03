@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;$(SolutionDir)base;$(SolutionDir)math;$(SolutionDir)window;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -224,7 +224,6 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowRenderer.cpp" />
-    <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
@@ -238,9 +237,6 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="TriangleMeshFactory.cpp" />
     <ClCompile Include="Unit.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="WindowFactory.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBModule.h" />
@@ -317,7 +313,6 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowRenderer.h" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
@@ -331,9 +326,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="TriangleMeshFactory.h" />
     <ClInclude Include="Unit.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowFactory.h" />
-    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="common.rc" />
@@ -347,6 +339,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\window\window.vcxproj">
+      <Project>{993adbba-ce14-40c8-a138-09b744537251}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

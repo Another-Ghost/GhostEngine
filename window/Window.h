@@ -1,17 +1,9 @@
 ﻿#pragma once
-#include "Prerequisite.h"
+#include "BasicDependencies.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class WindowEventListener
-{
-public:
-	virtual void OnWindowClosed();
-	virtual void OnFrameBufferSizeChanged();	
-	virtual void OnMouseMove(double x_offset, double y_offset);
-	virtual void OnMouseScroll(double x_offset, double y_offset);
-	virtual void OnKeyPressed(Window* window);
-};
+class WindowEventListener;
 
 class Window	//? 改为全局
 {
@@ -70,3 +62,12 @@ protected:
 
 };
 
+class WindowEventListener
+{
+public:
+	virtual void OnWindowClosed();
+	virtual void OnFrameBufferSizeChanged();
+	virtual void OnMouseMove(double x_offset, double y_offset);
+	virtual void OnMouseScroll(double x_offset, double y_offset);
+	virtual void OnKeyPressed(Window* window);
+};

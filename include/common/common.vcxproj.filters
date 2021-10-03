@@ -51,9 +51,6 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,16 +72,7 @@
     <ClCompile Include="Global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Singleton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Root.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Prerequisite.cpp">
@@ -377,23 +365,11 @@
     <ClInclude Include="Prerequisite.h">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Support</Filter>
-    </ClInclude>
     <ClInclude Include="CameraFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RootRenderModule.h">
       <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Window</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowFactory.h">
-      <Filter>Window</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowManager.h">
-      <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="PointLightFactory.h">
       <Filter>Scene</Filter>

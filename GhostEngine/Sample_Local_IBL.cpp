@@ -1,5 +1,5 @@
 #include "common/Root.h"
-#include "common/WindowManager.h"
+#include "WindowManager.h"
 //#include "BasicWindowFactory.h"
 //#include "BasicWindow.h"
 //#include "BasicCamera.h"

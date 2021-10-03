@@ -17,12 +17,6 @@
     <ClCompile Include="BasicRepositry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicWindowFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasicCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,12 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRepositry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicWindowFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicCamera.h">

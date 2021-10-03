@@ -89,7 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math;$(SolutionDir)\window</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math;$(SolutionDir)\window</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math;$(SolutionDir)\window</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\base;$(SolutionDir)\math;$(SolutionDir)\window</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -152,8 +152,6 @@
     <ClCompile Include="BasicRenderModule.cpp" />
     <ClCompile Include="BasicRepositry.cpp" />
     <ClCompile Include="BasicNode.cpp" />
-    <ClCompile Include="BasicWindow.cpp" />
-    <ClCompile Include="BasicWindowFactory.cpp" />
     <ClCompile Include="Sample_Local_IBL.cpp" />
     <ClCompile Include="WFTestRenderer.cpp" />
     <ClCompile Include="WFTestShader.cpp" />
@@ -168,14 +166,15 @@
     <ProjectReference Include="..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\window\window.vcxproj">
+      <Project>{993adbba-ce14-40c8-a138-09b744537251}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicCamera.h" />
     <ClInclude Include="BasicRenderModule.h" />
     <ClInclude Include="BasicRepositry.h" />
     <ClInclude Include="BasicNode.h" />
-    <ClInclude Include="BasicWindow.h" />
-    <ClInclude Include="BasicWindowFactory.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="WFTestRenderer.h" />
     <ClInclude Include="WFTestShader.h" />

@@ -1,8 +1,6 @@
 ﻿#pragma once
-#include "Prerequisite.h"
 #include "Singleton.h"
 #include "Window.h"
-#include "WindowFactory.h"
 #include <vector>
 #include <string>
 
