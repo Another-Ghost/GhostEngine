@@ -90,9 +90,6 @@
     <ClCompile Include="RenderNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Module.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -243,9 +240,6 @@
     <ClCompile Include="ReflectionProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AABBModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -297,9 +291,6 @@
       <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
@@ -483,9 +474,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReflectionProbe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AABBModule.h">
