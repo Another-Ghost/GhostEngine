@@ -11,7 +11,7 @@ using glm::mat3;
 using glm::mat4;
 using glm::quat;
 
-class Math
+class MathMethod
 {
 public:
 	template<typename T>

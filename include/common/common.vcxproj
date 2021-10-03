@@ -152,13 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBModule.cpp" />
-    <ClCompile Include="AABBVolume.cpp" />
     <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BasicShader.cpp" />
-    <ClCompile Include="BoundingVolume.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFactory.cpp" />
@@ -193,7 +191,6 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="MaterialMap.cpp" />
-    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFactory.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -212,8 +209,6 @@
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
     <ClCompile Include="QuadGeometryMesh.cpp" />
-    <ClCompile Include="Quat.cpp" />
-    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="ReflectionProbe.cpp" />
     <ClCompile Include="ReflectionProbeShader.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -234,7 +229,6 @@
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
-    <ClCompile Include="SphereVolume.cpp" />
     <ClCompile Include="SSAOBlurShader.cpp" />
     <ClCompile Include="SSAOShader.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -250,13 +244,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBModule.h" />
-    <ClInclude Include="AABBVolume.h" />
     <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BasicShader.h" />
-    <ClInclude Include="BoundingVolume.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFactory.h" />
@@ -291,7 +283,6 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MaterialMap.h" />
-    <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFactory.h" />
     <ClInclude Include="Model.h" />
@@ -310,8 +301,6 @@
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
     <ClInclude Include="QuadGeometryMesh.h" />
-    <ClInclude Include="Quat.h" />
-    <ClInclude Include="Ray.h" />
     <ClInclude Include="ReflectionProbe.h" />
     <ClInclude Include="ReflectionProbeShader.h" />
     <ClInclude Include="Renderer.h" />
@@ -333,7 +322,6 @@
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
-    <ClInclude Include="SphereVolume.h" />
     <ClInclude Include="SSAOBlurShader.h" />
     <ClInclude Include="SSAOShader.h" />
     <ClInclude Include="Texture.h" />

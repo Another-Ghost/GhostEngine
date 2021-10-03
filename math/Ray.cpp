@@ -20,7 +20,7 @@ bool Ray::AABBIntersectionTest(const vec3& aabb_pos, const vec3& half_dimension,
 			t_values[i] = (aabb_max[i] - origin[i]) / direction[i];
 		}
 	}
-	float best_t = Math::MaxElement(t_values);	//check if the ray enters all pairs of slabs
+	float best_t = MathMethod::MaxElement(t_values);	//check if the ray enters all pairs of slabs
 	if (best_t < 0.f)
 	{
 		return false;

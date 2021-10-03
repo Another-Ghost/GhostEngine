@@ -45,9 +45,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Quat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -243,9 +240,6 @@
     <ClCompile Include="AttachmentTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PBRLightingPassShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -267,19 +261,7 @@
     <ClCompile Include="PlaneTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingVolume.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AABBVolume.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Frustum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereVolume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PBRDeferRenderer.cpp">
@@ -395,9 +377,6 @@
     <ClInclude Include="Prerequisite.h">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="Quat.h">
-      <Filter>Support</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Support</Filter>
     </ClInclude>
@@ -497,9 +476,6 @@
     <ClInclude Include="GLTFLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AttachmentTexture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
@@ -560,19 +536,7 @@
     <ClInclude Include="HDRIShader.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>Space</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundingVolume.h">
-      <Filter>Space</Filter>
-    </ClInclude>
-    <ClInclude Include="AABBVolume.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Frustum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereVolume.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PBRDeferRenderer.h">

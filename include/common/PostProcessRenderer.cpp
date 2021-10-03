@@ -1,7 +1,7 @@
 #include "PostProcessRenderer.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
-#include "Math.h"
+#include "MathMethod.h"
 #include "SSAOShader.h"
 #include "SSAOBlurShader.h"
 #include "OutputShader.h"
@@ -58,7 +58,7 @@ PostProcessRenderer::PostProcessRenderer(int width, int height)
 		sample *= random_floats(generator);	//随机半径大小
 		float scale = float(i) / 64;
 
-		scale = Math::Lerp<float>(0.1f, 1.0f, scale * scale);	//加速插值函数，使核的样本靠近原点分布
+		scale = MathMethod::Lerp<float>(0.1f, 1.0f, scale * scale);	//加速插值函数，使核的样本靠近原点分布
 		sample *= scale;
 		ssao_kernel.emplace_back(sample, 1.f);
 	}

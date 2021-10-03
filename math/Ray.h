@@ -1,5 +1,6 @@
 #pragma once
-#include "Prerequisite.h"
+#include "BasicDependencies.h"
+#include "MathMethod.h"
 
 struct RayIntersectionInfo
 {

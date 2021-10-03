@@ -147,11 +147,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBVolume.cpp" />
+    <ClCompile Include="BoundingVolume.cpp" />
+    <ClCompile Include="MathMethod.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="SphereVolume.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBVolume.h" />
+    <ClInclude Include="BoundingVolume.h" />
+    <ClInclude Include="MathMethod.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="SphereVolume.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
