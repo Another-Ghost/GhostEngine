@@ -159,7 +159,7 @@
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
-    <ClCompile Include="FrameBuffer.cpp" />
+    <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
@@ -170,6 +170,7 @@
     <ClCompile Include="PBRMaterialFacotry.cpp" />
     <ClCompile Include="PlaneTexture.cpp" />
     <ClCompile Include="QuadGeometryMesh.cpp" />
+    <ClCompile Include="RenderBuffer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SphereGeometryMesh.cpp" />
     <ClCompile Include="SphereGeometryMeshFactory.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="PBRMaterialFactory.h" />
     <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="QuadGeometryMesh.h" />
+    <ClInclude Include="RenderBuffer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
