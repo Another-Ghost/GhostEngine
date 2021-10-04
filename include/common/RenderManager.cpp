@@ -614,7 +614,7 @@ void RenderManager::BindFrameBuffer(FrameBuffer* fb)
 		return;
 	}
 
-	if (cur_framebuffer->width != cur_viewport_info.width || cur_framebuffer->height != cur_viewport_info.width)
+	if (cur_framebuffer->width != cur_viewport_info.width || cur_framebuffer->height != cur_viewport_info.height)
 	{
 		glViewport(0, 0, fb->width, fb->height);
 	}

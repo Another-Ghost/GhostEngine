@@ -3,19 +3,28 @@
 
 struct FrameBuffer
 {
+public:
+	FrameBuffer();
+
 	unsigned int id;
+
 
 	int width;
 	int height;
 
-	virtual void Bind();
+	void Bind();
 
-	static FrameBuffer* Generate();
+	void Unbind();
+
+protected:
 
 	//static vector<FrameBuffer*> frame_buffers;
-	//static stack<FrameBuffer*> fbo_stack;
 
-	//static FrameBuffer* cur_buffer;
+private:
+	static stack<FrameBuffer*> fbo_stack;
 
+	static FrameBuffer* cur_fbo;
+
+	static void BindCurrentFBO(FrameBuffer* _cur_fbo);
 };
 
