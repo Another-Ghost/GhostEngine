@@ -187,7 +187,6 @@
     <ClCompile Include="RenderNode.cpp" />
     <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Root.cpp" />
     <ClCompile Include="RootRenderModule.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -234,7 +233,6 @@
     <ClInclude Include="RenderNode.h" />
     <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Root.h" />
     <ClInclude Include="RootRenderModule.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

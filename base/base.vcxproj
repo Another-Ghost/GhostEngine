@@ -144,11 +144,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicDependencies.cpp" />
+    <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Singleton.cpp" />
+    <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicDependencies.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

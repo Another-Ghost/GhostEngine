@@ -11,6 +11,5 @@ public:
 
 	//void BindNoiseTexture(Texture* texture);
 
-
 };
 
