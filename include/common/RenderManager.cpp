@@ -7,7 +7,6 @@
 #include "PBRMaterial.h"
 #include "Camera.h"
 #include "Mesh.h"
-#include "IBLRenderer.h"
 #include "BasicRenderer.h"
 #include "CubeGeometryMeshFactory.h"
 #include "ResourceManager.h"
@@ -192,7 +191,7 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		}
 		b_initialized = true;
 
-		basic_renderer = new BasicRenderer();
+		//basic_renderer = new BasicRenderer();
 
 		shadow_renderer = new ShadowRenderer(shadow_far_plane);
 	
@@ -210,13 +209,46 @@ void RenderManager::PreRender()
 	//{
 	//	shadow_renderer->DrawDepthMap(point_light);
 	//}
+ 
+	//1.
+	CubeMap* env_cubemap = RenderManager::GetSingleton().GetSkybox();
+	//2. create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
+	CubeMap* irradiance_cubemap = ResourceManager::GetSingleton().CreateCubemap(32, 32, TextureType::CUBEMAP);	//因为每一个点是卷积后的结果，丢失了大部分高频细节，所以可以以较低的分辨率存储，并让 OpenGL 的线性滤波（GL_LINEAR）完成大部分工作
+	//irradiance_cubemap->min_filter_param = GL_LINEAR;
+	irradiance_cubemap->b_genarate_mipmap = false;
+	irradiance_cubemap->Buffer();
+	irradiance_cubemaps.emplace_back(irradiance_cubemap);
 
-	for (auto& probe : SceneManager::GetSingletonPtr()->reflection_probe_set)
+
+	IrradianceShader* irradiance_shader = new IrradianceShader();
+	irradiance_shader->RenderEnvIrradianceCubeMap(irradiance_cubemap, env_cubemap->id);
+
+	//3.create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
+	CubeMap* prefilter_cubemap = ResourceManager::GetSingleton().CreateCubemap(128, 128, TextureType::CUBEMAP); // be sure to set minification filter to mip_linear 
+	prefilter_cubemap->b_genarate_mipmap = true;
+	prefilter_cubemap->min_filter_param = GL_LINEAR_MIPMAP_LINEAR;
+	prefilter_cubemap->Buffer(); 	// be sure to generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
+
+	PrefilterShader* prefilter_shader = new PrefilterShader();
+	prefilter_shader->RenderPrefilterCubeMap(prefilter_cubemap, env_cubemap->id);
+	prefilter_cubemaps.emplace_back(prefilter_cubemap);
+
+
+
+	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)	//? 移到PreRender
 	{
-		//reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
-		light_probe_renderer->Render(probe);	//? 可能是framebuffer绑定错误
+		shadow_renderer->DrawDepthMap(point_light);
 	}
-	//light_probe_renderer->Render(reflection_probe);
+
+	if (b_enable_local_IBL)
+	{
+		for (auto& probe : SceneManager::GetSingletonPtr()->reflection_probe_set)
+		{
+			//reflection_probe = new ReflectionProbe({ 0, 0, 0 }, AABBModule());
+			light_probe_renderer->Render(probe);	//? 可能是framebuffer绑定错误
+		}
+		//light_probe_renderer->Render(reflection_probe);
+	}
 
 	b_prerendered = true;
 
@@ -244,65 +276,92 @@ void RenderManager::Render(float dt)
 
 void RenderManager::Update(float dt)
 {
-	UpdateLightArray();
-
-	UpdateLightArray();
-
-	for (auto& point_light : SceneManager::GetSingletonPtr()->point_light_array)	//? 移到PreRender
+	if (b_enable_local_IBL)
 	{
-		shadow_renderer->DrawDepthMap(point_light);
-	}
+		UpdateLightArray();
+
+		UpdateLightArray();
 
 
-	if (!b_prerendered)
-	{
-		//PreRender();
-		PreRender();
-	}
-
-	
-	UpdateEnvironmentLight();
-
-	camera = SceneManager::GetSingleton().main_camera;
-	CameraInfo camera_info;
-	camera_info.position = { camera->GetPosition(), 0 };
-	camera_info.view = camera->ViewMatrix();
-	camera_info.projection = camera->PerspectiveMatrix();
-	ModifyCurrentCameraInfo(camera_info);
 
 
-	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		if (!b_prerendered)
+		{
+			//PreRender();
+			PreRender();
+		}
 
-	if (b_defer_rendering)
-	{
-		pbr_defer_renderer->Update(dt);
 
+		UpdateEnvironmentLight();
+
+		camera = SceneManager::GetSingleton().main_camera;
+		CameraInfo camera_info;
+		camera_info.position = { camera->GetPosition(), 0 };
+		camera_info.view = camera->ViewMatrix();
+		camera_info.projection = camera->PerspectiveMatrix();
+		ModifyCurrentCameraInfo(camera_info);
+
+
+		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		if (b_defer_rendering)
+		{
+			pbr_defer_renderer->Update(dt);
+
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			current_renderer->Update(dt);
+
+			basic_renderer->Update(dt);
+
+			skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
+
+			glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+		}
+
+		post_process_renderer->Update(dt);
+
+
+		//if (!b_prerendered)
+		//{
+		//	//PreRender();
+		//	//skybox_cubemap = reflection_probe->cubemap;
+		//}
+		//light_probe_renderer->Render(reflection_probe);
+
+		ResetRenderArray();
 	}
 	else
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+		UpdateLightArray();
+
+		if (!b_prerendered)
+		{
+			//PreRender();
+			PreRender();
+		}
+
+		camera = SceneManager::GetSingleton().main_camera;
+		CameraInfo camera_info;
+		camera_info.position = { camera->GetPosition(), 0 };
+		camera_info.view = camera->ViewMatrix();
+		camera_info.projection = camera->PerspectiveMatrix();
+		ModifyCurrentCameraInfo(camera_info);
+
+
+		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		current_renderer->Update(dt);
 
-		basic_renderer->Update(dt);
+		pbr_defer_renderer->Update(dt);
 
-		skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
+		post_process_renderer->Update(dt);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+		ResetRenderArray();
 	}
-	
-	post_process_renderer->Update(dt);
-
-
-	//if (!b_prerendered)
-	//{
-	//	//PreRender();
-	//	//skybox_cubemap = reflection_probe->cubemap;
-	//}
-	//light_probe_renderer->Render(reflection_probe);
-
-	ResetRenderArray();
 }
 
 

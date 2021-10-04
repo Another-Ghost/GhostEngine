@@ -4,3 +4,8 @@ void FrameBuffer::Bind()
 {
 	
 }
+
+FrameBuffer* FrameBuffer::Generate()
+{
+	return new FrameBuffer();
+}

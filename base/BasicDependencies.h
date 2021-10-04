@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <queue>
+#include <stack>
 #include <algorithm>
 
 #include <glad/glad.h>
@@ -28,6 +29,7 @@ using std::multiset;
 using std::unique_ptr;
 using std::shared_ptr;
 using std::priority_queue;
+using std::stack;
 using std::make_unique;
 using std::make_shared;
 

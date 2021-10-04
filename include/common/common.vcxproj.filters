@@ -72,9 +72,6 @@
     <ClCompile Include="PointLightFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IBLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PBRShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,6 +168,9 @@
     <ClCompile Include="GLTFLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LocalIBLRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -228,9 +228,6 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="ChannelCombinationShader.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="IBLRenderer.h">
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="IrradianceShader.h">
@@ -303,6 +300,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLTFLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalIBLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

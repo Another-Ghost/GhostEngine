@@ -1,4 +1,6 @@
 #pragma once
+#include "BasicDependencies.h"
+
 struct FrameBuffer
 {
 	unsigned int id;
@@ -8,6 +10,12 @@ struct FrameBuffer
 
 	virtual void Bind();
 
-	//virtual void Unbind();
+	static FrameBuffer* Generate();
+
+	//static vector<FrameBuffer*> frame_buffers;
+	//static stack<FrameBuffer*> fbo_stack;
+
+	//static FrameBuffer* cur_buffer;
+
 };
 

@@ -65,7 +65,7 @@ void LightProbeRenderer::Render(ReflectionProbe* probe)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, probe->cubemap->id, 0);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		RenderManager::GetSingleton().pbr_defer_renderer->RenderDirectLight();
+		//RenderManager::GetSingleton().pbr_defer_renderer->RenderDirectLight(); 
 		post_process_renderer->Update(0);
 		//glTextureBarrier();
 	}

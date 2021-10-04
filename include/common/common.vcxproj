@@ -160,10 +160,10 @@
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
-    <ClCompile Include="IBLRenderer.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
     <ClCompile Include="LightProbe.cpp" />
     <ClCompile Include="LightProbeRenderer.cpp" />
+    <ClCompile Include="LocalIBLRenderer.cpp" />
     <ClCompile Include="OutputShader.cpp" />
     <ClCompile Include="PBRDeferRenderer.cpp" />
     <ClCompile Include="PBRGeometryPassShader.cpp" />
@@ -206,10 +206,10 @@
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
-    <ClInclude Include="IBLRenderer.h" />
     <ClInclude Include="IrradianceShader.h" />
     <ClInclude Include="LightProbe.h" />
     <ClInclude Include="LightProbeRenderer.h" />
+    <ClInclude Include="LocalIBLRenderer.h" />
     <ClInclude Include="OutputShader.h" />
     <ClInclude Include="PBRDeferRenderer.h" />
     <ClInclude Include="PBRGeometryPassShader.h" />

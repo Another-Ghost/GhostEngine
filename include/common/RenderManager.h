@@ -87,8 +87,9 @@ public:
 	CubeMap* blended_irradiance_cubemap;
 	CubeMap* blended_prefilter_cubemap;
 
-	//vector<CubeMap*> irradiance_cubemaps;
-	//vector<CubeMap*> prefilter_cubemaps;
+	vector<CubeMap*> irradiance_cubemaps;
+	vector<CubeMap*> prefilter_cubemaps;
+
 	vector<ReflectionProbe*> enabled_probes;
 
 	bool b_prerendered{ false };
@@ -259,5 +260,7 @@ private:
 
 
 	bool b_frustum_culling{ false };
+
+	bool b_enable_local_IBL{ false };
 };
 

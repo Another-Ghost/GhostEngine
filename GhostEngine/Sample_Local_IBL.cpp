@@ -89,17 +89,17 @@ int main()
 	tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/paint_green/ao.png")));
 	cube_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, tex_file);
 
-	PBRMaterial* point_mat = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
-	LDRTextureFile* point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/albedo.png")));	//rusted_iron, painted_metal, gold
-	point_mat->basecolor_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::BASECOLOR, true, point_tex_file);
-	point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/normal.png")));
-	point_mat->normal_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::NORMAL, true, point_tex_file);
-	point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/metallic.png")));
-	point_mat->metalness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::METALNESS, true, point_tex_file);
-	point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/roughness.png")));
-	point_mat->roughness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ROUGHNESS, true, point_tex_file);
-	point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/ao.png")));
-	point_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, point_tex_file);
+	//PBRMaterial* point_mat = dynamic_cast<PBRMaterial*>(ResourceManager::GetSingleton().CreateMaterial(MaterialType::PBR));
+	//LDRTextureFile* point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/albedo.png")));	//rusted_iron, painted_metal, gold
+	//point_mat->basecolor_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::BASECOLOR, true, point_tex_file);
+	//point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/normal.png")));
+	//point_mat->normal_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::NORMAL, true, point_tex_file);
+	//point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/metallic.png")));
+	//point_mat->metalness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::METALNESS, true, point_tex_file);
+	//point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/roughness.png")));
+	//point_mat->roughness_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ROUGHNESS, true, point_tex_file);
+	//point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/ao.png")));
+	//point_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, point_tex_file);
 
 
 	/*Mesh*/
@@ -120,27 +120,27 @@ int main()
 
 	float probe_size = 16.f;
 
-	/*bottom*/
-	RenderNode* cube_node = new RenderNode();
-	RootRenderModule* root_render_module = new RootRenderModule();
+	///*bottom*/
+	//RenderNode* cube_node = new RenderNode();
+	//RootRenderModule* root_render_module = new RootRenderModule();
 
-	//root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
-	root_render_module->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
-	root_render_module->local_transform.SetPosition({ 0.f, -probe_size / 2, 0.f });
-	ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
-	cube_node->AttachRenderModule(root_render_module);
+	////root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
+	//root_render_module->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
+	//root_render_module->local_transform.SetPosition({ 0.f, -probe_size / 2, 0.f });
+	//ResourceManager::GetSingleton().CreateRenderUnit(root_render_module, cube_mesh, cube_mat);
+	//cube_node->AttachRenderModule(root_render_module);
 
-	//	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
-	//}
+	////	sphere_unit->transform.SetPosition({ (col - column_num / 2.f) * 2.5f, 0.f, 0.f });
+	////}
 
-	//back
-	RenderNode* wall1 = new RenderNode();
-	RootRenderModule* wall1_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
-	wall1->AttachRenderModule(wall1_root_rm);
-	wall1->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
-	wall1->local_transform.SetPosition({ 0.f, 0.f, -probe_size });
-	wall1->local_transform.SetYaw(0.f);
+	////back
+	//RenderNode* wall1 = new RenderNode();
+	//RootRenderModule* wall1_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
+	//wall1->AttachRenderModule(wall1_root_rm);
+	//wall1->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
+	//wall1->local_transform.SetPosition({ 0.f, 0.f, -probe_size });
+	//wall1->local_transform.SetYaw(0.f);
 
 	//right
 	RenderNode* wall2 = new RenderNode();
@@ -151,58 +151,58 @@ int main()
 	wall2->local_transform.SetPosition({ probe_size, 0.f, 0.f });
 	wall2->local_transform.SetYaw(90.f);
 
-	//left
-	RenderNode* wall3 = new RenderNode();
-	RootRenderModule* wall3_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);
-	wall3->AttachRenderModule(wall3_root_rm);
-	wall3->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
-	wall3->local_transform.SetPosition({ -probe_size, 0.f, 0.f });
-	wall3->local_transform.SetYaw(-90.f);
+	////left
+	//RenderNode* wall3 = new RenderNode();
+	//RootRenderModule* wall3_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall3_root_rm, cube_mesh, cube_mat);
+	//wall3->AttachRenderModule(wall3_root_rm);
+	//wall3->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
+	//wall3->local_transform.SetPosition({ -probe_size, 0.f, 0.f });
+	//wall3->local_transform.SetYaw(-90.f);
 
-	//front
-	RenderNode* wall4 = new RenderNode();
-	RootRenderModule* wall4_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
-	wall4->AttachRenderModule(wall4_root_rm);
-	wall4->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
-	wall4->local_transform.SetPosition({ 0.f, 0.f, probe_size });
-	wall4->local_transform.SetYaw(180.f);
+	////front
+	//RenderNode* wall4 = new RenderNode();
+	//RootRenderModule* wall4_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall4_root_rm, cube_mesh, cube_mat);
+	//wall4->AttachRenderModule(wall4_root_rm);
+	//wall4->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
+	//wall4->local_transform.SetPosition({ 0.f, 0.f, probe_size });
+	//wall4->local_transform.SetYaw(180.f);
 
-	//top
-	RenderNode* wall6 = new RenderNode();
-	RootRenderModule* wall6_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall6_root_rm, cube_mesh, cube_mat);
-	wall6->AttachRenderModule(wall6_root_rm);
-	wall6->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
-	wall6->local_transform.SetPosition({ 0.f, probe_size / 2, 0.f });
+	////top
+	//RenderNode* wall6 = new RenderNode();
+	//RootRenderModule* wall6_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall6_root_rm, cube_mesh, cube_mat);
+	//wall6->AttachRenderModule(wall6_root_rm);
+	//wall6->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
+	//wall6->local_transform.SetPosition({ 0.f, probe_size / 2, 0.f });
 
-	//middle
-	RenderNode* wall5 = new RenderNode();
-	RootRenderModule* wall5_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, point_mat);
-	wall5->AttachRenderModule(wall5_root_rm);
-	wall5->local_transform.SetDimension({ 2.f, 2.f, 2.f });
-	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	wall5->local_transform.SetPosition({ -probe_size / 2, -3.f, -probe_size / 2 + 1 });
+	////middle
+	//RenderNode* wall5 = new RenderNode();
+	//RootRenderModule* wall5_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall5_root_rm, cube_mesh, point_mat);
+	//wall5->AttachRenderModule(wall5_root_rm);
+	//wall5->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+	////wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
+	//wall5->local_transform.SetPosition({ -probe_size / 2, -3.f, -probe_size / 2 + 1 });
 
-	//middle
-	RenderNode* wall7 = new RenderNode();
-	RootRenderModule* wall7_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall7_root_rm, cube_mesh, point_mat);
-	wall7->AttachRenderModule(wall7_root_rm);
-	wall7->local_transform.SetDimension({ 2.f, 2.f, 2.f });
-	wall7->local_transform.SetPosition({ -probe_size / 2, -3.f, probe_size / 2 - 1 });
+	////middle
+	//RenderNode* wall7 = new RenderNode();
+	//RootRenderModule* wall7_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall7_root_rm, cube_mesh, point_mat);
+	//wall7->AttachRenderModule(wall7_root_rm);
+	//wall7->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+	//wall7->local_transform.SetPosition({ -probe_size / 2, -3.f, probe_size / 2 - 1 });
 
 
-	//middle
-	RenderNode* wall8 = new RenderNode();
-	RootRenderModule* wall8_root_rm = new RootRenderModule();
-	ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
-	wall8->AttachRenderModule(wall8_root_rm);
-	wall8->local_transform.SetDimension({ 2.f, 2.f, 2.f });
-	//wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
-	wall8->local_transform.SetPosition({ -probe_size / 2, -3.f, 0 });
+	////middle
+	//RenderNode* wall8 = new RenderNode();
+	//RootRenderModule* wall8_root_rm = new RootRenderModule();
+	//ResourceManager::GetSingleton().CreateRenderUnit(wall8_root_rm, cube_mesh, point_mat);
+	//wall8->AttachRenderModule(wall8_root_rm);
+	//wall8->local_transform.SetDimension({ 2.f, 2.f, 2.f });
+	////wall5->local_transform.SetPosition({ -6.f, -3.f, probe_size - 1 });
+	//wall8->local_transform.SetPosition({ -probe_size / 2, -3.f, 0 });
 
 	PointLight* light = dynamic_cast<PointLight*>(SceneManager::GetSingleton().CreateLight(PointLightFactory()));
 	light->postion = vec3(0.f, 3.f, -probe_size / 2 + 1);
