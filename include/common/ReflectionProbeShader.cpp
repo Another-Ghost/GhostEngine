@@ -12,12 +12,12 @@ ReflectionProbeShader::ReflectionProbeShader(const string& vertex_path /*= File:
 void ReflectionProbeShader::Draw(CubeMap* cubemap)
 {
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
-	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, cubemap->width, cubemap->height);
-
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+	//glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, cubemap->width, cubemap->height);
+	shared_ptr<CaptureFrameBuffer> fbo = RenderManager::GetSingleton().GetCaptureFBO();
+	fbo->Bind(cubemap->width, cubemap->height);
 	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
-
 
 	const vector<mat4>& capture_view_array = RenderManager::GetSingleton().GetCaptureViewArray();
 	for (unsigned int i = 0; i < 6; ++i)
@@ -27,7 +27,9 @@ void ReflectionProbeShader::Draw(CubeMap* cubemap)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	
+	fbo->Unbind();
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 	//glViewport(0, 0, WindowManager::s_current_window->GetWidth(), WindowManager::s_current_window->GetHeight());
-	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+	//glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 }

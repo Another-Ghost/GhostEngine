@@ -4,6 +4,7 @@
 #include "CubeGeometryMesh.h"
 #include "QuadGeometryMesh.h"
 #include "RenderUnit.h"
+#include "CaptureFrameBuffer.h"
 #include "PBRDeferRenderer.h"
 
 //struct RenderMaterialComp
@@ -129,8 +130,8 @@ public:
 
 	bool InsertRenderUnit(RenderUnit* ru);
 
-	unsigned int GetCaptureFBO() { return capture_fbo; }
-	unsigned int GetCaptureRBO() { return capture_rbo; }
+	shared_ptr<CaptureFrameBuffer> GetCaptureFBO() { return capture_fbo; }
+	//RenderBuffer* GetCaptureRBO() { return capture_rbo; }
 
 	const CubeGeometryMesh* GetCaptureCubeMesh() { return capture_cube_mesh; }	//底层const，指向常量的指针
 
@@ -174,9 +175,9 @@ public:
 
 	unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
 
-	void BindCurrentOutputFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, cur_output_fbo); }
+	//void BindCurrentOutputFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, cur_output_fbo); }
 
-	void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
+	//void SetCurrentOutputFrameBuffer(unsigned int fbo) { cur_output_fbo = fbo; glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
 
 	vector<mat4> GetCaptureViewArray(const vec3& pos);
 
@@ -184,7 +185,7 @@ public:
 
 	void DrawMeshes(MVPShader* shader);
 
-	void BindFrameBuffer(FrameBuffer* fb);
+	//void BindFrameBuffer(FrameBuffer* fb);
 
 private:
 
@@ -209,8 +210,9 @@ private:
 
 	BasicRenderer* basic_renderer;
 
-	unsigned int capture_fbo;
-	unsigned int capture_rbo;
+	shared_ptr<CaptureFrameBuffer> capture_fbo;
+	//shared_ptr<RenderBuffer> capture_rbo;
+	
 	vector<mat4> capture_view_array;
 	mat4 capture_projection;
 	CubeGeometryMesh* capture_cube_mesh;

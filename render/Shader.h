@@ -1,6 +1,8 @@
 #pragma once
 #include "Prerequisite.h"
 
+//#include "RenderManager.h"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>

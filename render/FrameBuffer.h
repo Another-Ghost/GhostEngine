@@ -1,6 +1,19 @@
 #pragma once
 #include "BasicDependencies.h"
 #include "RenderBuffer.h"
+#include "AttachmentTexture.h"
+#include "CubeMap.h"
+
+struct FrameBuffer;
+struct FBOInfo
+{
+	FrameBuffer* fbo;
+	int width;
+	int height;
+
+	FBOInfo(FrameBuffer* _fbo, int _w, int _h)
+		:fbo(_fbo), width(_w), height(_h) {}
+};
 
 struct FrameBuffer
 {
@@ -16,22 +29,37 @@ public:
 
 	unique_ptr<RenderBuffer> depth_rbo;
 
-	void Bind();
+	virtual void Bind();
 
-	void Unbind();
+	virtual void Unbind();
 
 	void GenerateDepthRBO();
 
+	void AttachTexture2D(const PlaneTexture* tex);
+
+	void AttachCubeMap(const CubeMap* cube_map);
+
+	void SpecifyDrawColorBuffers();
+
+	bool CheckStatus();
+
 public:
-	static FrameBuffer* screen_fbo;	//? 外部初始化（window）
+	static shared_ptr<FrameBuffer> screen_fbo;	//? 外部初始化（window）
 	//static vector<FrameBuffer*> frame_buffers;
 
+protected:
+	int color_attachment_index{ 0 };
+
 private:
-	static stack<FrameBuffer*> fbo_stack;
+	static stack<FBOInfo> fbo_stack;
 
-	static FrameBuffer* cur_fbo;
+	static FBOInfo cur_fbo_info;
 
-	static void BindCurrentFBO(FrameBuffer* _cur_fbo);
+	static void UpdateCurrentFBOInfo(FBOInfo info);
 
+	static const GLenum color_attachments[16]; //? 改为32
+
+	/*debug*/
+	static bool b_nest_bind;
 };
 

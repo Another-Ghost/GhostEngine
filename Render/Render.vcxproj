@@ -154,6 +154,7 @@
     <ClCompile Include="AttachmentTexture.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="BasicMaterialFactory.cpp" />
+    <ClCompile Include="CaptureFrameBuffer.cpp" />
     <ClCompile Include="CubeGeometryMesh.cpp" />
     <ClCompile Include="CubeGeometryMeshFactory.cpp" />
     <ClCompile Include="CubeMap.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="AttachmentTexture.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="BasicMaterialFactory.h" />
+    <ClInclude Include="CaptureFrameBuffer.h" />
     <ClInclude Include="CubeGeometryMesh.h" />
     <ClInclude Include="CubeGeometryMeshFactory.h" />
     <ClInclude Include="CubeMap.h" />

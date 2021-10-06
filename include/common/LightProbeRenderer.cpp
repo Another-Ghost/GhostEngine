@@ -26,11 +26,10 @@ void LightProbeRenderer::Render(ReflectionProbe* probe)
 	RenderManager::GetSingleton().ModifyCurrentViewportInfo(viewport_info);
 	RenderManager::GetSingleton().cur_g_buffer = g_buffer;
 
-	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(capture_fbo);
+	//RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(capture_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, viewport_width, viewport_height);
-	
 	//glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, probe->depth_cubemap->id, 0);
 
 	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
@@ -73,7 +72,7 @@ void LightProbeRenderer::Render(ReflectionProbe* probe)
 	
 
 	RenderManager::GetSingleton().UpdateCamera();
-	RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(0);
+	//RenderManager::GetSingleton().SetCurrentOutputFrameBuffer(0);
 	RenderManager::GetSingleton().cur_g_buffer = RenderManager::GetSingleton().g_buffer;
 	RenderManager::GetSingleton().ModifyCurrentViewportInfo(RenderManager::GetSingleton().GetWindowViewportInfo());
 

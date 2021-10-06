@@ -24,13 +24,15 @@ void HDRIShader::RenderCubeMap(const CubeMap* cube_map, PlaneTexture* hdr_tex)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, hdr_tex->id);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
-	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, cube_map->width, cube_map->height);	//创建一个深度渲染缓冲对象
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
+	shared_ptr<CaptureFrameBuffer> capture_fbo = RenderManager::GetSingleton().GetCaptureFBO();
+	capture_fbo->Bind(cube_map->width, cube_map->height);
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+	//glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, cube_map->width, cube_map->height);	//创建一个深度渲染缓冲对象
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());	//附加一个深度渲染缓冲对象到当前绑定的帧缓冲对象中
 
 	//GLCall(glViewport(0, 0, cube_map->width, cube_map->height));
-	glViewport(0, 0, cube_map->width, cube_map->height);
+	//glViewport(0, 0, cube_map->width, cube_map->height);
 
 
 	const vector<mat4>& capture_view_array = RenderManager::GetSingleton().GetCaptureViewArray();
@@ -42,9 +44,10 @@ void HDRIShader::RenderCubeMap(const CubeMap* cube_map, PlaneTexture* hdr_tex)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this); //? 是否能像下文中的一样一次渲染整个cubemap
 	}
+	capture_fbo->Unbind();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->id);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);	//需在渲染之后生成mipmap(之前生成的话修改数据后会失效)

@@ -13,8 +13,8 @@ private:
 	/*SSAO*/
 	GLuint ssao_kernel_ssbo;
 
-	unsigned int ssao_fbo;
-	unsigned int ssao_blur_fbo;
+	unique_ptr<FrameBuffer> ssao_fbo;
+	unique_ptr<FrameBuffer> ssao_blur_fbo;
 	PlaneTexture* ssao_color_attachment;
 	PlaneTexture* ssao_blur_color_attachment;
 

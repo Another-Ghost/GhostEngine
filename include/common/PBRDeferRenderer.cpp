@@ -36,9 +36,7 @@ PBRDeferRenderer::PBRDeferRenderer()
 void PBRDeferRenderer::Update(float dt)
 {
 	//RenderDirectLight();
-
 	Render();
-
 }
 
 void PBRDeferRenderer::OnKeyPressed(Window* window)
@@ -73,7 +71,7 @@ void PBRDeferRenderer::RnderGeometryPass()
 		//std::pair<float, PBRMaterial*> fp = heap.top();
 		const auto& material = heap.top().second;
 		pbr_geometry_pass_shader->BindMaterial(material);
-		g_buffer->Bind();	//? buffer 类统一管理
+		//g_buffer->Bind();	//? buffer 类统一管理
 
 		const auto& ru_set = RenderManager::GetSingleton().pbr_mat_unit_map[material];
 		for (const auto& render_unit : ru_set)
@@ -160,7 +158,6 @@ void PBRDeferRenderer::Render()
 	}
 
 
-	
 	TextureUnit::Bind2DTexture(TextureUnit::brdf_lut, brdf_lut);
 	//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTextureBarrier.xhtml
 	TextureUnit::Bind2DTexture(TextureUnit::g_world_position, g_buffer->world_position_tex);

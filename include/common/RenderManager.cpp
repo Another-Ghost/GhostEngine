@@ -42,8 +42,9 @@ RenderManager::RenderManager():
 	glCullFace(GL_FRONT);
 	glFrontFace(GL_CW);
 
-	glGenFramebuffers(1, &capture_fbo);	
-	glGenRenderbuffers(1, &capture_rbo);
+	capture_fbo = make_shared<CaptureFrameBuffer>();
+	//glGenFramebuffers(1, &capture_fbo);
+	//glGenRenderbuffers(1, &capture_rbo);
 
 	win_viewport_info.width = WindowManager::s_current_window->GetWidth();
 	win_viewport_info.height = WindowManager::s_current_window->GetHeight();
@@ -167,7 +168,10 @@ RenderManager::RenderManager():
 	prefilter_shader = make_shared<PrefilterShader>();
 
 	irradiance_shader = make_shared<IrradianceShader>();
+	
 
+	FrameBuffer::screen_fbo = make_shared<FrameBuffer>(0, viewport_info.width, viewport_info.height);
+	FrameBuffer::screen_fbo->Bind();
 }
 
 bool RenderManager::Initialize(Renderer* renderer_)
@@ -607,21 +611,21 @@ void RenderManager::DrawMeshes(MVPShader* shader)
 	}
 }
 
-void RenderManager::BindFrameBuffer(FrameBuffer* fb)
-{
-	if (cur_framebuffer == fb)
-	{
-		return;
-	}
-
-	if (cur_framebuffer->width != cur_viewport_info.width || cur_framebuffer->height != cur_viewport_info.height)
-	{
-		glViewport(0, 0, fb->width, fb->height);
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, fb->id);
-
-	cur_framebuffer = fb;
-}
+//void RenderManager::BindFrameBuffer(FrameBuffer* fb)
+//{
+//	if (cur_framebuffer == fb)
+//	{
+//		return;
+//	}
+//
+//	if (cur_framebuffer->width != cur_viewport_info.width || cur_framebuffer->height != cur_viewport_info.height)
+//	{
+//		glViewport(0, 0, fb->width, fb->height);
+//	}
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, fb->id);
+//
+//	cur_framebuffer = fb;
+//}
 
 

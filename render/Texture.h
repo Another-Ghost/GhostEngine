@@ -85,6 +85,9 @@ struct Texture
 	}
 
 	//static unsigned int LoadTexture(const std::string& name); //? 在何处进行gamma校正
-
+	/*debug*/
+	void AddLabel(string _label) {
+		glObjectLabel(GL_TEXTURE, id, -1, _label.c_str());
+	}
 };
 

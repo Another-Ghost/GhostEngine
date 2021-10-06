@@ -23,7 +23,9 @@ ResourceManager::ResourceManager()
 
     gltf_loader = std::make_unique<GLTFLoader>();
 }
-PlaneTexture* ResourceManager::CreatePlaneTexture(TextureType type, bool b_buffer, TextureFile* file)
+
+
+PlaneTexture* ResourceManager::CreatePlaneTexture(TextureType type, bool b_buffer, TextureFile* file, string label)
 {
     if (file != nullptr)
     {
@@ -69,6 +71,11 @@ PlaneTexture* ResourceManager::CreatePlaneTexture(TextureType type, bool b_buffe
     }
 
     plane_texture_array.emplace(texture);
+
+    if (label != "")
+    {
+        glObjectLabel(GL_TEXTURE, texture->id, -1, label.c_str());
+    }
 
     return texture;
 }

@@ -49,8 +49,8 @@ void main()
     //const vec2 noise_scale = vec2(1280.0/float(noise_tex_size), 720.0/float(noise_tex_size)); 
 
     vec3 frag_pos = texture(g_view_position, TexCoords).xyz; //view space
-    if(frag_pos.z < 0.f)
-    {
+//    if(frag_pos.z < 0.f)
+//    {
         vec3 normal = normalize(texture(g_view_normal, TexCoords).xyz);  //view space
         vec3 random_vec = normalize(texture(noise_texture, TexCoords * noise_scale).xyz);   //采样值会大于1，但noise_texture被设为REPEAT，所以效果上相当于按noise texture的大小平铺这个材质
 
@@ -79,9 +79,9 @@ void main()
             occlusion = 1.f - (occlusion / sample_array.length());  //output result 1 means totally no occlusion
 
             OUT_FragColor = occlusion;
-    }
-    else
-        OUT_FragColor = 1.f;
+//    }
+//    else
+//        OUT_FragColor = 1.f;
 
     //OUT_FragColor = sample_array.length() / 128.0;
 }

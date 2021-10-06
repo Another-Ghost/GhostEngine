@@ -18,36 +18,37 @@ PostProcessRenderer::PostProcessRenderer(int width, int height)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	/*SSAO*/
-	glGenFramebuffers(1, &ssao_fbo);
-	glObjectLabel(GL_FRAMEBUFFER, ssao_fbo, -1, "ssao_fbo");
-	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
+	ssao_fbo = make_unique<FrameBuffer>(RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+	//glGenFramebuffers(1, &ssao_fbo);
+	//glObjectLabel(GL_FRAMEBUFFER, ssao_fbo, -1, "ssao_fbo");
+	//glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
 	ssao_color_attachment = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false);
 	ssao_color_attachment->width = width;
 	ssao_color_attachment->height = height;
 	ssao_color_attachment->internal_format = GL_RED;
 	ssao_color_attachment->data_format = GL_RED;
 	ssao_color_attachment->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ssao_color_attachment->id, 0);
+	ssao_color_attachment->AddLabel("ssao_color_attachment");
+	ssao_fbo->AttachTexture2D(ssao_color_attachment);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ssao_color_attachment->id, 0);
 #ifdef DEBUG_MODE
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "SSAO Frame buffer not complete!" << std::endl;
+	ssao_fbo->CheckStatus();
 #endif
+	ssao_blur_fbo = make_unique<FrameBuffer>(RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 
-	glGenFramebuffers(1, &ssao_blur_fbo);
-	glObjectLabel(GL_FRAMEBUFFER, ssao_blur_fbo, -1, "ssao_blur_fbo");
-	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
 	ssao_blur_color_attachment = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::ATTACHMENT, false);
 	ssao_blur_color_attachment->width = width;
 	ssao_blur_color_attachment->height = height;
 	ssao_blur_color_attachment->internal_format = GL_RED;
 	ssao_blur_color_attachment->data_format = GL_RED;
 	ssao_blur_color_attachment->Buffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ssao_blur_color_attachment->id, 0);
+	ssao_blur_color_attachment->AddLabel("ssao_blur_color_attachment");
+	ssao_blur_fbo->AttachTexture2D(ssao_blur_color_attachment);
 #ifdef DEBUG_MODE
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "SSAO Blur Frame buffer not complete!" << std::endl;
+	ssao_blur_fbo->CheckStatus();
 #endif
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	std::uniform_real_distribution<GLfloat> random_floats(0.f, 1.f);	//均匀分布
 	std::default_random_engine generator;	//默认随机数生成器（由编译器定，大概率是线性同余（RandSeed = (A * RandSeed + B) % M，伪随机））
@@ -114,19 +115,24 @@ void PostProcessRenderer::Update(float dt)
 
 void PostProcessRenderer::UpdateSSAO()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, ssao_fbo);
+	ssao_fbo->Bind();
 	glClear(GL_COLOR_BUFFER_BIT);
 	TextureUnit::Bind2DTexture(TextureUnit::g_view_position, RenderManager::GetSingleton().cur_g_buffer->view_position_tex);
 	TextureUnit::Bind2DTexture(TextureUnit::g_view_normal, RenderManager::GetSingleton().cur_g_buffer->view_normal_tex);
 	TextureUnit::Bind2DTexture(SSAOShader::noise_texture_tu, noise_texture);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(ssao_shader);
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	ssao_fbo->Unbind();
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
-	glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
+	//glBindFramebuffer(GL_FRAMEBUFFER, ssao_blur_fbo);
+	ssao_blur_fbo->Bind();
 	glClear(GL_COLOR_BUFFER_BIT);
 	TextureUnit::Bind2DTexture(TextureUnit::ssao, ssao_color_attachment);
 	RenderManager::GetSingleton().DrawCaptureQuadMesh(ssao_blur_shader);
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	ssao_blur_fbo->Unbind();
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//TextureUnit::Bind2DTexture(TextureUnit::g_color, RenderManager::GetSingleton().color_tex);

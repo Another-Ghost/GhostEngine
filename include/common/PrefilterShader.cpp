@@ -17,8 +17,11 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, ori_cubemap_id);
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	
+	shared_ptr<CaptureFrameBuffer> fbo = RenderManager::GetSingleton().GetCaptureFBO();
+	//fbo->Bind(prefilter_cubemap->width, prefilter_cubemap->height);
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 	
 	unsigned int max_mip_levels = 5;
 	for (unsigned int mip = 0; mip < max_mip_levels; ++mip)
@@ -26,9 +29,11 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 		// resize framebuffer according to mip-level size.
 		unsigned int mip_width = prefilter_cubemap->width * std::pow(0.5f, mip);	//大小很关键
 		unsigned int mip_height = prefilter_cubemap->height * std::pow(0.5f, mip);
-		glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
-		glViewport(0, 0, mip_width, mip_height);
+		//glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+		//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_width, mip_height);
+		fbo->Bind(prefilter_cubemap->width, prefilter_cubemap->height);
+		fbo->depth_rbo->Resize(mip_width, mip_height);
+		//glViewport(0, 0, mip_width, mip_height);
 
 		float roughness = (float)mip / (float)(max_mip_levels - 1);
 		SetFloat("roughness", roughness);
@@ -42,8 +47,12 @@ void PrefilterShader::RenderPrefilterCubeMap(const CubeMap* prefilter_cubemap, u
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //? 是否应该被加到每个drawcall之前
 			RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 		}
+
+		fbo->Unbind();
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 }
 

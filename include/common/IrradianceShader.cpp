@@ -11,11 +11,13 @@ IrradianceShader::IrradianceShader():
 void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cubemap, unsigned int ori_cubemap_id)
 {
 	Use();
+	shared_ptr<CaptureFrameBuffer> capture_fbo = RenderManager::GetSingleton().GetCaptureFBO();
+	capture_fbo->Bind(irradiance_cubemap);	//? GL_DEPTH_COMPONENT24
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
-	glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, irradiance_cubemap->width, irradiance_cubemap->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
+	//glBindRenderbuffer(GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, irradiance_cubemap->width, irradiance_cubemap->height);
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RenderManager::GetSingleton().GetCaptureRBO());
 
 	SetInt("environment_map", 0);
 	SetProjectionMatrix(RenderManager::GetSingleton().GetCaptureProjectionMatrix());
@@ -23,7 +25,7 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, ori_cubemap_id);
 
-	glViewport(0, 0, irradiance_cubemap->width, irradiance_cubemap->height);
+	//glViewport(0, 0, irradiance_cubemap->width, irradiance_cubemap->height);
 	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCaptureFBO());
 	const vector<mat4>& capture_view_array = RenderManager::GetSingleton().GetCaptureViewArray();
 	for (unsigned int i = 0; i < 6; ++i)
@@ -33,8 +35,9 @@ void IrradianceShader::RenderEnvIrradianceCubeMap(const CubeMap* irradiance_cube
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		RenderManager::GetSingleton().DrawCaptureCubeMesh(this);
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+	capture_fbo->Unbind();
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
 }
 
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "Prerequisite.h"
+#include "FrameBuffer.h"
 
-struct GBuffer
+struct GBuffer : public FrameBuffer
 {
-	unsigned int fbo;
-	unsigned int depth_rbo;
+	//unsigned int fbo;
+	//unsigned int depth_rbo;
 
 	AttachmentTexture* world_position_tex;
 	AttachmentTexture* world_normal_tex;
@@ -16,14 +16,13 @@ struct GBuffer
 	AttachmentTexture* color_tex;
 
 
-	GBuffer();
+	//GBuffer();
 
 	GBuffer(int width, int height);
 
-	void Bind();
+	//void Bind();
 
-
-	void Unbind();
+	//void Unbind();
 	
 };
 
