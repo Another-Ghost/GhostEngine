@@ -101,7 +101,6 @@ int main()
 	//point_tex_file = dynamic_cast<LDRTextureFile*>(ResourceManager::GetSingleton().CreateTextureFile(TextureFileType::LDR, true, File::GetTexturePath("pbr/plastic/ao.png")));
 	//point_mat->ao_map = ResourceManager::GetSingleton().CreatePlaneTexture(TextureType::AO, true, point_tex_file);
 
-
 	/*Mesh*/
 	SphereGeometryMesh* sphere_mesh = dynamic_cast<SphereGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(SphereGeometryMeshFactory())); //? should be created by the resource manager
 	CubeGeometryMesh* cube_mesh = dynamic_cast<CubeGeometryMesh*>(ResourceManager::GetSingleton().CreateMesh(CubeGeometryMeshFactory()));
