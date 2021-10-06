@@ -1,6 +1,8 @@
 ﻿#pragma once
-#include "Shader.h"
+
 #include "AABBVolume.h"
+
+class Shader;
 
 enum class MeshType
 {

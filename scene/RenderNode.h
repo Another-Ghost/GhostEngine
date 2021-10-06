@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "Prerequisite.h"
 #include "Node.h"
+#include "RenderModule.h"
 
 class RenderNode : public Node
 {

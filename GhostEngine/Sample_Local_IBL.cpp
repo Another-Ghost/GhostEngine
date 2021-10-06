@@ -5,7 +5,6 @@
 //#include "BasicCamera.h"
 //#include "BasicNode.h"
 #include "RenderNode.h"
-
 #include "RenderModule.h"
 #include "ResourceManager.h"
 #include "PBRMaterial.h"

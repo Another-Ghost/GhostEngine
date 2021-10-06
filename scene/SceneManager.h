@@ -1,8 +1,18 @@
 #pragma once
-#include "Prerequisite.h"
+//#include "Prerequisite.h"
+#include "BasicDependencies.h"
 #include "Singleton.h"
 
 //include all objects with postion
+class Camera;
+class Node;
+class RenderNode;
+struct PointLight;
+class ReflectionProbe;
+class CameraFactory;
+struct Light;
+class LightFactory;
+class AABBModule;
 
 class SceneManager : public Singleton<SceneManager>
 {

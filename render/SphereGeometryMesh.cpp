@@ -1,4 +1,5 @@
 ﻿#include "SphereGeometryMesh.h"
+#include "Shader.h"
 
 SphereGeometryMesh::SphereGeometryMesh(int x_segment_num_, int y_segment_num_):
 	x_segment_num(x_segment_num_), y_segment_num(y_segment_num_)

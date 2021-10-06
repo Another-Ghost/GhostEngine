@@ -1,7 +1,11 @@
 #pragma once
-#include "Prerequisite.h"
-#include "AABBVolume.h"
 
+#include "Mesh.h"
+#include "Material.h"
+#include "AABBVolume.h"
+#include "Transform.h"
+
+class RenderModule;
 
 class RenderUnit
 {

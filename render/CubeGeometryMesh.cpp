@@ -1,4 +1,5 @@
 #include "CubeGeometryMesh.h"
+#include "Shader.h"
 
 CubeGeometryMesh::CubeGeometryMesh()
 {

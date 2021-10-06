@@ -1,4 +1,5 @@
 #include "QuadGeometryMesh.h"
+#include "Shader.h"
 
 QuadGeometryMesh::QuadGeometryMesh()
 {

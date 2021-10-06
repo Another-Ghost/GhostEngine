@@ -155,11 +155,9 @@
     <ClCompile Include="BasicShader.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
     <ClCompile Include="CubeMapShader.cpp" />
-    <ClCompile Include="Datatype.cpp" />
     <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
-    <ClCompile Include="LightProbe.cpp" />
     <ClCompile Include="LightProbeRenderer.cpp" />
     <ClCompile Include="LocalIBLRenderer.cpp" />
     <ClCompile Include="OutputShader.cpp" />
@@ -169,21 +167,14 @@
     <ClCompile Include="MVPShader.cpp" />
     <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
-    <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="PointLightFactory.cpp" />
     <ClCompile Include="PointShadowDepthShader.cpp" />
     <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
-    <ClCompile Include="ReflectionProbe.cpp" />
     <ClCompile Include="ReflectionProbeShader.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderManager.cpp" />
-    <ClCompile Include="RenderModule.cpp" />
-    <ClCompile Include="RenderNode.cpp" />
-    <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowRenderer.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="ChannelCombinationShader.cpp" />
@@ -195,11 +186,9 @@
     <ClInclude Include="BasicShader.h" />
     <ClInclude Include="BRDFLUTShader.h" />
     <ClInclude Include="CubeMapShader.h" />
-    <ClInclude Include="Datatype.h" />
     <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IrradianceShader.h" />
-    <ClInclude Include="LightProbe.h" />
     <ClInclude Include="LightProbeRenderer.h" />
     <ClInclude Include="LocalIBLRenderer.h" />
     <ClInclude Include="OutputShader.h" />
@@ -209,21 +198,14 @@
     <ClInclude Include="MVPShader.h" />
     <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
-    <ClInclude Include="PointLight.h" />
-    <ClInclude Include="PointLightFactory.h" />
     <ClInclude Include="PointShadowDepthShader.h" />
     <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
-    <ClInclude Include="ReflectionProbe.h" />
     <ClInclude Include="ReflectionProbeShader.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="RenderModule.h" />
-    <ClInclude Include="RenderNode.h" />
-    <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowRenderer.h" />
     <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="ChannelCombinationShader.h" />
@@ -248,9 +230,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\render\render.vcxproj">
-      <Project>{f138511f-1810-41b5-8af8-ee2931ba1c84}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\resource\resource.vcxproj">
       <Project>{18f1f27c-58ef-47be-8b3a-3e66fc7b6401}</Project>

@@ -1,4 +1,5 @@
 #include "TriangleMesh.h"
+#include "Shader.h"
 
 void TriangleMesh::Initialize()
 {

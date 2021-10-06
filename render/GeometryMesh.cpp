@@ -1,4 +1,5 @@
 ﻿#include "GeometryMesh.h"
+#include "Shader.h"
 
 GeometryMesh::GeometryMesh()
 {

@@ -159,7 +159,11 @@
     <ClCompile Include="Root.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Root.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="framework.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

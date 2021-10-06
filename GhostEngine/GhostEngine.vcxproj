@@ -149,12 +149,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sample_Local_IBL.cpp" />
-    <ClCompile Include="WFTestRenderer.cpp" />
-    <ClCompile Include="WFTestShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{30b2dd8d-2c97-498f-a559-bd11019a253d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\camera\camera.vcxproj">
+      <Project>{9e2df78f-f54f-4f8a-b9ce-980627ad7cbd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependencies\Dependencies.vcxproj">
+      <Project>{4c34553e-4ca1-422e-b69a-0a8ba25b5b38}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\framework\framework.vcxproj">
+      <Project>{cfc40881-00a1-4303-8963-d3e2c34a83ba}</Project>
     </ProjectReference>
     <ProjectReference Include="..\include\common\common.vcxproj">
       <Project>{286780d4-36af-4ad8-be7c-1733f4747a9b}</Project>
@@ -162,8 +169,14 @@
     <ProjectReference Include="..\math\math.vcxproj">
       <Project>{2c37dc7b-3a93-4783-b306-6c39abff23bb}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\render\render.vcxproj">
+      <Project>{f138511f-1810-41b5-8af8-ee2931ba1c84}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\resource\resource.vcxproj">
       <Project>{18f1f27c-58ef-47be-8b3a-3e66fc7b6401}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\scene\scene.vcxproj">
+      <Project>{5f9a9752-9863-4381-adf0-7af7ae2ac22b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\window\window.vcxproj">
       <Project>{993adbba-ce14-40c8-a138-09b744537251}</Project>
@@ -171,8 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="WFTestRenderer.h" />
-    <ClInclude Include="WFTestShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GhostEngine.rc" />
