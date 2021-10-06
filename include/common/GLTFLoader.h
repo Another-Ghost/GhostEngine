@@ -65,14 +65,14 @@ class GLTFLoader : public Loader
 
 
 public:
-	RootRenderModule* LoadFile(const string& path_str);
+	RenderModule* LoadFile(const string& path_str);
 
 private:
 	map<string, Material*> material_map;
 	map<string, Mesh*> mesh_map;
 	std::filesystem::path parent_path;
 
-	RootRenderModule* ProcessScene(const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resource_reader);
+	RenderModule* ProcessScene(const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resource_reader);
 
 	void ProcessNode(const string& node_id, RenderModule* render_module, const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resource_reader);
 

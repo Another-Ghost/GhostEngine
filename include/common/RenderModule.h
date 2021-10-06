@@ -12,7 +12,7 @@ enum class RenderModuleType
 class RenderModule : public TransformableModule
 {
 protected:
-	RenderModule* parent;
+	TransformableModule* parent;
 
 	bool b_rendered;
 
@@ -29,8 +29,8 @@ public:
 
 	virtual void Update(float dt) override;
 
-	virtual RenderModule* GetParent() { return parent; }
-	virtual void SetParent(RenderModule* parent_) { parent = parent_; }
+	virtual TransformableModule* GetParent() { return parent; }
+	virtual void SetParent(TransformableModule* parent_) { parent = parent_; }
 
 	void AddChild(RenderModule* child); 
 

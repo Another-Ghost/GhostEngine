@@ -2,6 +2,7 @@
 #include "Prerequisite.h"
 #include "Singleton.h"
 
+//include all objects with postion
 
 class SceneManager : public Singleton<SceneManager>
 {
@@ -14,7 +15,7 @@ public:
 
 	Camera* main_camera;
 
-	Node* root_unit;
+	Node* root_node;
 
 	set<ReflectionProbe*> reflection_probe_set;
 

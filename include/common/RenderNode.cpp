@@ -1,6 +1,6 @@
 #include "RenderNode.h"
-#include "RootRenderModule.h"
 #include "SceneManager.h"
+#include "RenderModule.h"
 
 RenderNode::RenderNode()
 {
@@ -12,10 +12,10 @@ RenderNode::~RenderNode()
 	parent->RemoveChild(this);
 }
 
-void RenderNode::AttachRenderModule(RootRenderModule* root_render_module_)
+void RenderNode::AttachRenderModule(RenderModule* root_render_module_)
 {
 	root_render_module = root_render_module_;
-	root_render_module->SetParentNode(this);
+	root_render_module->SetParent(this);
 }
 
 void RenderNode::Update(float dt)
@@ -24,4 +24,6 @@ void RenderNode::Update(float dt)
 	{
 		root_render_module->Update(dt);
 	}
+
+	Node::Update(dt);
 }

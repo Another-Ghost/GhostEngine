@@ -166,7 +166,6 @@
     <ClCompile Include="PBRDeferRenderer.cpp" />
     <ClCompile Include="PBRGeometryPassShader.cpp" />
     <ClCompile Include="PBRLightingPassShader.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="MVPShader.cpp" />
     <ClCompile Include="PBRRenderer.cpp" />
     <ClCompile Include="PBRShader.cpp" />
@@ -184,7 +183,6 @@
     <ClCompile Include="RenderNode.cpp" />
     <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="RootRenderModule.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowRenderer.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
@@ -208,7 +206,6 @@
     <ClInclude Include="PBRDeferRenderer.h" />
     <ClInclude Include="PBRGeometryPassShader.h" />
     <ClInclude Include="PBRLightingPassShader.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="MVPShader.h" />
     <ClInclude Include="PBRRenderer.h" />
     <ClInclude Include="PBRShader.h" />
@@ -226,7 +223,6 @@
     <ClInclude Include="RenderNode.h" />
     <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="RootRenderModule.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowRenderer.h" />
     <ClInclude Include="SkyboxShader.h" />

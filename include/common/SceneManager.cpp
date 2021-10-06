@@ -13,12 +13,12 @@
 template<> SceneManager* Singleton<SceneManager>::singleton = nullptr;
 SceneManager::SceneManager()
 {
-	root_unit = new Node();
+	root_node = new Node();
 }
 void SceneManager::AddRenderNode(RenderNode* unit, Node* parent)
 {
 	if (!parent)
-		parent = root_unit;
+		parent = root_node;
 	unit->SetParent(parent);
 	parent->AddChild(unit);
 }
@@ -44,7 +44,7 @@ void SceneManager::Update(float dt)
 {
 	main_camera->Update(dt);
 
-	root_unit->Update(dt);
+	root_node->Update(dt);
 
 	//for (const auto& render_unit : render_unit_array)	//可以改成保存unit数组，dynamic_cast判断是否是render_unit
 	//{

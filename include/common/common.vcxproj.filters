@@ -57,12 +57,6 @@
     <ClCompile Include="RenderNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RootRenderModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PBRShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,9 +79,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CubeMapShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUnit.cpp">
@@ -147,9 +138,6 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLTFLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LocalIBLRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -157,6 +145,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PointLightFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLTFLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -181,12 +175,6 @@
     </ClInclude>
     <ClInclude Include="Prerequisite.h">
       <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="RootRenderModule.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUnit.h">
       <Filter>Header Files</Filter>

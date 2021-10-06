@@ -1,5 +1,5 @@
 #include "GLTFLoader.h"
-#include "RootRenderModule.h"
+#include "RenderModule.h"
 #include "RenderUnit.h"
 #include "ResourceManager.h"
 #include "PBRMaterial.h"
@@ -9,7 +9,7 @@
 
 //using namespace Microsoft::glTF;
 
-RootRenderModule* GLTFLoader::LoadFile(const string& path_str)
+RenderModule* GLTFLoader::LoadFile(const string& path_str)
 {
 	material_map.clear();
 	mesh_map.clear();
@@ -100,12 +100,12 @@ RootRenderModule* GLTFLoader::LoadFile(const string& path_str)
 	return nullptr;
 }
 
-RootRenderModule* GLTFLoader::ProcessScene(const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resource_reader)
+RenderModule* GLTFLoader::ProcessScene(const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resource_reader)
 {
-	RootRenderModule* root_render_module = nullptr;
+	RenderModule* root_render_module = nullptr;
 	for (const auto& node_id : document.GetDefaultScene().nodes)	//sceneÖ»±£ÁônodeµÄid
 	{
-		root_render_module = dynamic_cast<RootRenderModule*>(ResourceManager::GetSingleton().CreateRenderModule(nullptr, RenderModuleType::ROOT));
+		root_render_module = ResourceManager::GetSingleton().CreateRenderModule(nullptr);
 
 		ProcessNode(node_id, root_render_module, document, resource_reader);
 	}

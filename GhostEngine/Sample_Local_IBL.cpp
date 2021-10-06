@@ -11,7 +11,7 @@
 #include "PBRMaterial.h"
 #include "File.h"
 #include "PointLight.h"
-#include "RootRenderModule.h"
+#include "RenderModule.h"
 #include "SphereGeometryMesh.h"
 #include "SceneManager.h"
 #include "CameraFactory.h"
@@ -123,7 +123,7 @@ int main()
 
 	/*bottom*/
 	RenderNode* cube_node = new RenderNode();
-	RootRenderModule* root_render_module = new RootRenderModule();
+	RenderModule* root_render_module = new RenderModule();
 
 	//root_render_module->local_transform.SetDimension({ 20.f, 1.f, 20.f });
 	root_render_module->local_transform.SetDimension({ probe_size, 0.5f, probe_size });
@@ -134,7 +134,7 @@ int main()
 
 	//back
 	RenderNode* wall1 = new RenderNode();
-	RootRenderModule* wall1_root_rm = new RootRenderModule();
+	RenderModule* wall1_root_rm = new RenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall1_root_rm, cube_mesh, cube_mat);
 	wall1->AttachRenderModule(wall1_root_rm);
 	wall1->local_transform.SetDimension({ probe_size, probe_size, 0.5f });
@@ -143,7 +143,7 @@ int main()
 
 	//right
 	RenderNode* wall2 = new RenderNode();
-	RootRenderModule* wall2_root_rm = new RootRenderModule();
+	RenderModule* wall2_root_rm = new RenderModule();
 	ResourceManager::GetSingleton().CreateRenderUnit(wall2_root_rm, cube_mesh, material);
 	wall2->AttachRenderModule(wall2_root_rm);
 	wall2->local_transform.SetDimension({ probe_size, probe_size, 0.5f });

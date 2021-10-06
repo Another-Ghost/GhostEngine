@@ -32,7 +32,7 @@ void RenderModule::AddChild(RenderModule* child)
 Transform RenderModule::GetWorldTransform()
 {
 	Transform matrix = parent->GetWorldTransform() * local_transform;
-	matrix.PrintMatrix();
+	//matrix.PrintMatrix();
 
 	return parent->GetWorldTransform() * local_transform;
 }

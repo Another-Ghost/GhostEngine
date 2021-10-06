@@ -9,7 +9,7 @@
 #include "RenderModule.h"
 #include "Light.h"
 #include "EquirectangularMap.h"
-#include "RootRenderModule.h"
+#include "RenderModule.h"
 #include "Node.h"
 #include "RenderUnit.h"
 #include "HDRIShader.h"

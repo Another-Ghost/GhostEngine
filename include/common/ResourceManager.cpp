@@ -8,7 +8,7 @@
 #include "CubeMap.h"
 #include "AttachmentTexture.h"
 #include "TextureFile.h"
-#include "RootRenderModule.h"
+#include "RenderModule.h"
 #include "TriangleMesh.h"
 #include "RenderUnit.h"
 #include "BasicMaterialFactory.h"
@@ -174,9 +174,6 @@ RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderMo
     {
     case RenderModuleType::DEFAULT:
         render_module = new RenderModule();
-        break;
-    case RenderModuleType::ROOT:
-        render_module = new RootRenderModule();
         break;
     default:
         break;
