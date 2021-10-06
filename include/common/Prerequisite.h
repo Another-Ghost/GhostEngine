@@ -119,7 +119,7 @@ class ReflectionProbe;
 class LightProbeRenderer;
 
 class ShadowRenderer;
-class PointShadowShader;
+//class PointShadowShader;
 class PointShadowDepthShader;
 
 class FrameBuffer;

@@ -161,6 +161,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
     <ClCompile Include="framebuffer.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
     <ClInclude Include="FrameBuffer.h" />
+    <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />

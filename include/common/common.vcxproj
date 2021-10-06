@@ -154,10 +154,8 @@
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="BasicShader.cpp" />
     <ClCompile Include="BRDFLUTShader.cpp" />
-    <ClCompile Include="Config.cpp" />
     <ClCompile Include="CubeMapShader.cpp" />
     <ClCompile Include="Datatype.cpp" />
-    <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GLTFLoader.cpp" />
     <ClCompile Include="HDRIShader.cpp" />
     <ClCompile Include="IrradianceShader.cpp" />
@@ -175,7 +173,6 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightFactory.cpp" />
     <ClCompile Include="PointShadowDepthShader.cpp" />
-    <ClCompile Include="PointShadowShader.cpp" />
     <ClCompile Include="PostProcessRenderer.cpp" />
     <ClCompile Include="PrefilterShader.cpp" />
     <ClCompile Include="Prerequisite.cpp" />
@@ -188,7 +185,6 @@
     <ClCompile Include="RenderUnit.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RootRenderModule.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowRenderer.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
@@ -200,10 +196,8 @@
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="BasicShader.h" />
     <ClInclude Include="BRDFLUTShader.h" />
-    <ClInclude Include="Config.h" />
     <ClInclude Include="CubeMapShader.h" />
     <ClInclude Include="Datatype.h" />
-    <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="HDRIShader.h" />
     <ClInclude Include="IrradianceShader.h" />
@@ -221,7 +215,6 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightFactory.h" />
     <ClInclude Include="PointShadowDepthShader.h" />
-    <ClInclude Include="PointShadowShader.h" />
     <ClInclude Include="PostProcessRenderer.h" />
     <ClInclude Include="PrefilterShader.h" />
     <ClInclude Include="Prerequisite.h" />
@@ -234,7 +227,6 @@
     <ClInclude Include="RenderUnit.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RootRenderModule.h" />
-    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowRenderer.h" />
     <ClInclude Include="SkyboxShader.h" />
