@@ -15,7 +15,7 @@
 #include "PBRShader.h"
 #include "PBRLightingPassShader.h"
 #include "ReflectionProbe.h"
-
+#include "Mesh.h"
 
 LocalIBLRenderer::LocalIBLRenderer()
 {

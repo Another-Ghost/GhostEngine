@@ -1,11 +1,8 @@
 #pragma once
 #include "Prerequisite.h"
 #include "Singleton.h"
-#include "CubeGeometryMesh.h"
-#include "QuadGeometryMesh.h"
 #include "RenderUnit.h"
-#include "CaptureFrameBuffer.h"
-#include "PBRDeferRenderer.h"
+
 
 //struct RenderMaterialComp
 //{
@@ -104,7 +101,7 @@ public:
 	float shadow_far_plane{64};
 
 	/*Defer Rendering*/
-	unique_ptr<PBRDeferRenderer> pbr_defer_renderer;
+	shared_ptr<PBRDeferRenderer> pbr_defer_renderer;
 
 	bool b_defer_rendering{ true };
 

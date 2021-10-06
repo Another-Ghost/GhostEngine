@@ -4,7 +4,7 @@
 #include "AttachmentTexture.h"
 #include "CubeMap.h"
 
-struct FrameBuffer;
+class FrameBuffer;
 struct FBOInfo
 {
 	FrameBuffer* fbo;
@@ -15,7 +15,7 @@ struct FBOInfo
 		:fbo(_fbo), width(_w), height(_h) {}
 };
 
-struct FrameBuffer
+class FrameBuffer
 {
 public:
 	FrameBuffer(int _w, int _h);

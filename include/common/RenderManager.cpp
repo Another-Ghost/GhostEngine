@@ -1,5 +1,4 @@
 ﻿#include "RenderManager.h"
-#include "RenderUnit.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
 #include "PointLight.h"
@@ -28,6 +27,9 @@
 #include "IrradianceShader.h"
 #include "ShadowRenderer.h"
 #include "FrameBuffer.h"
+#include "CubeGeometryMesh.h"
+#include "QuadGeometryMesh.h"
+#include "CaptureFrameBuffer.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -187,7 +189,7 @@ bool RenderManager::Initialize(Renderer* renderer_)
 		if (b_defer_rendering)
 		{
 			/*Defer Rendering*/
-			pbr_defer_renderer = make_unique<PBRDeferRenderer>();
+			pbr_defer_renderer = make_shared<PBRDeferRenderer>();
 		}
 		else
 		{

@@ -2,7 +2,7 @@
 #include "RenderManager.h"
 #include "RenderModule.h"
 #include "AABBVolume.h"
-
+#include "Mesh.h"
 
 RenderUnit::RenderUnit(RenderModule* parent_, Mesh* mesh_, Material* material_): 
 	mesh(mesh_), material(material_), b_rendered(true), parent(parent_)

@@ -1,7 +1,10 @@
 #pragma once
 #include "Prerequisite.h"
 
-//#include "RenderManager.h"
+#include "RenderManager.h"
+#include "Mesh.h"
+#include "CaptureFrameBuffer.h"
+
 
 #include <fstream>
 #include <sstream>
