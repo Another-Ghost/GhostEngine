@@ -67,7 +67,7 @@ public:
 	shared_ptr<GBuffer> g_buffer;
 	shared_ptr<GBuffer> cur_g_buffer;
 
-	unsigned int cur_output_fbo{ 0 };
+	//unsigned int cur_output_fbo{ 0 };
 
 	SkyboxShader* skybox_shader;
 
@@ -170,7 +170,7 @@ public:
 	ViewportInfo GetCurrentViewportInfo() { return cur_viewport_info; }
 	CameraInfo GetCurrentCameraInfo() { return cur_camera_info; }
 
-	unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
+	//unsigned int GetCurrentOutputFrameBuffer() { return cur_output_fbo; }
 
 	//void BindCurrentOutputFrameBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, cur_output_fbo); }
 

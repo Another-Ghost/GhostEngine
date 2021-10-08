@@ -17,6 +17,11 @@
 #include <cassert>
 #include <cstdlib>
 
+class RenderModule;
+class Material;
+class Mesh;
+
+
 
 // The glTF SDK is decoupled from all file I/O by the IStreamReader (and IStreamWriter)
 // interface(s) and the C++ stream-based I/O library. This allows the glTF SDK to be used in

@@ -319,7 +319,8 @@ void RenderManager::Update(float dt)
 		}
 		else
 		{
-			glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+			//glBindFramebuffer(GL_FRAMEBUFFER, gbuffer_fbo);
+			g_buffer->Bind();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			current_renderer->Update(dt);
 
@@ -327,7 +328,8 @@ void RenderManager::Update(float dt)
 
 			skybox_shader->RenderSkybox(RenderManager::GetSingleton().GetSkybox()->id);
 
-			glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+			g_buffer->Unbind();
+			//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 		}
 
 		post_process_renderer->Update(dt);

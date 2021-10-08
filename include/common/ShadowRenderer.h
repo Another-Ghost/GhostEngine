@@ -18,7 +18,8 @@ private:
 	PointShadowDepthShader* point_shadow_depth_shader;
 	//unique_ptr<PointShadowShader> point_shadow_shader;
 
-	unsigned int depth_map_fbo;
+	//unsigned int depth_map_fbo;
+	shared_ptr<FrameBuffer> depth_map_fbo;
 
 	vector<CubeMap*> depth_cubemaps;
 

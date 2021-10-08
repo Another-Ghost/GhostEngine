@@ -12,18 +12,21 @@ ShadowRenderer::ShadowRenderer(float far_plane_): far_plane(far_plane_)
 	point_shadow_depth_shader = new PointShadowDepthShader();
 	//point_shadow_shader = make_unique<PointShadowShader>();
 
-	glGenFramebuffers(1, &depth_map_fbo);
-	
+	//glGenFramebuffers(1, &depth_map_fbo);
+	depth_map_fbo = make_shared<FrameBuffer>(0, 0);
+
 	//depth_cubemaps = ResourceManager::GetSingleton().CreateCubemap(shadow_width, shadow_height);
 	//depth_cubemaps->internal_format = GL_DEPTH_COMPONENT;
 	//depth_cubemaps->data_format = GL_DEPTH_COMPONENT;
 	//depth_cubemaps->Buffer();
-
-	glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
+	
+	//glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
 	//glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_cubemaps->id, 0);
+	depth_map_fbo->Bind();
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	depth_map_fbo->Unbind();
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 
 	//float near_plane = 1.f;
 	//float far_plane = 25.f;
@@ -48,7 +51,8 @@ void ShadowRenderer::DrawDepthMap(PointLight* light)
 	}
 
 	glViewport(0, 0, shadow_width, shadow_height);
-	glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
+	//glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
+	depth_map_fbo->Bind();
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, light->shadow_cubemap->id, 0);
 	//glDrawBuffer(GL_NONE);
 	//glReadBuffer(GL_NONE);
@@ -62,9 +66,9 @@ void ShadowRenderer::DrawDepthMap(PointLight* light)
 
 	glTextureBarrier();	//?
 
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
-	glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
-
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glViewport(0, 0, RenderManager::GetSingleton().GetCurrentViewportInfo().width, RenderManager::GetSingleton().GetCurrentViewportInfo().height);
+	depth_map_fbo->Unbind();
 	
 }
 

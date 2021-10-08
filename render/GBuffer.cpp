@@ -104,7 +104,7 @@ GBuffer::GBuffer(int width, int height)
 	//	std::cout << "ERROR<GBuffer>: G-Buffer not complete!" << std::endl;
 	CheckStatus();
 #endif
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
+	//glBindFramebuffer(GL_FRAMEBUFFER, RenderManager::GetSingleton().GetCurrentOutputFrameBuffer());
 }
 
 //void GBuffer::Bind()
