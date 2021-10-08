@@ -23,10 +23,10 @@ void ChannelCombinationShader::RenderTexture(const PlaneTexture* out_tex, const 
 
 
 	glActiveTexture(GL_TEXTURE23);
-	glBindTexture(GL_TEXTURE_2D, tex1->id);
+	glBindTexture(GL_TEXTURE_2D, tex2->id);
 
 	glActiveTexture(GL_TEXTURE24);
-	glBindTexture(GL_TEXTURE_2D, tex2->id);
+	glBindTexture(GL_TEXTURE_2D, tex1->id);
 
 	//glViewport(0, 0, out_tex->width, out_tex->height);
 

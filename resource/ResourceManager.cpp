@@ -10,9 +10,11 @@
 #include "TextureFile.h"
 #include "RenderModule.h"
 #include "TriangleMesh.h"
-#include "RenderUnit.h"
+#include "RenderModule.h"
 #include "BasicMaterialFactory.h"
 #include "PlaneTexture.h"
+#include "GLTFLoader.h"
+
 
 
 
@@ -21,7 +23,7 @@ ResourceManager::ResourceManager()
 {
     stbi_set_flip_vertically_on_load(true);
 
-    gltf_loader = std::make_unique<GLTFLoader>();
+    gltf_loader = std::make_shared<GLTFLoader>();
 }
 
 
@@ -135,12 +137,12 @@ Material* ResourceManager::CreateMaterial(MaterialType type)
 
 }
 
-Material* ResourceManager::CreateMaterial(const MaterialFactory& mat_factory)
-{
-    Material* material = mat_factory.CreateMaterial();
-    material_array.emplace(material);
-    return material;
-}
+//Material* ResourceManager::CreateMaterial(const MaterialFactory& mat_factory)
+//{
+//    Material* material = mat_factory.CreateMaterial();
+//    material_array.emplace(material);
+//    return material;
+//}
 
 Mesh* ResourceManager::CreateMesh(const MeshFactory& mesh_factory)
 {
@@ -167,17 +169,19 @@ TriangleMesh* ResourceManager::CreateTriangleMesh(bool b_buffer, const vector<Ex
 
 
 
-RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent, RenderModuleType type /*= RenderModuleType::DEFAULT*/)
+RenderModule* ResourceManager::CreateRenderModule(RenderModule* parent)
 {
     RenderModule* render_module = nullptr;
-    switch (type)
-    {
-    case RenderModuleType::DEFAULT:
-        render_module = new RenderModule();
-        break;
-    default:
-        break;
-    }
+  //  switch (type)
+  //  {
+  //  case RenderModuleType::DEFAULT:
+		//render_module = new RenderModule();
+  //      break;
+  //  default:
+  //      break;
+  //  }
+
+    render_module = new RenderModule();
 
     if (parent)
     {

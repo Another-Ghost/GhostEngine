@@ -1,4 +1,5 @@
 #include "LocalIBLRenderer.h"
+#include "RenderModule.h"
 #include "ResourceManager.h"
 #include "CubeMap.h"
 #include "PrefilterShader.h"

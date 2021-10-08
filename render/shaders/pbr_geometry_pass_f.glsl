@@ -46,8 +46,8 @@ void main()
 //	GBaseColor = pow(texture(basecolor_map, TexCoords).rgb, vec3(2.2));
 	GBaseColor = texture(basecolor_map, TexCoords).rgb;	//do gamma correction in lighting pass
 	GAORoughnessMetalness.r = texture(ao_map, TexCoords).r;
-	GAORoughnessMetalness.g = texture(metalness_roughness_map, TexCoords).b;
-	GAORoughnessMetalness.b  = texture(metalness_roughness_map, TexCoords).g;
+	GAORoughnessMetalness.g = texture(metalness_roughness_map, TexCoords).g;
+	GAORoughnessMetalness.b  = texture(metalness_roughness_map, TexCoords).b;
 //	GEmissive = pow(texture(emissive_map, TexCoords).rgb, vec3(2.2));
 	GEmissive = texture(emissive_map, TexCoords).rgb;
 

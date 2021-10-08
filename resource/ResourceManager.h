@@ -1,12 +1,29 @@
 #pragma once
-#include "Prerequisite.h"
+//#include "Prerequisite.h"
 #include "Singleton.h"
-#include "Material.h"
+#include "MeshFactory.h"
+//#include "Material.h"
 #include "Texture.h"
-#include "CubeMap.h"
-#include "RenderModule.h"
-#include "GLTFLoader.h"
+//#include "CubeMap.h"
+//#include "RenderModule.h"
+//#include "GLTFLoader.h"
 
+class Mesh;
+//class MeshFactory;
+class TriangleMesh;
+struct ExpandedVertex;
+struct PlaneTexture;
+struct Material;
+struct CubeMap;
+struct TextureFile;
+class RenderModule;
+class RenderUnit;
+enum class TextureType;
+enum class TextureFileType;
+enum class MaterialType;
+
+
+class GLTFLoader;
 
 struct TexturePredicate
 {
@@ -27,7 +44,7 @@ class ResourceManager : public Singleton<ResourceManager>
 
 	//map<string, TriangleMesh*> tri_mesh_array;
 
-	set<Shader*> shader_array;
+	//set<Shader*> shader_array;
 
 	set<PlaneTexture*> plane_texture_array;
 
@@ -45,7 +62,7 @@ class ResourceManager : public Singleton<ResourceManager>
 
 public:
 
-	unique_ptr<GLTFLoader> gltf_loader;
+	shared_ptr<GLTFLoader> gltf_loader;
 
 	ResourceManager();
 
@@ -58,22 +75,17 @@ public:
 
 	Material* CreateMaterial(MaterialType type);
 
-	Material* CreateMaterial(const MaterialFactory& mat_factory);
+	//Material* CreateMaterial(const MaterialFactory& mat_factory);
 
 	Mesh* CreateMesh(const MeshFactory& mesh_factory);	//- 只用来生成Geometry mesh
 
 	TriangleMesh* CreateTriangleMesh(bool b_buffer = false, const vector<ExpandedVertex>& vertex_array = vector<ExpandedVertex>(), const vector<unsigned int>& index_array = vector<unsigned int>());
 
-	RenderModule* CreateRenderModule(RenderModule* parent, RenderModuleType type = RenderModuleType::DEFAULT);
+	RenderModule* CreateRenderModule(RenderModule* parent);
 
 	RenderUnit* CreateRenderUnit(RenderModule* parent, Mesh* mesh = nullptr, Material* material = nullptr);
 
 	CubeMap* CreateCubemap(int width, int height, TextureType type = TextureType::CUBEMAP, bool b_buffer = false, TextureFile* file = nullptr);
-
-
-
-
-
 
 };
 

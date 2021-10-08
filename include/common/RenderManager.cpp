@@ -30,6 +30,7 @@
 #include "CubeGeometryMesh.h"
 #include "QuadGeometryMesh.h"
 #include "CaptureFrameBuffer.h"
+#include "RenderModule.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():

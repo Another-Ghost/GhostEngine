@@ -13,7 +13,7 @@ public:
 
 	void RnderGeometryPass();
 	
-	void RenderDirectLight();
+	//void RenderDirectLight();
 
 	void Render();
 

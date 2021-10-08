@@ -15,6 +15,7 @@
 #include "PBRShader.h"
 #include "PBRLightingPassShader.h"
 #include "ReflectionProbe.h"
+#include "RenderModule.h"
 
 
 PBRDeferRenderer::PBRDeferRenderer()

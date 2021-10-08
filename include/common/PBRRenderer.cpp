@@ -10,6 +10,7 @@
 #include "IrradianceShader.h"
 #include "BRDFLUTShader.h"
 #include "PBRDeferRenderer.h"
+#include "RenderModule.h"
 
 
 
