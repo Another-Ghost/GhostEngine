@@ -70,6 +70,7 @@ class SSAOBlurShader;
 class OutputShader;
 class PrefilterShader;
 class IrradianceShader;
+class FBOShader;
 
 class Mesh;
 class MeshFactory;

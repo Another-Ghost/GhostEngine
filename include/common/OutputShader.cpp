@@ -8,8 +8,8 @@ OutputShader::OutputShader(const string& vertex_path, const string& fragment_pat
 
 void OutputShader::Initialize(bool b_reload)
 {
-	UseTextureUnit(TextureUnit::g_color);
-	UseTextureUnit(TextureUnit::ssao);
+	UseTextureUnit(TextureUnit::g_color);	//?
+	UseTextureUnit(TextureUnit::ssao);	
 
 	if (b_reload)
 	{

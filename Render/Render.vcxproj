@@ -160,6 +160,7 @@
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EquirectangularMap.cpp" />
+    <ClCompile Include="FBOShader.cpp" />
     <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GeometryMesh.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="CubeMap.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EquirectangularMap.h" />
+    <ClInclude Include="FBOShader.h" />
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GeometryMesh.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="PlaneTexture.h" />
     <ClInclude Include="QuadGeometryMesh.h" />
     <ClInclude Include="RenderBuffer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereGeometryMesh.h" />
     <ClInclude Include="SphereGeometryMeshFactory.h" />
@@ -211,7 +214,11 @@
     <ClInclude Include="TriangleMeshFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\fbo_f.glsl" />
     <None Include="shaders\local_IBL_lighting_pass_f.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="render.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

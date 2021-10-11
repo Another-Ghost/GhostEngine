@@ -61,6 +61,8 @@ struct TextureUnit
 	static const vector<TextureUnit> light_prefilter_maps;
 	static const vector<TextureUnit> probe_depth_maps;
 
+	static const TextureUnit texture_0;
+
 	//? static void Reset();
 	static void Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture);
 	static void BindCubemapTexture(const TextureUnit& unit, CubeMap* texture);
@@ -110,7 +112,6 @@ public:
 	void SetMat4(const string& name, const mat4& mat) const { Use(); glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]); }
 
 	unsigned int GetID() { return id; }
-
 
 	//static int GetNumber(TextureUnit unit) { return static_cast<int>(unit); }
 	//static string GetName(TextureUnit unit);

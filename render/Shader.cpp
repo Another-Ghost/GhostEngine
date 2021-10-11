@@ -29,6 +29,8 @@ const vector<TextureUnit> TextureUnit::irradiance_maps = { { "irradiance_maps[0]
 const vector<TextureUnit> TextureUnit::light_prefilter_maps = { { "light_prefilter_maps[0]", 6 }, { "light_prefilter_maps[1]", 22 },{ "light_prefilter_maps[2]", 25 }, { "light_prefilter_maps[3]", 29 } };
 const vector<TextureUnit> TextureUnit::probe_depth_maps = { { "probe_depth_maps[0]", 23 }, { "probe_depth_maps[1]", 26 },{ "probe_depth_maps[2]", 29 }, { "probe_depth_maps[3]", 30 } };
 
+const TextureUnit TextureUnit::texture_0 = { "texture_0", 16 };
+
 void TextureUnit::Bind2DTexture(const TextureUnit& unit, PlaneTexture* texture)
 {
 	glActiveTexture(GL_TEXTURE0 + unit.number);

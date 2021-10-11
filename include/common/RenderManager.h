@@ -194,10 +194,9 @@ private:
 
 	Shader* pbr_shader;
 
-
-
 	ChannelCombinationShader* channel_combination_shader;
 
+	shared_ptr<FBOShader> fbo_shader;
 
 	mat4 model_matrix;
 	mat4 view_matrix;
@@ -261,5 +260,7 @@ private:
 	bool b_frustum_culling{ false };
 
 	bool b_enable_local_IBL{ false };
+
+	bool b_enable_postprocess{ false };
 };
 

@@ -31,6 +31,7 @@
 #include "QuadGeometryMesh.h"
 #include "CaptureFrameBuffer.h"
 #include "RenderModule.h"
+#include "FBOShader.h"
 
 template<> RenderManager* Singleton<RenderManager>::singleton = nullptr;
 RenderManager::RenderManager():
@@ -70,8 +71,6 @@ RenderManager::RenderManager():
 
 	//brdf_lut->data_format = GL_RG;
 
-
-
 	glGenBuffers(1, &camera_ubo);	// binding point is 0	//? 写成一个类
 	glObjectLabel(GL_UNIFORM_BUFFER, camera_ubo, -1, "camera_ubo");
 	glBindBuffer(GL_UNIFORM_BUFFER, camera_ubo);
@@ -99,6 +98,8 @@ RenderManager::RenderManager():
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, probe_aabb_ssbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, probe_aabb_ssbo);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 //
 //
@@ -172,6 +173,7 @@ RenderManager::RenderManager():
 
 	irradiance_shader = make_shared<IrradianceShader>();
 	
+	fbo_shader = make_shared<FBOShader>();
 
 	FrameBuffer::screen_fbo = make_shared<FrameBuffer>(0, viewport_info.width, viewport_info.height);
 	FrameBuffer::screen_fbo->Bind();
@@ -367,7 +369,14 @@ void RenderManager::Update(float dt)
 
 		pbr_defer_renderer->Update(dt);
 
-		post_process_renderer->Update(dt);
+		if (b_enable_postprocess)
+		{
+			post_process_renderer->Update(dt);
+		}
+		else
+		{
+			fbo_shader->Draw(g_buffer->color_tex, FrameBuffer::screen_fbo);
+		}
 
 		ResetRenderArray();
 	}
